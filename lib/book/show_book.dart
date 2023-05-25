@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/main.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../models/models.dart';
@@ -25,14 +26,12 @@ class _ShowBookState extends State<ShowBook> {
 
   _deleteBook(int id) async {
     await box.delete(id);
-    /**
-     * Navigator.push(
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => BookPage()),
+        builder: ((context) => const MyApp(index: 0)),
       ),
     );
-     */
   }
 
   @override

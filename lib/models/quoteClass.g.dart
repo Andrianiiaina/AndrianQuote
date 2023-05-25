@@ -17,18 +17,21 @@ class QuoteClassAdapter extends TypeAdapter<QuoteClass> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return QuoteClass(
-      idBook: fields[0] as int,
-      quote: fields[1] as String,
+      author: fields[0] as String,
+      book: fields[1] as String,
+      quote: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, QuoteClass obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.idBook)
+      ..write(obj.author)
       ..writeByte(1)
+      ..write(obj.book)
+      ..writeByte(2)
       ..write(obj.quote);
   }
 

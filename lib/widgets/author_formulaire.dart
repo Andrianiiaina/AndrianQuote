@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import '../models/models.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
+import '../models/models.dart';
 import '../widgets/style.dart';
+import 'dart:async';
 
 class FormulaireAuthor extends StatefulWidget {
   const FormulaireAuthor({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class FormulaireAuthor extends StatefulWidget {
 class _FormulaireAuthorState extends State<FormulaireAuthor> {
   List<String> listBooky = [];
   final box = Hive.box<AuthorClass>('author');
+  // PickedFile? _imageFile;
   @override
   void initState() {
     super.initState();
@@ -20,16 +23,24 @@ class _FormulaireAuthorState extends State<FormulaireAuthor> {
 
   @override
   Widget build(BuildContext context) {
+    //final ImagePicker _picker = ImagePicker();
     TextEditingController _author = TextEditingController();
     TextEditingController _biographie = TextEditingController();
     TextEditingController _image = TextEditingController();
     TextEditingController _books = TextEditingController();
+    Future<void> _pickPhoto(ImageSource source) async {
+      // final pickedFile = await _picker.getImage(source: source);
+
+      // setState(() {
+      // _imageFile = pickedFile;
+      //});
+    }
 
     return Column(
       children: [
-        TextWidget('Ajouter un auteur'),
+        textWidget('Ajouter un auteur'),
         const SizedBox(height: 25),
-        TextFieldWidget(_author, "Nom de l'auteur"),
+        textFieldWidget(_author, "Nom de l'auteur"),
         Row(
           children: [
             Expanded(
@@ -58,10 +69,19 @@ class _FormulaireAuthorState extends State<FormulaireAuthor> {
         TextField(
           controller: _image,
         ),
+        FloatingActionButton(
+          onPressed: () {
+            _pickPhoto(ImageSource.gallery);
+          },
+          heroTag: 'image0',
+          tooltip: 'profil_author',
+          child: const Icon(Icons.photo),
+        ),
         const SizedBox(height: 25),
         ElevatedButton(
             onPressed: () async {
               listBooky.add(_books.text);
+              listBooky.remove(' ');
               final AuthorClass newAuthor = AuthorClass(
                   author: _author.text,
                   biography: _biographie.text,

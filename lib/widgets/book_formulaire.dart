@@ -1,17 +1,25 @@
-import '../author/author.dart';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 import 'package:hive/hive.dart';
 import 'style.dart';
+import '../main.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 class BookFormulaire extends StatefulWidget {
-  const BookFormulaire({Key? key}) : super(key: key);
+  final bool isFinished;
+  const BookFormulaire({Key? key, required this.isFinished}) : super(key: key);
   @override
   State<BookFormulaire> createState() => _BookFormulaireState();
 }
 
 class _BookFormulaireState extends State<BookFormulaire> {
   final box = Hive.box<BookClass>('book');
+  final List<Map<String, dynamic>> bookCategory = [
+    {'value': 'Thriller', 'label': 'Thriller'},
+    {'value': 'Romance', 'label': 'Romance'},
+    {'value': 'Classique', 'label': 'Classique'},
+    {'value': 'Dev perso', 'label': 'Dev perso'}
+  ];
   @override
   Widget build(BuildContext context) {
     TextEditingController _author = TextEditingController();
@@ -21,7 +29,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
 
     return Column(
       children: [
-        TextWidget("Ajouter un livre"),
+        textWidget("Ajouter un livre"),
         TextField(
           controller: _author,
           decoration: const InputDecoration(hintText: "Nom de l'auteur"),
@@ -30,10 +38,11 @@ class _BookFormulaireState extends State<BookFormulaire> {
           controller: _title,
           decoration: const InputDecoration(hintText: "titre"),
         ),
-        TextField(
-          controller: _category,
-          decoration: const InputDecoration(hintText: "category"),
-        ),
+        SelectFormField(
+            labelText: 'Category',
+            type: SelectFormFieldType.dropdown,
+            controller: _category,
+            items: bookCategory),
         TextField(
           controller: _note,
           decoration: const InputDecoration(hintText: "note"),
@@ -46,16 +55,9 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   title: _title.text,
                   category: _category.text,
                   note: _note.text,
-                  isFinished: true,
+                  isFinished: widget.isFinished,
                   version: 'fr');
               _addBook(newBook);
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const AuthorPage()),
-                ),
-              );
               //message bien enregistrer
             },
             child: const Text('Enregistrer'))
@@ -65,5 +67,20 @@ class _BookFormulaireState extends State<BookFormulaire> {
 
   _addBook(BookClass values) async {
     await box.add(values);
+    if (widget.isFinished) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: ((context) => const MyApp(index: 0)),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: ((context) => const MyApp(index: 2)),
+        ),
+      );
+    }
   }
 }

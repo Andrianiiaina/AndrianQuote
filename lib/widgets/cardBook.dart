@@ -15,13 +15,13 @@ Widget cardBook(List<BookClass> books) {
             margin: const EdgeInsets.all(3),
             child: ListTile(
               title: Text(
-                "${book.title}",
+                book.title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              subtitle: Text("${book.author}"),
+              subtitle: Text(book.author),
               onTap: () {
                 Navigator.push(
                   context,

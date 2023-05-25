@@ -9,7 +9,33 @@ Widget cardAuthor(List<AuthorClass> authors) {
     itemCount: authors.length,
     itemBuilder: ((context, index) {
       AuthorClass author = authors[index];
-      return SizedBox(
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => ShowAuthor(idAuthor: author.id)),
+            ),
+          );
+        },
+        child: SizedBox(
+          height: 50,
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/2.png'), fit: BoxFit.cover)),
+            width: 80,
+            margin: const EdgeInsets.all(3),
+            child: Text(author.author),
+          ),
+        ),
+      );
+    }),
+  );
+}
+/**
+ * 
+ * SizedBox(
         height: 50,
         child: Container(
           decoration: BoxDecoration(
@@ -20,10 +46,6 @@ Widget cardAuthor(List<AuthorClass> authors) {
           child: Text(author.author),
         ),
       );
-    }),
-  );
-}
-/**
  * ListTile(
               leading: const Image(
                 image: AssetImage('assets/2.png'),

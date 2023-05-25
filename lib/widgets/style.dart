@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget TextWidget(texte) {
+Widget textWidget(texte) {
   return Text(
     texte,
     style: const TextStyle(
@@ -11,7 +11,7 @@ Widget TextWidget(texte) {
   );
 }
 
-Widget TextFieldWidget(controller, text) {
+Widget textFieldWidget(controller, text) {
   return TextField(
     controller: controller,
     decoration: InputDecoration(hintText: text),
