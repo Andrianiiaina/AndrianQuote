@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/models.dart';
-import 'package:hive/hive.dart';
+import '../models/QuoteModel.dart';
 import '../main.dart';
 
 class ShowQuote extends StatefulWidget {
@@ -13,9 +12,8 @@ class ShowQuote extends StatefulWidget {
 
 class _ShowQuoteState extends State<ShowQuote> {
   late int idQuote;
-  late QuoteClass? quote;
+  late QuotyClass? quote;
   late bool isReadOnly;
-  final box = Hive.box<QuoteClass>('quoty');
 
   @override
   void initState() {
@@ -25,13 +23,12 @@ class _ShowQuoteState extends State<ShowQuote> {
 
   _initState() {
     idQuote = widget.idQuote;
-    quote = box.get(idQuote);
+    quote = QuoteModel.getQuote(idQuote);
     isReadOnly = true;
   }
 
   _update(String quoteE) async {
-    await box.put(idQuote,
-        QuoteClass(author: quote!.author, book: quote!.book, quote: quoteE));
+    await QuoteModel.updateQuote(idQuote, quote!.author, quote!.book, quoteE);
     _initState();
     setState(() {
       isReadOnly = true;
@@ -39,7 +36,7 @@ class _ShowQuoteState extends State<ShowQuote> {
   }
 
   _delete(int index) async {
-    await box.delete(index);
+    await QuoteModel.deleteQuote(index);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -53,6 +50,17 @@ class _ShowQuoteState extends State<ShowQuote> {
     TextEditingController _quote = TextEditingController(text: quote?.quote);
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => MyApp(index: 1)),
+                  ),
+                );
+              },
+              icon: Icon(Icons.skip_previous)),
           title: Text('${quote?.author} - ${quote?.book}'),
           actions: [
             IconButton(

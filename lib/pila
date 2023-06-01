@@ -1,0 +1,174 @@
+
+
+import 'package:andrianiaiina_quote/widgets/cardBook.dart';
+import 'package:flutter/material.dart';
+import 'widgets/book_formulaire.dart';
+import 'widgets/style.dart';
+import 'book/show_book.dart';
+import 'models/BookModel.dart';
+
+class PilALire extends StatelessWidget {
+  PilALire({Key? key}) : super(key: key);
+  List<BookClass> books = BookModel.getAllData()
+      .where((element) => element.isFinished == false)
+      .toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Pile à lire')),
+      body: ReorderableListView(
+        onReorder: (oldIndex, newIndex) {
+          if (oldIndex < newIndex) newIndex--;
+          //final item = books.removeAt(oldIndex);
+          //books.insert(newIndex, item);
+          final BookClass truc1 = books[oldIndex];
+          //  final BookClass truc2 = books[newIndex];
+          final int c = truc1.id;
+
+          BookModel.deleteBook(c);
+          // BookModel.updateBook(truc1.id, truc2);
+
+          //BookModel.deleteBook(truc2.id);
+          //BookModel.updateBook(truc2.id, c);
+          //  BookModel.deleteBook(books[newIndex].id);
+
+          //BookModel.updateBook(books[newIndex].id, c);
+
+          // BookModel.updateBook(truc2.id, truc1);
+        },
+        children: [
+          for (int i = 0; i < books.length; i++)
+            ListTile(
+                key: ValueKey(books[i].id),
+                title: Text(books[i].id.toString(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    )),
+                subtitle: Text(books[i].author),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => ShowBook(idBook: books[i].id)),
+                    ),
+                  );
+                },
+                trailing: SizedBox(
+                    width: MediaQuery.of(context).size.width / 4,
+                    child: star(int.parse(books[i].note)))),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.small(
+        heroTag: 'h1',
+        backgroundColor: Colors.black,
+        onPressed: () {
+          showForm(
+            context,
+            const BookFormulaire(
+              isFinished: false,
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+/**
+ *  /**
+           * ListView.builder(
+              itemCount: books.length,
+              itemBuilder: ((context, index) {
+                BookClass book = books[index];
+                return cardBook(book, context);
+              }))
+           */
+ */
+
+
+import 'package:flutter/material.dart';
+import 'widgets/book_formulaire.dart';
+import 'widgets/style.dart';
+import 'book/show_book.dart';
+import 'models/BookModel.dart';
+
+class PilALire extends StatelessWidget {
+  PilALire({Key? key}) : super(key: key);
+  List<BookClass> books = BookModel.getAllData()
+      .where((element) => element.isFinished == false)
+      .toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Pile à lire')),
+      body: Column(
+        children: [
+          Table(
+            children: const [
+              TableRow(children: [
+                TableCell(child: Text("Titre")),
+                TableCell(child: Text("Auteur")),
+                TableCell(child: Text("category")),
+                TableCell(child: Text("Note")),
+                TableCell(child: Text(""))
+              ])
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: books.length,
+              itemBuilder: ((context, index) {
+                return Table(
+                  children: [
+                    TableRow(children: [
+                      TableCell(child: Text(books[index].title)),
+                      TableCell(child: Text(books[index].author)),
+                      TableCell(child: Text(books[index].category)),
+                      TableCell(child: Text(books[index].note)),
+                      TableCell(
+                          child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) =>
+                                  ShowBook(idBook: books[index].id)),
+                            ),
+                          );
+                        },
+                        icon: (const Icon(Icons.edit)),
+                      ))
+                    ])
+                  ],
+                );
+              }),
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.small(
+        heroTag: 'h1',
+        backgroundColor: Colors.black,
+        onPressed: () {
+          showForm(
+            context,
+            const BookFormulaire(
+              isFinished: false,
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}

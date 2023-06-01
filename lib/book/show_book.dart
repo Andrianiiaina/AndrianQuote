@@ -1,7 +1,8 @@
-import 'package:andrianiaiina_quote/main.dart';
+import '/main.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import '../models/models.dart';
+import '../models/BookModel.dart';
+import '../models/authorClass.dart';
 
 //todo:redirection after modification
 class ShowBook extends StatefulWidget {
@@ -13,23 +14,26 @@ class ShowBook extends StatefulWidget {
 }
 
 class _ShowBookState extends State<ShowBook> {
-  final box = Hive.box<BookClass>("book");
+  final authorbox = Hive.box<AuthorClass>("author");
+
   late BookClass? book;
-  late int id;
-  bool readOnly = true;
+  late bool isAuthorExist;
   @override
   void initState() {
     super.initState();
-    id = widget.idBook;
-    book = box.get(id);
+    book = BookModel.getBook(widget.idBook);
+    isAuthorExist = authorbox.values
+        .where((element) => element.author == book?.author)
+        .isNotEmpty;
   }
 
   _deleteBook(int id) async {
-    await box.delete(id);
+    await BookModel.deleteBook(id);
+    final idPage = (book?.isFinished == true) ? 0 : 2;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 0)),
+        builder: ((context) => MyApp(index: idPage)),
       ),
     );
   }
@@ -43,7 +47,7 @@ class _ShowBookState extends State<ShowBook> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              _deleteBook(id);
+              _deleteBook(widget.idBook);
             },
           ),
         ],
@@ -51,7 +55,22 @@ class _ShowBookState extends State<ShowBook> {
       body: Column(
         children: [
           const SizedBox(height: 30),
-          Text("Auteur: ${book?.author}"),
+          TextButton(
+              onPressed: () {
+                if (isAuthorExist) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => ShowBook(
+                          idBook: authorbox.values
+                              .firstWhere(
+                                  (element) => element.author == book!.author)
+                              .id)),
+                    ),
+                  );
+                }
+              },
+              child: Text("Auteur: ${book?.author}")),
           Text("Categorie: ${book?.category}"),
           const SizedBox(height: 30),
           Text("Version: ${book?.version}"),

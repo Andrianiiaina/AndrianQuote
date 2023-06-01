@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'quoteClass.g.dart';
+part 'quotyClass.g.dart';
 
 @HiveType(typeId: 0)
-class QuoteClass extends HiveObject {
+class QuotyClass extends HiveObject {
   dynamic id;
   @HiveField(0)
   String author;
@@ -12,7 +12,7 @@ class QuoteClass extends HiveObject {
   @HiveField(2)
   String quote;
 
-  QuoteClass({
+  QuotyClass({
     this.id,
     required this.author,
     required this.book,

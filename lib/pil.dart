@@ -1,90 +1,66 @@
+import 'package:andrianiaiina_quote/widgets/cardBook.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'models/models.dart';
 import 'widgets/book_formulaire.dart';
+import 'widgets/style.dart';
 import 'book/show_book.dart';
+import 'models/BookModel.dart';
 
 class PilALire extends StatefulWidget {
   const PilALire({Key? key}) : super(key: key);
+
   @override
   State<PilALire> createState() => _PilALireState();
 }
 
 class _PilALireState extends State<PilALire> {
-  final box = Hive.box<BookClass>('book');
-  late List<BookClass> books = [];
-
-  @override
-  void initState() {
-    super.initState();
-    final data = box.keys.map((e) {
-      final book = box.get(e);
-      return BookClass(
-          id: e,
-          author: book!.author,
-          title: book.title,
-          version: book.version,
-          category: book.category,
-          note: book.note,
-          isFinished: book.isFinished);
-    }).toList();
-    books =
-        data.reversed.where((element) => element.isFinished == false).toList();
-  }
+  List<BookClass> books = BookModel.getAllData()
+      .where((element) => element.isFinished == false)
+      .toList();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Pile à lire')),
-      body: Column(
+      body: ReorderableListView(
+        onReorder: (oldIndex, newIndex) async {
+          if (oldIndex < newIndex) newIndex--;
+          await BookModel.updateBookList(books, oldIndex, newIndex);
+          setState(() {
+            books = BookModel.getAllData()
+                .where((element) => element.isFinished == false)
+                .toList();
+          });
+        },
         children: [
-          Table(
-            children: const [
-              TableRow(children: [
-                TableCell(child: Text("Titre")),
-                TableCell(child: Text("Auteur")),
-                TableCell(child: Text("Note")),
-                TableCell(child: Text(""))
-              ])
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: books.length,
-              itemBuilder: ((context, index) {
-                return Table(
-                  children: [
-                    TableRow(children: [
-                      TableCell(child: Text(books[index].title)),
-                      TableCell(child: Text(books[index].author)),
-                      TableCell(child: Text(books[index].note)),
-                      TableCell(
-                          child: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) =>
-                                  ShowBook(idBook: books[index].id)),
-                            ),
-                          );
-                        },
-                        icon: (const Icon(Icons.edit)),
-                      ))
-                    ])
-                  ],
+          for (int i = 0; i < books.length; i++)
+            ListTile(
+              key: ValueKey(books[i]),
+              // key: ValueKey(books[i].id),
+              title: Text(books[i].title,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
+              subtitle: Text(books[i].author),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => ShowBook(idBook: books[i].id)),
+                  ),
                 );
-              }),
+              },
             ),
-          )
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
         heroTag: 'h1',
         backgroundColor: Colors.black,
         onPressed: () {
-          _showFormulaire(context);
+          showForm(
+            context,
+            const BookFormulaire(
+              isFinished: false,
+            ),
+          );
         },
         child: const Icon(
           Icons.add,
@@ -93,21 +69,12 @@ class _PilALireState extends State<PilALire> {
       ),
     );
   }
-
-  _showFormulaire(BuildContext context) async {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        elevation: 5,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                  left: 10,
-                  top: 2,
-                  right: 10,
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: const BookFormulaire(
-                isFinished: false,
-              ),
-            ));
-  }
 }
+/**
+ * BookModel.updateBookList(books[oldIndex], books[newIndex]);
+          setState(() {
+            books = BookModel.getAllData()
+                .where((element) => element.isFinished == false)
+                .toList();
+          });
+ */

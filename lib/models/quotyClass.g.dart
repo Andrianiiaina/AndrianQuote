@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quoteClass.dart';
+part of 'quotyClass.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuoteClassAdapter extends TypeAdapter<QuoteClass> {
+class QuotyClassAdapter extends TypeAdapter<QuotyClass> {
   @override
   final int typeId = 0;
 
   @override
-  QuoteClass read(BinaryReader reader) {
+  QuotyClass read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuoteClass(
+    return QuotyClass(
       author: fields[0] as String,
       book: fields[1] as String,
       quote: fields[2] as String,
@@ -24,7 +24,7 @@ class QuoteClassAdapter extends TypeAdapter<QuoteClass> {
   }
 
   @override
-  void write(BinaryWriter writer, QuoteClass obj) {
+  void write(BinaryWriter writer, QuotyClass obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,7 +41,7 @@ class QuoteClassAdapter extends TypeAdapter<QuoteClass> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QuoteClassAdapter &&
+      other is QuotyClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

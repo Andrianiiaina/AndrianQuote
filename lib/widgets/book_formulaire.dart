@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/models.dart';
-import 'package:hive/hive.dart';
+import 'package:select_form_field/select_form_field.dart';
+import '../models/BookModel.dart';
 import 'style.dart';
 import '../main.dart';
-import 'package:select_form_field/select_form_field.dart';
 
 class BookFormulaire extends StatefulWidget {
   final bool isFinished;
@@ -13,74 +12,129 @@ class BookFormulaire extends StatefulWidget {
 }
 
 class _BookFormulaireState extends State<BookFormulaire> {
-  final box = Hive.box<BookClass>('book');
-  final List<Map<String, dynamic>> bookCategory = [
-    {'value': 'Thriller', 'label': 'Thriller'},
-    {'value': 'Romance', 'label': 'Romance'},
-    {'value': 'Classique', 'label': 'Classique'},
-    {'value': 'Dev perso', 'label': 'Dev perso'}
-  ];
+  int stara = 0;
+  TextEditingController authorController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController resumeController = TextEditingController();
+  late bool version;
+  @override
+  void initState() {
+    super.initState();
+    version = true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _author = TextEditingController();
-    TextEditingController _title = TextEditingController();
-    TextEditingController _category = TextEditingController();
-    TextEditingController _note = TextEditingController();
-
     return Column(
       children: [
         textWidget("Ajouter un livre"),
-        TextField(
-          controller: _author,
-          decoration: const InputDecoration(hintText: "Nom de l'auteur"),
-        ),
-        TextField(
-          controller: _title,
-          decoration: const InputDecoration(hintText: "titre"),
-        ),
+        textFieldWidget(authorController, "Nom de l'auteur", false),
+        textFieldWidget(titleController, "Titre du livre", false),
+        textareaWidget(resumeController, "Resumé", false),
         SelectFormField(
             labelText: 'Category',
             type: SelectFormFieldType.dropdown,
-            controller: _category,
-            items: bookCategory),
-        TextField(
-          controller: _note,
-          decoration: const InputDecoration(hintText: "note"),
-        ),
-        const SizedBox(height: 25),
+            controller: categoryController,
+            items: BookModel.bookCategory),
+        const SizedBox(height: 20),
+        if (widget.isFinished)
+          SizedBox(height: 30, child: star(stara))
+        else
+          SizedBox(
+              height: 120, child: widget.isFinished ? star(stara) : priority()),
+        const SizedBox(height: 20),
         ElevatedButton(
-            onPressed: () async {
-              final BookClass newBook = BookClass(
-                  author: _author.text,
-                  title: _title.text,
-                  category: _category.text,
-                  note: _note.text,
+            onPressed: () {
+              _addBook(BookClass(
+                  title: titleController.text,
+                  author: authorController.text,
+                  version: 'vf',
+                  note: stara.toString(),
+                  resume: resumeController.text,
                   isFinished: widget.isFinished,
-                  version: 'fr');
-              _addBook(newBook);
+                  category: categoryController.text));
+
               //message bien enregistrer
             },
-            child: const Text('Enregistrer'))
+            child: const Text('Enregistrer le livre'))
       ],
     );
   }
 
   _addBook(BookClass values) async {
-    await box.add(values);
-    if (widget.isFinished) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: ((context) => const MyApp(index: 0)),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: ((context) => const MyApp(index: 2)),
-        ),
-      );
-    }
+    await BookModel.addBook(values);
+    final idPage = (widget.isFinished) ? 0 : 2;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => MyApp(index: idPage)),
+      ),
+    );
+  }
+
+  Widget star(int nbr) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: 5,
+        itemBuilder: ((context, index) {
+          return IconButton(
+            splashRadius: 1,
+            constraints: const BoxConstraints(maxWidth: 30, minWidth: 20),
+            onPressed: () {
+              setState(() {
+                stara = index + 1;
+              });
+            },
+            iconSize: 30,
+            icon: Icon((index < nbr) ? Icons.star : Icons.star_outline),
+            color: (index < nbr)
+                ? const Color.fromARGB(255, 236, 149, 252)
+                : Colors.grey,
+          );
+        }));
+  }
+
+  Widget priority() {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text('Priorité:'),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                stara = 5;
+              });
+            },
+            child: const Text(
+              'Dès que possible',
+            ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                stara = 4;
+              });
+            },
+            child: const Text("Me plait bien"),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.orange)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                stara = 3;
+              });
+            },
+            child: const Text('Un jour peut etre'),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.yellow)),
+          )
+        ]);
   }
 }

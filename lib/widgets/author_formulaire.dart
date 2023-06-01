@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
-import '../models/models.dart';
 import '../widgets/style.dart';
-import 'dart:async';
+import '../main.dart';
+import '../models/authorModel.dart';
+import 'style.dart';
 
 class FormulaireAuthor extends StatefulWidget {
   const FormulaireAuthor({Key? key}) : super(key: key);
@@ -13,62 +15,56 @@ class FormulaireAuthor extends StatefulWidget {
 
 class _FormulaireAuthorState extends State<FormulaireAuthor> {
   List<String> listBooky = [];
-  final box = Hive.box<AuthorClass>('author');
-  // PickedFile? _imageFile;
+  final TextEditingController _author = TextEditingController();
+  final TextEditingController _biographie = TextEditingController();
+  final TextEditingController _books = TextEditingController();
+
+  String _imageFile = "";
+
+  late List<String> listBooks;
   @override
   void initState() {
     super.initState();
-    listBooky = [];
+    listBooks = [];
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  _pickPhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(source: source);
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      final base = base64UrlEncode(bytes);
+      setState(() {
+        _imageFile = base;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //final ImagePicker _picker = ImagePicker();
-    TextEditingController _author = TextEditingController();
-    TextEditingController _biographie = TextEditingController();
-    TextEditingController _image = TextEditingController();
-    TextEditingController _books = TextEditingController();
-    Future<void> _pickPhoto(ImageSource source) async {
-      // final pickedFile = await _picker.getImage(source: source);
-
-      // setState(() {
-      // _imageFile = pickedFile;
-      //});
-    }
-
     return Column(
       children: [
         textWidget('Ajouter un auteur'),
         const SizedBox(height: 25),
-        textFieldWidget(_author, "Nom de l'auteur"),
+        textFieldWidget(_author, "Nom de l'auteur", false),
+        Text(listBooks.toString()),
         Row(
           children: [
-            Expanded(
-              child: TextField(
-                controller: _books,
-                decoration: const InputDecoration(hintText: "Livres"),
-              ),
-            ),
+            Expanded(child: textFieldWidget(_books, "un autre livre", false)),
             Expanded(
               child: IconButton(
                   onPressed: () {
-                    listBooky.add(_books.text);
+                    setState(() {
+                      if (_books.text != " " && _books.text != "")
+                        listBooks.add(_books.text);
+                    });
                     _books.clear();
                   },
                   icon: const Icon(Icons.add)),
             )
           ],
         ),
-        TextField(
-          controller: _biographie,
-          decoration: const InputDecoration(hintText: "Biographie"),
-          keyboardType: TextInputType.multiline,
-          maxLines: 9,
-          minLines: 4,
-        ),
-        TextField(
-          controller: _image,
-        ),
+        textareaWidget(_biographie, "Biographie", false),
         FloatingActionButton(
           onPressed: () {
             _pickPhoto(ImageSource.gallery);
@@ -80,14 +76,14 @@ class _FormulaireAuthorState extends State<FormulaireAuthor> {
         const SizedBox(height: 25),
         ElevatedButton(
             onPressed: () async {
-              listBooky.add(_books.text);
-              listBooky.remove(' ');
-              final AuthorClass newAuthor = AuthorClass(
+              if (_books.text != " " && _books.text != "") {
+                listBooks.add(_books.text);
+              }
+              _addAuthor(AuthorClass(
                   author: _author.text,
                   biography: _biographie.text,
-                  books: listBooky,
-                  profile: _image.text);
-              _addAuthor(newAuthor);
+                  books: listBooks,
+                  profile: _imageFile));
               //message bien enregistrer
             },
             child: const Text('Enregistrer'))
@@ -96,7 +92,13 @@ class _FormulaireAuthorState extends State<FormulaireAuthor> {
   }
 
   _addAuthor(AuthorClass values) async {
-    await box.add(values);
+    await AuthorModel.addAuthor(values);
     listBooky = [];
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const MyApp(index: 0)),
+      ),
+    );
   }
 }

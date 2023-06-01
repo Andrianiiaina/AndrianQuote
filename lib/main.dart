@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'models/models.dart';
+import 'models/quotyClass.dart';
+import 'models/authorClass.dart';
+import 'models/bookClass.dart';
 import 'author/author.dart';
 import 'pil.dart';
 import 'quote/quote.dart';
 
 void main() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(QuoteClassAdapter());
+  Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(AuthorClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
 
   //await Hive.deleteBoxFromDisk("quoty");
-  // await Hive.deleteBoxFromDisk("author");
+  //await Hive.deleteBoxFromDisk("author");
   // await Hive.deleteBoxFromDisk("book");
 
-  await Hive.openBox<QuoteClass>("quoty");
+  await Hive.openBox<QuotyClass>("quoty");
   await Hive.openBox<AuthorClass>("author");
   await Hive.openBox<BookClass>("book");
 

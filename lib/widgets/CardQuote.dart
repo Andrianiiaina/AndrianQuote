@@ -1,14 +1,14 @@
-import 'package:andrianiaiina_quote/quote/showQuote.dart';
+import '/quote/showQuote.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 Widget cardQuote(currentQuote, BuildContext context) {
-  final int x = Random().nextInt(4);
+  final int x = Random().nextInt(36);
   return Container(
-    height: 120,
+    height: 150,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('assets/p${x + 1}.png'),
+          image: AssetImage('assets/p (${x + 1}).jpg'),
           fit: BoxFit.cover,
           opacity: 0.6),
     ),

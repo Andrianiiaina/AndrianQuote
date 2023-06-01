@@ -1,6 +1,7 @@
+import 'package:andrianiaiina_quote/widgets/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import '../models/models.dart';
+import '../models/authorClass.dart';
 import '../main.dart';
 
 //todo:redirection after modification
@@ -56,97 +57,78 @@ class _ShowAuthorState extends State<ShowAuthor> {
     TextEditingController _books = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _author,
-          readOnly: readOnly,
+        appBar: AppBar(
+          title: textFieldWidget(_author, "", readOnly),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (readOnly == true) {
+                      readOnly = false;
+                    } else {
+                      _updateAuthor(AuthorClass(
+                          author: _author.text,
+                          biography: _biographie.text,
+                          books: listBooks,
+                          profile: author!.profile));
+                    }
+                  });
+                },
+                icon: readOnly == true
+                    ? const Icon(Icons.edit)
+                    : const Icon(Icons.update)),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                _deleteAuthor(id);
+              },
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  readOnly = false;
-                });
-              },
-              icon: const Icon(Icons.edit)),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              _deleteAuthor(id);
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 30),
-          const Image(
-            image: AssetImage('assets/p2.png'),
-            width: 180,
-          ),
-          const SizedBox(height: 20),
-          Text(" A écrit ${author!.books.length.toString()} livres:"),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: listBooks.length,
-              itemBuilder: ((context, index) {
-                return CheckboxListTile(
-                    value: true,
-                    onChanged: (val) {},
-                    title: Text(listBooks[index]));
-              }),
-            ),
-          ),
-          const SizedBox(height: 10),
-          if (readOnly == false)
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    readOnly: readOnly,
-                    controller: _books,
-                    decoration:
-                        const InputDecoration(hintText: "un autre livre"),
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                      onPressed: () {
-                        setState(() {
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Image(
+                image: AssetImage('assets/p2.png'),
+                width: 180,
+              ),
+              const SizedBox(height: 20),
+              const Text("Biographie"),
+              textareaWidget(_biographie, "Biographie...", readOnly),
+              Text("${author!.author} a écrit les livres suivantes:"),
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: listBooks.length,
+                itemBuilder: ((context, index) {
+                  return CheckboxListTile(
+                      value: true,
+                      onChanged: (val) {},
+                      title: Text(listBooks[index]));
+                }),
+              ),
+              if (readOnly == false)
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (_books.text != " " && _books.text != "") {
                           listBooks.add(_books.text);
-                          listBooks.remove(" ");
-                        });
-                        _books.clear();
-                      },
-                      icon: const Icon(Icons.add)),
-                )
-              ],
-            ),
-          const Text("Biographie"),
-          TextField(
-            controller: _biographie,
-            readOnly: readOnly,
-            keyboardType: TextInputType.multiline,
-            maxLines: 9,
-            minLines: 2,
+                        }
+                      });
+                      _books.clear();
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 3,
+                            child: textFieldWidget(
+                                _books, "un autre livre", readOnly)),
+                        const Icon(Icons.add)
+                      ],
+                    )),
+            ],
           ),
-          const SizedBox(height: 10),
-          if (readOnly == false)
-            ElevatedButton(
-              child: const Text('Appliquer les modifications'),
-              onPressed: () {
-                if (_books.text != ' ') listBooks.add(_books.text);
-                _updateAuthor(AuthorClass(
-                    author: _author.text,
-                    biography: _biographie.text,
-                    books: listBooks,
-                    profile: author!.profile));
-              },
-            )
-        ],
-      ),
-    );
+        ));
   }
 }

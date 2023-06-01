@@ -13,8 +13,10 @@ class BookClass extends HiveObject {
   @HiveField(3)
   String note;
   @HiveField(4)
-  bool isFinished;
+  String resume;
   @HiveField(5)
+  bool isFinished;
+  @HiveField(6)
   String category;
 
   BookClass({
@@ -23,6 +25,7 @@ class BookClass extends HiveObject {
     required this.author,
     required this.version,
     required this.note,
+    required this.resume,
     required this.isFinished,
     required this.category,
   });
