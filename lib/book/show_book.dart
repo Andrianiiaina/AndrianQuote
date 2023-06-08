@@ -1,30 +1,29 @@
+import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
+
 import '/main.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import '../models/BookModel.dart';
-import '../models/authorClass.dart';
+import 'dart:io';
+import '../widgets/style.dart';
 
 //todo:redirection after modification
 class ShowBook extends StatefulWidget {
   final int idBook;
-  const ShowBook({Key? key, required this.idBook}) : super(key: key);
+  final bool isFinished;
+  const ShowBook({Key? key, required this.idBook, required this.isFinished})
+      : super(key: key);
 
   @override
   State<ShowBook> createState() => _ShowBookState();
 }
 
 class _ShowBookState extends State<ShowBook> {
-  final authorbox = Hive.box<AuthorClass>("author");
-
   late BookClass? book;
   late bool isAuthorExist;
   @override
   void initState() {
     super.initState();
     book = BookModel.getBook(widget.idBook);
-    isAuthorExist = authorbox.values
-        .where((element) => element.author == book?.author)
-        .isNotEmpty;
   }
 
   _deleteBook(int id) async {
@@ -42,8 +41,17 @@ class _ShowBookState extends State<ShowBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" ${book?.title}"),
+        title: const Text(" Details"),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              showForm(
+                  context,
+                  BookFormulaire(
+                      isFinished: widget.isFinished, idBook: widget.idBook));
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
@@ -54,27 +62,52 @@ class _ShowBookState extends State<ShowBook> {
       ),
       body: Column(
         children: [
+          if (book!.couverture.isNotEmpty)
+            Image.file(File(book!.couverture), width: 180),
           const SizedBox(height: 30),
-          TextButton(
-              onPressed: () {
-                if (isAuthorExist) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => ShowBook(
-                          idBook: authorbox.values
-                              .firstWhere(
-                                  (element) => element.author == book!.author)
-                              .id)),
-                    ),
-                  );
-                }
-              },
-              child: Text("Auteur: ${book?.author}")),
+          if (widget.isFinished == true)
+            SizedBox(
+                height: 50,
+                width: MediaQuery.of(context).size.width / 4,
+                child: star(int.parse(book!.note)))
+          else
+            Icon(Icons.rectangle_rounded,
+                color: (book!.note == "5")
+                    ? const Color.fromARGB(255, 216, 3, 253)
+                    : (book!.note == "4")
+                        ? const Color.fromARGB(255, 233, 121, 253)
+                        : const Color.fromARGB(255, 172, 119, 182)),
+          Text("Auteur: ${book?.author}"),
           Text("Categorie: ${book?.category}"),
-          const SizedBox(height: 30),
-          Text("Version: ${book?.version}"),
+          const SizedBox(height: 20),
+          Row(children: [
+            Flexible(child: listTileWidget("Pages", book!.nbrPage.toString())),
+            Flexible(child: listTileWidget("Langage", book!.version)),
+            Flexible(child: listTileWidget("ISBN", book!.isbn))
+          ]),
+          const SizedBox(height: 20),
+          ListTile(
+            title: const Text(
+              "A propos",
+              style: const TextStyle(fontSize: 18, fontFamily: 'verdana'),
+            ),
+            subtitle: Text(book!.resume),
+          )
         ],
+      ),
+    );
+  }
+
+  Widget listTileWidget(titre, soutitre) {
+    return ListTile(
+      title: Text(
+        titre,
+        style: const TextStyle(fontSize: 13, fontFamily: 'verdana'),
+      ),
+      subtitle: Text(
+        soutitre,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'dart:math';
 Widget cardQuote(currentQuote, BuildContext context) {
   final int x = Random().nextInt(36);
   return Container(
+    alignment: Alignment.center,
     height: 150,
     decoration: BoxDecoration(
       image: DecorationImage(

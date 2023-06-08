@@ -33,47 +33,59 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
   Widget build(BuildContext context) {
     TextEditingController _book = TextEditingController();
     TextEditingController _quoty = TextEditingController();
-    return Column(
-      children: [
-        textWidget("Ajouter un quote"),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: SelectFormField(
-                hintText: "Auteur - Titre",
-                controller: _book,
-                type: SelectFormFieldType.dropdown,
-                items: bookField,
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(0),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              opacity: 0.2,
+              image: AssetImage('assets/p (8).jpg'),
+              fit: BoxFit.cover)),
+      child: Column(
+        children: [
+          textWidget("Ajouter un quote"),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: SelectFormField(
+                  hintText: "Book",
+                  controller: _book,
+                  type: SelectFormFieldType.dropdown,
+                  items: bookField,
+                ),
               ),
+              //Ajouter d'autre Auteur
+
+              IconButton(
+                  onPressed: () {
+                    showForm(
+                      context,
+                      const BookFormulaire(
+                        isFinished: true,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.add))
+            ],
+          ),
+          const SizedBox(height: 30),
+          textareaWidget(_quoty, 'Quote...', false),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            onPressed: () async {
+              List<String> book = _book.text.split("-");
+              _createQuote(book[1], book[0], _quoty.text);
+
+              ///notif oe bien enregistrer
+            },
+            child: const Text(
+              'Enregistrer le quote',
+              style: TextStyle(color: Colors.white),
             ),
-            //Ajouter d'autre Auteur
-
-            IconButton(
-                onPressed: () {
-                  showForm(
-                    context,
-                    const BookFormulaire(
-                      isFinished: true,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add))
-          ],
-        ),
-        const SizedBox(height: 30),
-        textareaWidget(_quoty, 'Quote...', false),
-        const SizedBox(height: 30),
-        ElevatedButton(
-          onPressed: () async {
-            List<String> book = _book.text.split("-");
-            _createQuote(book[1], book[0], _quoty.text);
-
-            ///notif oe bien enregistrer
-          },
-          child: const Text('Enregistrer le quote'),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

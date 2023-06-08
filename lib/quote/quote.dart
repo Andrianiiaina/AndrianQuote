@@ -14,27 +14,42 @@ class QuotePage extends StatefulWidget {
 class _QuotePageState extends State<QuotePage> {
   final List<QuotyClass> _items = QuoteModel.getAllData();
   List<QuotyClass> _filterdItems = [];
+  bool isSearching = false;
   @override
   void initState() {
     super.initState();
     _filterdItems = _items;
+    isSearching = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Andrianiiaina Quotes'),
+        title: const Text('Quotee'),
+        actions: [
+          if (isSearching == true)
+            SizedBox(
+              width: 180,
+              child: TextField(
+                decoration: const InputDecoration(hintText: "search..."),
+                onChanged: (q) {
+                  search(q);
+                },
+              ),
+            ),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  isSearching = !isSearching;
+                });
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          TextField(
-            decoration: const InputDecoration(
-                icon: Icon(Icons.search), hintText: "rechercher un quote"),
-            onChanged: (q) {
-              search(q);
-            },
-          ),
           Expanded(
             child: SizedBox(
               height: 3,

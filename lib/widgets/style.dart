@@ -4,10 +4,10 @@ Widget textWidget(texte) {
   return Text(
     texte,
     style: const TextStyle(
-      fontSize: 23,
-      color: Colors.purple,
-      fontWeight: FontWeight.bold,
-    ),
+        fontSize: 28,
+        color: Color.fromARGB(255, 230, 116, 250),
+        fontWeight: FontWeight.bold,
+        fontFamily: "San Francisco"),
   );
 }
 
@@ -27,7 +27,7 @@ Widget textareaWidget(controller, text, readOnly) {
     decoration: InputDecoration(hintText: text),
     keyboardType: TextInputType.multiline,
     maxLines: 9,
-    minLines: 2,
+    minLines: 3,
   );
 }
 
@@ -39,14 +39,29 @@ Future showForm(BuildContext context, truc) async {
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    elevation: 5,
+    elevation: 2,
     builder: (_) => Container(
       padding: EdgeInsets.only(
           left: 10,
-          top: 2,
+          top: 30,
           right: 10,
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: truc,
     ),
   );
+}
+
+Widget star(int nbr) {
+  return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 5,
+      itemBuilder: ((context, index) {
+        return Icon(
+          (index < nbr) ? Icons.star : Icons.star_outline,
+          size: 15,
+          color: (index < nbr)
+              ? const Color.fromARGB(255, 236, 149, 252)
+              : Colors.grey,
+        );
+      }));
 }

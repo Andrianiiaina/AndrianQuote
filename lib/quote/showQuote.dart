@@ -56,11 +56,11 @@ class _ShowQuoteState extends State<ShowQuote> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: ((context) => MyApp(index: 1)),
+                    builder: ((context) => const MyApp(index: 1)),
                   ),
                 );
               },
-              icon: Icon(Icons.skip_previous)),
+              icon: const Icon(Icons.skip_previous)),
           title: Text('${quote?.author} - ${quote?.book}'),
           actions: [
             IconButton(

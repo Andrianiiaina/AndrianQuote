@@ -24,13 +24,16 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       resume: fields[4] as String,
       isFinished: fields[5] as bool,
       category: fields[6] as String,
+      couverture: fields[7] as String,
+      nbrPage: fields[8] as String,
+      isbn: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookClass obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -44,7 +47,13 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       ..writeByte(5)
       ..write(obj.isFinished)
       ..writeByte(6)
-      ..write(obj.category);
+      ..write(obj.category)
+      ..writeByte(7)
+      ..write(obj.couverture)
+      ..writeByte(8)
+      ..write(obj.nbrPage)
+      ..writeByte(9)
+      ..write(obj.isbn);
   }
 
   @override

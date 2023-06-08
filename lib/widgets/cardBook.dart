@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 import '../book/show_book.dart';
-
-star(int nbr) {
-  return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: 5,
-      itemBuilder: ((context, index) {
-        return Icon(
-          (index < nbr) ? Icons.star : Icons.star_outline,
-          size: 15,
-          color:
-              (index < nbr) ? Color.fromARGB(255, 236, 149, 252) : Colors.grey,
-        );
-      }));
-}
+import 'style.dart';
 
 Widget cardBook(book, context) {
   return Container(
@@ -22,6 +9,8 @@ Widget cardBook(book, context) {
     margin: const EdgeInsets.all(3),
     child: ListTile(
         title: Text(book.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -31,7 +20,10 @@ Widget cardBook(book, context) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: ((context) => ShowBook(idBook: book.id)),
+              builder: ((context) => ShowBook(
+                    idBook: book.id,
+                    isFinished: true,
+                  )),
             ),
           );
         },

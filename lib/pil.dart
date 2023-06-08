@@ -1,4 +1,3 @@
-import 'package:andrianiaiina_quote/widgets/cardBook.dart';
 import 'package:flutter/material.dart';
 import 'widgets/book_formulaire.dart';
 import 'widgets/style.dart';
@@ -16,14 +15,19 @@ class _PilALireState extends State<PilALire> {
   List<BookClass> books = BookModel.getAllData()
       .where((element) => element.isFinished == false)
       .toList();
+  List<BookClass> finishedLists = BookModel.getAllData()
+      .where((element) => element.isFinished == true)
+      .toList();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Pile à lire')),
       body: ReorderableListView(
+        scrollDirection: Axis.vertical,
         onReorder: (oldIndex, newIndex) async {
           if (oldIndex < newIndex) newIndex--;
+          books.addAll(finishedLists);
           await BookModel.updateBookList(books, oldIndex, newIndex);
           setState(() {
             books = BookModel.getAllData()
@@ -33,22 +37,35 @@ class _PilALireState extends State<PilALire> {
         },
         children: [
           for (int i = 0; i < books.length; i++)
-            ListTile(
-              key: ValueKey(books[i]),
-              // key: ValueKey(books[i].id),
-              title: Text(books[i].title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold)),
-              subtitle: Text(books[i].author),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => ShowBook(idBook: books[i].id)),
+            Container(
+                color: const Color.fromARGB(255, 71, 60, 59),
+                margin: const EdgeInsets.all(2),
+                key: ValueKey(books[i]),
+                child: ListTile(
+                  leading: Icon(Icons.rectangle_rounded,
+                      color: (books[i].note == "5")
+                          ? const Color.fromARGB(255, 216, 3, 253)
+                          : (books[i].note == "4")
+                              ? const Color.fromARGB(255, 233, 121, 253)
+                              : const Color.fromARGB(255, 172, 119, 182)),
+                  title: Text(books[i].title,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    books[i].author,
                   ),
-                );
-              },
-            ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => ShowBook(
+                              idBook: books[i].id,
+                              isFinished: false,
+                            )),
+                      ),
+                    );
+                  },
+                )),
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
@@ -70,11 +87,3 @@ class _PilALireState extends State<PilALire> {
     );
   }
 }
-/**
- * BookModel.updateBookList(books[oldIndex], books[newIndex]);
-          setState(() {
-            books = BookModel.getAllData()
-                .where((element) => element.isFinished == false)
-                .toList();
-          });
- */

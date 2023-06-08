@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/quotyClass.dart';
-import 'models/authorClass.dart';
 import 'models/bookClass.dart';
-import 'author/author.dart';
 import 'pil.dart';
 import 'quote/quote.dart';
+import 'book/book.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(QuotyClassAdapter());
-  Hive.registerAdapter(AuthorClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
 
   //await Hive.deleteBoxFromDisk("quoty");
-  //await Hive.deleteBoxFromDisk("author");
-  // await Hive.deleteBoxFromDisk("book");
-
+  //await Hive.deleteBoxFromDisk("book");
   await Hive.openBox<QuotyClass>("quoty");
-  await Hive.openBox<AuthorClass>("author");
   await Hive.openBox<BookClass>("book");
 
   runApp(const MyApp(
@@ -37,7 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late int currentPage;
   final screen = [
-    const AuthorPage(),
+    const BookPage(),
     const QuotePage(),
     const PilALire(),
   ];
@@ -72,20 +67,20 @@ class _MyAppState extends State<MyApp> {
           },
           items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.person,
-                    color: Color.fromARGB(197, 255, 255, 255)),
-                label: 'authors',
-                tooltip: "Authors"),
-            BottomNavigationBarItem(
                 icon:
                     Icon(Icons.book, color: Color.fromARGB(197, 255, 255, 255)),
+                label: 'books',
+                tooltip: "Books"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark,
+                    color: Color.fromARGB(197, 255, 255, 255)),
                 label: 'quote',
                 tooltip: "Quotes"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.list_rounded,
+                icon: Icon(Icons.watch_later,
                     color: Color.fromARGB(197, 255, 255, 255)),
-                label: 'pile à lire',
-                tooltip: "pil")
+                label: 'wishlist',
+                tooltip: "wishlist")
           ],
         ),
       ),
