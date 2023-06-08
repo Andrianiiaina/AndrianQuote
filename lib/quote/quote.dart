@@ -4,6 +4,8 @@ import '../widgets/CardQuote.dart';
 import '../widgets/style.dart';
 import '../models/QuoteModel.dart';
 
+import '../models/sauvegarde.dart';
+
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);
 
@@ -46,6 +48,19 @@ class _QuotePageState extends State<QuotePage> {
               },
               icon: const Icon(Icons.search))
         ],
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.transparent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  sauvegarde.exportToJson();
+                },
+                child: const Text('Sauvegarder in net'))
+          ],
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,

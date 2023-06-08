@@ -22,7 +22,7 @@ class _PilALireState extends State<PilALire> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pile à lire')),
+      appBar: AppBar(title: const Text('Wishlist')),
       body: ReorderableListView(
         scrollDirection: Axis.vertical,
         onReorder: (oldIndex, newIndex) async {
@@ -38,11 +38,11 @@ class _PilALireState extends State<PilALire> {
         children: [
           for (int i = 0; i < books.length; i++)
             Container(
-                color: const Color.fromARGB(255, 71, 60, 59),
+                color: Color.fromARGB(255, 49, 44, 49),
                 margin: const EdgeInsets.all(2),
                 key: ValueKey(books[i]),
                 child: ListTile(
-                  leading: Icon(Icons.rectangle_rounded,
+                  leading: Icon(Icons.rectangle,
                       color: (books[i].note == "5")
                           ? const Color.fromARGB(255, 216, 3, 253)
                           : (books[i].note == "4")

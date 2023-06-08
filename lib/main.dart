@@ -11,8 +11,8 @@ void main() async {
   Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
 
-  //await Hive.deleteBoxFromDisk("quoty");
-  //await Hive.deleteBoxFromDisk("book");
+  // await Hive.deleteBoxFromDisk("quoty");
+  // await Hive.deleteBoxFromDisk("book");
   await Hive.openBox<QuotyClass>("quoty");
   await Hive.openBox<BookClass>("book");
 

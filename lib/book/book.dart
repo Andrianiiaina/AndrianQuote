@@ -29,7 +29,7 @@ class bookPage_State extends State<BookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Andrianiiaina quote'),
+        title: const Text('Books'),
         actions: [
           if (isSearching == true)
             SizedBox(
@@ -52,7 +52,6 @@ class bookPage_State extends State<BookPage> {
       ),
       body: Column(
         children: [
-          listTileAddButton("Books", const BookFormulaire(isFinished: true)),
           Expanded(
             flex: 5,
             child: ListView.builder(
@@ -65,6 +64,17 @@ class bookPage_State extends State<BookPage> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton.small(
+        heroTag: 'h5',
+        backgroundColor: Colors.black,
+        onPressed: () {
+          showForm(context, const BookFormulaire(isFinished: true));
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -76,20 +86,5 @@ class bookPage_State extends State<BookPage> {
               element.author.toLowerCase().contains(q.toLowerCase()))
           .toList();
     });
-  }
-
-  Widget listTileAddButton(String title, Formulaire) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontFamily: "Roboto"),
-      ),
-      onTap: () {},
-      trailing: IconButton(
-          onPressed: () {
-            showForm(context, Formulaire);
-          },
-          icon: const Icon(Icons.add)),
-    );
   }
 }

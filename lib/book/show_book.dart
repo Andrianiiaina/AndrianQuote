@@ -89,7 +89,7 @@ class _ShowBookState extends State<ShowBook> {
           ListTile(
             title: const Text(
               "A propos",
-              style: const TextStyle(fontSize: 18, fontFamily: 'verdana'),
+              style: TextStyle(fontSize: 18, fontFamily: 'verdana'),
             ),
             subtitle: Text(book!.resume),
           )

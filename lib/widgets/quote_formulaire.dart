@@ -35,11 +35,11 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
     TextEditingController _quoty = TextEditingController();
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
           image: DecorationImage(
-              opacity: 0.2,
-              image: AssetImage('assets/p (8).jpg'),
+              opacity: 0.3,
+              image: AssetImage('assets/p (10).jpg'),
               fit: BoxFit.cover)),
       child: Column(
         children: [

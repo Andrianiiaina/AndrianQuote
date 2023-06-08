@@ -64,84 +64,96 @@ class _BookFormulaireState extends State<BookFormulaire> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          textWidget("Ajouter un livre"),
-          SizedBox(height: 20),
-          if (currentImage.isNotEmpty)
-            Image.file(
-              File(currentImage),
-              height: 150,
-              width: 150,
+      scrollDirection: Axis.vertical,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                opacity: 0.5,
+                image: AssetImage('assets/p (18).jpg'),
+                fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            textWidget("Ajouter un livre"),
+            const SizedBox(height: 20),
+            if (currentImage.isNotEmpty)
+              Image.file(
+                File(currentImage),
+                height: 150,
+                width: 150,
+              ),
+            FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                _pickPhoto(ImageSource.gallery);
+              },
+              heroTag: 'image0',
+              tooltip: 'profil_author',
+              child: const Icon(Icons.photo),
+              backgroundColor: Colors.white,
             ),
-          FloatingActionButton(
-            onPressed: () {
-              _pickPhoto(ImageSource.gallery);
-            },
-            heroTag: 'image0',
-            tooltip: 'profil_author',
-            child: const Icon(Icons.photo),
-            backgroundColor: Colors.white,
-          ),
-          const Text(
-            "Couverture du livre",
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          SizedBox(height: 20),
-          textFieldWidget(authorController, "Nom de l'auteur", false),
-          textFieldWidget(titleController, "Titre du livre", false),
-          SelectFormField(
-            labelText: 'Category',
-            type: SelectFormFieldType.dropdown,
-            controller: categoryController,
-            items: BookModel.bookCategory,
-          ),
-          textFieldWidget(nbrpageController, "Nombre de page", false),
-          textFieldWidget(isbnController, "ISBN", false),
-          textareaWidget(resumeController, "Resumé", false),
-          const SizedBox(height: 20),
-          if (widget.isFinished)
-            SizedBox(height: 20, child: star(stara))
-          else
-            SizedBox(
-                height: 90,
-                child: widget.isFinished ? star(stara) : priority()),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () async {
-              final imageFile = File(currentImage);
-              if (!File(_imageFile).existsSync() && currentImage != "") {
-                await imageFile.copy(_imageFile);
-              }
+            const Text(
+              "Couverture du livre",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 5),
+            textFieldWidget(authorController, "Nom de l'auteur", false),
+            textFieldWidget(titleController, "Titre du livre", false),
+            SelectFormField(
+              labelText: 'Category',
+              type: SelectFormFieldType.dropdown,
+              controller: categoryController,
+              items: BookModel.bookCategory,
+            ),
+            textFieldWidgetNumber(nbrpageController, "Nombre de page", false),
+            textFieldWidget(isbnController, "ISBN", false),
+            textareaWidget(resumeController, "Resumé", false),
+            if (widget.isFinished)
+              SizedBox(height: 50, child: star(stara))
+            else
+              SizedBox(
+                  height: 100,
+                  child: widget.isFinished ? star(stara) : priority()),
+            ElevatedButton(
+              onPressed: () async {
+                final imageFile = File(currentImage);
+                if (!File(_imageFile).existsSync() && currentImage != "") {
+                  await imageFile.copy(_imageFile);
+                }
 
-              BookClass boky = BookClass(
-                title: titleController.text,
-                author: authorController.text,
-                version: 'vf',
-                note: stara.toString(),
-                resume: resumeController.text,
-                isFinished: widget.isFinished,
-                category: categoryController.text,
-                couverture: _imageFile,
-                isbn: isbnController.text,
-                nbrPage: nbrpageController.text,
-              );
-              if (widget.idBook == -1)
-                _addBook(boky);
-              else
-                _updateBook(widget.idBook, boky);
-              //message bien enregistrer
-            },
-            child: const Text(
-              'Enregistrer',
-              style: TextStyle(color: Colors.white),
+                BookClass boky = BookClass(
+                  title: titleController.text,
+                  author: authorController.text,
+                  version: 'vf',
+                  note: stara.toString(),
+                  resume: resumeController.text,
+                  isFinished: widget.isFinished,
+                  category: categoryController.text,
+                  couverture: _imageFile,
+                  isbn: isbnController.text,
+                  nbrPage: nbrpageController.text,
+                );
+                if (widget.idBook == -1) {
+                  _addBook(boky);
+                } else {
+                  _updateBook(widget.idBook, boky);
+                }
+                //message bien enregistrer
+              },
+              child: const Text(
+                'Enregistrer',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Color.fromARGB(255, 230, 116, 250)),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(15))),
             ),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 230, 116, 250)),
-                padding: MaterialStateProperty.all(EdgeInsets.all(15))),
-          ),
-        ],
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -197,21 +209,25 @@ class _BookFormulaireState extends State<BookFormulaire> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Priorité:'),
+        const Text(
+          'Priorité:',
+          style: TextStyle(
+              color: Color.fromARGB(255, 196, 192, 192), fontSize: 15),
+        ),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
               child: priorityButton(
                   // ignore: prefer_const_constructors
                   5,
-                  "Dès que possible",
+                  "Love troop",
                   const Color.fromARGB(255, 216, 3, 253))),
           Expanded(
-              child: priorityButton(4, "Me plait bien",
-                  const Color.fromARGB(255, 233, 121, 253))),
+              child: priorityButton(
+                  4, "Love it", const Color.fromARGB(255, 233, 121, 253))),
           Expanded(
               child: priorityButton(
-                  3, "Si j'ai le temps", Color.fromARGB(255, 172, 119, 182))),
+                  3, "like it", const Color.fromARGB(255, 172, 119, 182))),
         ])
       ],
     );
@@ -226,11 +242,12 @@ class _BookFormulaireState extends State<BookFormulaire> {
       },
       child: Text(
         titre,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w400, fontSize: 12),
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(color),
-          padding: MaterialStateProperty.all(EdgeInsets.all(15))),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(15))),
     );
   }
 }
