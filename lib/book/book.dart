@@ -1,4 +1,6 @@
+import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:select_form_field/select_form_field.dart';
 import '../widgets/cardBook.dart';
 import '../widgets/book_formulaire.dart';
 import '../widgets/style.dart';
@@ -12,9 +14,7 @@ class BookPage extends StatefulWidget {
 }
 
 class bookPage_State extends State<BookPage> {
-  final List<BookClass> books = BookModel.getAllData()
-      .where((element) => element.isFinished == true)
-      .toList();
+  final List<BookClass> books = BookModel.getAllData().toList();
   List<BookClass> filteredBooks = [];
 
   late bool isSearching;
@@ -22,6 +22,7 @@ class bookPage_State extends State<BookPage> {
   void initState() {
     super.initState();
     filteredBooks = books;
+    filteredBooks.sort(((a, b) => b.date.compareTo(a.date)));
     isSearching = false;
   }
 
@@ -52,6 +53,52 @@ class bookPage_State extends State<BookPage> {
       ),
       body: Column(
         children: [
+          Row(children: [
+            Expanded(
+              flex: 3,
+              child: SelectFormField(
+                labelText: 'Category',
+                items: Models.bookCategory,
+                onChanged: (value) {
+                  setState(() {
+                    if (value == 'tout') {
+                      filteredBooks = books;
+                    } else {
+                      filteredBooks = books
+                          .where((element) => element.category == value)
+                          .toList();
+                    }
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SelectFormField(
+                labelText: 'ordre',
+                items: const [
+                  {'value': 'ASC', 'label': 'ASC'},
+                  {'value': 'DESC', 'label': 'DESC'}
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    if (value == 'ASC') {
+                      setState(() {
+                        filteredBooks
+                            .sort(((a, b) => a.title.compareTo(b.title)));
+                      });
+                    } else {
+                      setState(() {
+                        filteredBooks
+                            .sort(((a, b) => b.title.compareTo(a.title)));
+                      });
+                    }
+                  });
+                },
+              ),
+            ),
+          ]),
+          const SizedBox(height: 5),
           Expanded(
             flex: 5,
             child: ListView.builder(
@@ -68,7 +115,7 @@ class bookPage_State extends State<BookPage> {
         heroTag: 'h5',
         backgroundColor: Colors.black,
         onPressed: () {
-          showForm(context, const BookFormulaire(isFinished: true));
+          showForm(context, const BookFormulaire());
         },
         child: const Icon(
           Icons.add,

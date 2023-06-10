@@ -3,6 +3,12 @@ import '../book/show_book.dart';
 import 'style.dart';
 
 Widget cardBook(book, context) {
+  var note = 0;
+  try {
+    note = int.parse(book!.note);
+  } catch (e) {
+    note = 0;
+  }
   return Container(
     key: ValueKey(book.id),
     color: const Color.fromARGB(255, 71, 70, 70),
@@ -28,7 +34,6 @@ Widget cardBook(book, context) {
           );
         },
         trailing: SizedBox(
-            width: MediaQuery.of(context).size.width / 4,
-            child: star(int.parse(book.note)))),
+            width: MediaQuery.of(context).size.width / 4, child: star(note))),
   );
 }

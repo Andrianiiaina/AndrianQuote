@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'quotyClass.dart';
 export 'quotyClass.dart';
+import 'sauvegarde.dart';
 
 final box = Hive.box<QuotyClass>('quoty');
 
@@ -33,5 +34,11 @@ class QuoteModel {
       int idQuote, String author, String book, String quoteE) async {
     await box.put(
         idQuote, QuotyClass(author: author, book: book, quote: quoteE));
+  }
+
+  static recupJsonDataQuote() async {
+    final List<QuotyClass> quotes = await sauvegarde.majQuote();
+    box.clear();
+    box.addAll(quotes);
   }
 }

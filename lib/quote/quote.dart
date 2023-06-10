@@ -4,8 +4,6 @@ import '../widgets/CardQuote.dart';
 import '../widgets/style.dart';
 import '../models/QuoteModel.dart';
 
-import '../models/sauvegarde.dart';
-
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);
 
@@ -21,6 +19,7 @@ class _QuotePageState extends State<QuotePage> {
   void initState() {
     super.initState();
     _filterdItems = _items;
+    _filterdItems.shuffle();
     isSearching = false;
   }
 
@@ -49,19 +48,6 @@ class _QuotePageState extends State<QuotePage> {
               icon: const Icon(Icons.search))
         ],
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.transparent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  sauvegarde.exportToJson();
-                },
-                child: const Text('Sauvegarder in net'))
-          ],
-        ),
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -69,7 +55,9 @@ class _QuotePageState extends State<QuotePage> {
             child: SizedBox(
               height: 3,
               child: _filterdItems.isEmpty
-                  ? const Text('No quote, please insert')
+                  ? Text(isSearching == true
+                      ? "Aucun resultat."
+                      : "Aucun quote disponible.")
                   : ListView.builder(
                       controller: ScrollController(),
                       scrollDirection: Axis.vertical,
@@ -101,7 +89,9 @@ class _QuotePageState extends State<QuotePage> {
     setState(() {
       _filterdItems = _items
           .where((element) =>
-              element.quote.toLowerCase().contains(q.toLowerCase()))
+              element.quote.toLowerCase().contains(q.toLowerCase()) ||
+              element.author.toLowerCase().contains(q.toLowerCase()) ||
+              element.book.toLowerCase().contains(q.toLowerCase()))
           .toList();
     });
   }

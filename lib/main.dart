@@ -1,20 +1,24 @@
+import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'models/quotyClass.dart';
-import 'models/bookClass.dart';
-import 'pil.dart';
+import 'wishlist.dart';
 import 'quote/quote.dart';
 import 'book/book.dart';
+import '../models/WishlistModel.dart';
+import '../models/BookModel.dart';
+import '../models/QuoteModel.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
+  Hive.registerAdapter(WishlistClassAdapter());
 
-  // await Hive.deleteBoxFromDisk("quoty");
-  // await Hive.deleteBoxFromDisk("book");
+  //await Hive.deleteBoxFromDisk("quoty");
+  //await Hive.deleteBoxFromDisk("book");
   await Hive.openBox<QuotyClass>("quoty");
   await Hive.openBox<BookClass>("book");
+  await Hive.openBox<WishlistClass>("wishlist");
 
   runApp(const MyApp(
     index: 1,
@@ -34,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   final screen = [
     const BookPage(),
     const QuotePage(),
-    const PilALire(),
+    const Wishlist(),
   ];
   @override
   void initState() {
@@ -51,6 +55,10 @@ class _MyAppState extends State<MyApp> {
         colorScheme: const ColorScheme.dark(),
       ),
       home: Scaffold(
+        drawer: const Drawer(
+          backgroundColor: Colors.transparent,
+          child: Settings(),
+        ),
         body: IndexedStack(
           index: currentPage,
           children: screen,
@@ -59,7 +67,6 @@ class _MyAppState extends State<MyApp> {
           currentIndex: currentPage,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.black,
           onTap: (index) {
             setState(() {
               currentPage = index;
@@ -80,8 +87,9 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(Icons.watch_later,
                     color: Color.fromARGB(197, 255, 255, 255)),
                 label: 'wishlist',
-                tooltip: "wishlist")
+                tooltip: "wishlist"),
           ],
+          backgroundColor: Colors.black,
         ),
       ),
     );

@@ -20,19 +20,27 @@ class ShowBook extends StatefulWidget {
 class _ShowBookState extends State<ShowBook> {
   late BookClass? book;
   late bool isAuthorExist;
+  late int note;
+
   @override
   void initState() {
     super.initState();
     book = BookModel.getBook(widget.idBook);
+    try {
+      note = int.parse(book!.note);
+    } catch (e) {
+      note = 0;
+    }
   }
 
   _deleteBook(int id) async {
     await BookModel.deleteBook(id);
-    final idPage = (book?.isFinished == true) ? 0 : 2;
-    Navigator.push(
+    const idPage = 0;
+
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: ((context) => MyApp(index: idPage)),
+        builder: ((context) => const MyApp(index: idPage)),
       ),
     );
   }
@@ -41,15 +49,22 @@ class _ShowBookState extends State<ShowBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const MyApp(index: 0)),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back)),
         title: const Text(" Details"),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              showForm(
-                  context,
-                  BookFormulaire(
-                      isFinished: widget.isFinished, idBook: widget.idBook));
+              showForm(context, BookFormulaire(idBook: widget.idBook));
             },
           ),
           IconButton(
@@ -69,21 +84,40 @@ class _ShowBookState extends State<ShowBook> {
             SizedBox(
                 height: 50,
                 width: MediaQuery.of(context).size.width / 4,
-                child: star(int.parse(book!.note)))
+                child: star(note))
           else
-            Icon(Icons.rectangle_rounded,
-                color: (book!.note == "5")
-                    ? const Color.fromARGB(255, 216, 3, 253)
-                    : (book!.note == "4")
-                        ? const Color.fromARGB(255, 233, 121, 253)
-                        : const Color.fromARGB(255, 172, 119, 182)),
-          Text("Auteur: ${book?.author}"),
-          Text("Categorie: ${book?.category}"),
+            ElevatedButton(
+              child: const Text(
+                "Ajouter aux livres lus",
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all((book!.note == "5")
+                      ? const Color.fromARGB(255, 216, 3, 253)
+                      : (book!.note == "4")
+                          ? const Color.fromARGB(255, 233, 121, 253)
+                          : const Color.fromARGB(255, 172, 119, 182))),
+              onPressed: () {
+                showForm(
+                    context,
+                    BookFormulaire(
+                      idBook: widget.idBook,
+                    ));
+              },
+            ),
+          Text(
+            "Auteur: ${book?.author}",
+            style: const TextStyle(fontSize: 16),
+          ),
+          Text("Categorie: ${book?.category}",
+              style: const TextStyle(fontSize: 16)),
           const SizedBox(height: 20),
           Row(children: [
             Flexible(child: listTileWidget("Pages", book!.nbrPage.toString())),
             Flexible(child: listTileWidget("Langage", book!.version)),
-            Flexible(child: listTileWidget("ISBN", book!.isbn))
+            Flexible(
+                child: listTileWidget("Date",
+                    "${book!.date.year}-${book!.date.month}-${book!.date.day}")),
           ]),
           const SizedBox(height: 20),
           ListTile(

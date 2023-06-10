@@ -1,10 +1,13 @@
+import 'package:andrianiaiina_quote/widgets/style.dart';
 import 'package:flutter/material.dart';
 import '../models/QuoteModel.dart';
 import '../main.dart';
 
 class ShowQuote extends StatefulWidget {
   final int idQuote;
-  const ShowQuote({Key? key, required this.idQuote}) : super(key: key);
+  final int idFond;
+  const ShowQuote({Key? key, required this.idQuote, required this.idFond})
+      : super(key: key);
 
   @override
   State<ShowQuote> createState() => _ShowQuoteState();
@@ -53,23 +56,27 @@ class _ShowQuoteState extends State<ShowQuote> {
           automaticallyImplyLeading: false,
           leading: IconButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: ((context) => const MyApp(index: 1)),
                   ),
                 );
               },
-              icon: const Icon(Icons.skip_previous)),
-          title: Text('${quote?.author} - ${quote?.book}'),
+              icon: const Icon(Icons.arrow_back)),
+          title: const Text("Quotee details"),
           actions: [
             IconButton(
                 onPressed: () {
                   setState(() {
-                    isReadOnly = false;
+                    (isReadOnly == true)
+                        ? isReadOnly = false
+                        : _update(_quote.text);
                   });
                 },
-                icon: const Icon(Icons.edit)),
+                icon: (isReadOnly == false)
+                    ? const Icon(Icons.save)
+                    : const Icon(Icons.edit)),
             IconButton(
                 onPressed: () {
                   _delete(idQuote);
@@ -79,25 +86,24 @@ class _ShowQuoteState extends State<ShowQuote> {
         ),
         body: Container(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/p (${widget.idFond + 1}).jpg'),
+                fit: BoxFit.cover,
+                opacity: 0.6),
+          ),
           child: Column(
             children: [
-              Text("${quote!.author} - ${quote!.author}"),
-              const SizedBox(height: 20),
-              TextField(
-                decoration: const InputDecoration(labelText: "Quote:"),
-                controller: _quote,
-                readOnly: isReadOnly,
-                keyboardType: TextInputType.multiline,
-                maxLines: 9,
-                minLines: 2,
+              // textWidget("auteur-book"),
+              Text(
+                "${quote!.author} - ${quote!.book}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
+              const SizedBox(height: 20),
+              textareaWidget(_quote, "Quote...", isReadOnly),
+
               const SizedBox(height: 10),
-              if (isReadOnly == false)
-                ElevatedButton(
-                    onPressed: () {
-                      _update(_quote.text);
-                    },
-                    child: const Text('Enregistrer les modifications')),
             ],
           ),
         ));

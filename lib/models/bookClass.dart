@@ -15,15 +15,13 @@ class BookClass extends HiveObject {
   @HiveField(4)
   String resume;
   @HiveField(5)
-  bool isFinished;
-  @HiveField(6)
   String category;
-  @HiveField(7)
+  @HiveField(6)
   String couverture;
-  @HiveField(8)
+  @HiveField(7)
   String nbrPage;
-  @HiveField(9)
-  String isbn;
+  @HiveField(8)
+  DateTime date;
 
   BookClass(
       {this.id,
@@ -32,9 +30,8 @@ class BookClass extends HiveObject {
       required this.version,
       required this.note,
       required this.resume,
-      required this.isFinished,
       required this.category,
       required this.couverture,
       required this.nbrPage,
-      required this.isbn});
+      required this.date});
 }

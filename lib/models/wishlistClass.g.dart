@@ -1,38 +1,36 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bookClass.dart';
+part of 'wishlistClass.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BookClassAdapter extends TypeAdapter<BookClass> {
+class WishlistClassAdapter extends TypeAdapter<WishlistClass> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  BookClass read(BinaryReader reader) {
+  WishlistClass read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BookClass(
+    return WishlistClass(
       title: fields[0] as String,
       author: fields[1] as String,
       version: fields[2] as String,
-      note: fields[3] as String,
+      priority: fields[3] as String,
       resume: fields[4] as String,
-      category: fields[5] as String,
-      couverture: fields[7] as String,
+      category: fields[6] as String,
       nbrPage: fields[8] as String,
-      date: fields[9] as DateTime,
     );
   }
 
   @override
-  void write(BinaryWriter writer, BookClass obj) {
+  void write(BinaryWriter writer, WishlistClass obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -40,17 +38,13 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       ..writeByte(2)
       ..write(obj.version)
       ..writeByte(3)
-      ..write(obj.note)
+      ..write(obj.priority)
       ..writeByte(4)
       ..write(obj.resume)
-      ..writeByte(5)
+      ..writeByte(6)
       ..write(obj.category)
-      ..writeByte(7)
-      ..write(obj.couverture)
       ..writeByte(8)
-      ..write(obj.nbrPage)
-      ..writeByte(9)
-      ..write(obj.date);
+      ..write(obj.nbrPage);
   }
 
   @override
@@ -59,7 +53,7 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BookClassAdapter &&
+      other is WishlistClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

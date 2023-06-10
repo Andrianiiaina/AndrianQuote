@@ -13,16 +13,20 @@ Widget textWidget(texte) {
 }
 
 Widget textFieldWidget(controller, text, readOnly) {
-  return TextField(
+  return TextFormField(
     controller: controller,
     decoration: InputDecoration(hintText: text),
     readOnly: readOnly,
     keyboardType: TextInputType.multiline,
+    validator: (value) {
+      if (value == "") return "Veuillez remplir ce champ";
+      return null;
+    },
   );
 }
 
 Widget textFieldWidgetNumber(controller, text, readOnly) {
-  return TextField(
+  return TextFormField(
     controller: controller,
     decoration: InputDecoration(hintText: text),
     readOnly: readOnly,
@@ -37,7 +41,7 @@ Widget textareaWidget(controller, text, readOnly) {
     controller: controller,
     decoration: InputDecoration(hintText: text),
     keyboardType: TextInputType.multiline,
-    maxLines: 9,
+    maxLines: 16,
     minLines: 3,
   );
 }
@@ -67,12 +71,20 @@ Widget star(int nbr) {
       scrollDirection: Axis.horizontal,
       itemCount: 5,
       itemBuilder: ((context, index) {
+        final int r = (nbr % 2);
+        final int q = (nbr ~/ 2) - 1;
         return Icon(
-          (index < nbr) ? Icons.star : Icons.star,
+          (index < q)
+              ? Icons.star
+              : (index == q + 1 && r != 0)
+                  ? Icons.star_half
+                  : Icons.star,
           size: 15,
-          color: (index < nbr)
+          color: (index < q + r)
               ? const Color.fromARGB(255, 236, 149, 252)
-              : Colors.grey,
+              : (index == q + 1 && r != 0)
+                  ? const Color.fromARGB(255, 236, 149, 252)
+                  : Colors.grey,
         );
       }));
 }
