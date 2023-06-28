@@ -7,7 +7,8 @@ import '../models/BookModel.dart';
 import '../models/QuoteModel.dart';
 
 class QuoteFormulaire extends StatefulWidget {
-  const QuoteFormulaire({Key? key}) : super(key: key);
+  final int id;
+  const QuoteFormulaire({Key? key, this.id = -1}) : super(key: key);
 
   @override
   State<QuoteFormulaire> createState() => _QuoteFormulaireState();
@@ -16,10 +17,18 @@ class QuoteFormulaire extends StatefulWidget {
 class _QuoteFormulaireState extends State<QuoteFormulaire> {
   final List<BookClass> _books = BookModel.getAllData();
   List<Map<String, dynamic>> bookField = [];
-
+  late QuotyClass quote;
+  final TextEditingController _book = TextEditingController();
+  final TextEditingController _quoty = TextEditingController();
   @override
   void initState() {
     super.initState();
+    if (widget.id != -1) {
+      quote = QuoteModel.getQuote(widget.id);
+      _quoty.text = quote.quote;
+      _book.text = "${quote.book}-${quote.author}";
+    }
+
     _books.sort(((a, b) => b.date.compareTo(a.date)));
     for (int i = 0; i < _books.length; i++) {
       bookField.add({
@@ -31,10 +40,9 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _book = TextEditingController();
-    TextEditingController _quoty = TextEditingController();
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height,
         alignment: Alignment.center,
         padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
@@ -92,7 +100,12 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
   }
 
   Future<void> _createQuote(author, book, quote) async {
-    await QuoteModel.addQuote(author, book, quote);
+    if (widget.id == -1) {
+      await QuoteModel.addQuote(author, book, quote);
+    } else {
+      await QuoteModel.updateQuote(widget.id, author, book, quote);
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

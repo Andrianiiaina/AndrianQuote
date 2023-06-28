@@ -54,7 +54,7 @@ class sauvegarde {
       };
       return mapData;
     }).toList();
-    // Directory appDir = await getApplicationDocumentsDirectory();
+    //Directory appDir = await getApplicationDocumentsDirectory();
     final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     File fileQuote = File('$appDirPath/fileQuoteJson.json');
@@ -73,7 +73,7 @@ class sauvegarde {
     //Directory appDir = await getApplicationDocumentsDirectory();
     final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
-    String filePathQuote = '$appDirPath/fileQuote.json';
+    String filePathQuote = '$appDirPath/fileQuoteJson.json';
 
     String jsonStringQuote = await File(filePathQuote).readAsString();
 
@@ -90,11 +90,11 @@ class sauvegarde {
   }
 
   static majBook() async {
-    //Directory appDir = await getApplicationDocumentsDirectory();
+    // Directory appDir = await getApplicationDocumentsDirectory();
     final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     // String filePathBook = '$appDirPath/fileBookJson.json';
-    String filePathBook = '$appDirPath/fileBook.json';
+    String filePathBook = '$appDirPath/fileBookJson.json';
     String jsonStringBook = await File(filePathBook).readAsString();
 
     List<dynamic> jsonDataBook = json.decode(jsonStringBook);
@@ -115,8 +115,9 @@ class sauvegarde {
   }
 
   static majWishlist() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    String appDirPath = appDir.path;
+    // Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir!.path;
     String filePathWishlist = '$appDirPath/fileWishlistJson.json';
     String jsonStringWishlist = await File(filePathWishlist).readAsString();
 

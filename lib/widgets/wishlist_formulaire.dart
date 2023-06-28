@@ -19,7 +19,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController versionController = TextEditingController();
   TextEditingController resumeController = TextEditingController();
-  TextEditingController nbrpageController = TextEditingController();
+  TextEditingController nbrpageController = TextEditingController(text: "0");
 
   late WishlistClass wishlist;
   final _formKeyWish = GlobalKey<FormState>();
@@ -149,17 +149,11 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
         ),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Expanded(
-              child: priorityButton(
-                  1, "Love troop", const Color.fromARGB(255, 210, 3, 247))),
+          Expanded(child: priorityButton(1, "Love troop", oneC)),
           const SizedBox(width: 5),
-          Expanded(
-              child: priorityButton(
-                  2, "Love it", const Color.fromARGB(255, 119, 62, 129))),
+          Expanded(child: priorityButton(2, "Love it", twoC)),
           const SizedBox(width: 5),
-          Expanded(
-              child: priorityButton(
-                  3, "Like it", const Color.fromARGB(255, 202, 142, 214))),
+          Expanded(child: priorityButton(3, "Like it", threeC)),
         ])
       ],
     );

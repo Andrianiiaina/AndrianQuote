@@ -4,6 +4,7 @@ import '../models/WishlistModel.dart';
 import '../models/BookModel.dart';
 import '../models/sauvegarde.dart';
 import '../models/QuoteModel.dart';
+import '../main.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -23,29 +24,47 @@ class _SettingsState extends State<Settings> {
               sauvegarde.exportToJson();
             },
             child: const Text(
-              'Sauvegarder in net',
+              'Sauvegarder sur internet',
               style: TextStyle(color: Colors.white),
             )),
         const SizedBox(height: 10),
         ElevatedButton(
             onPressed: () {
               BookModel.recupJsonDataBook();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const MyApp(index: 0)),
+                ),
+              );
             },
-            child: const Text('recuperer data book',
+            child: const Text('Récupérer les dérnières données de book',
                 style: TextStyle(color: Colors.white))),
         const SizedBox(height: 10),
         ElevatedButton(
             onPressed: () {
               QuoteModel.recupJsonDataQuote();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const MyApp(index: 1)),
+                ),
+              );
             },
-            child: const Text('recuperer data quote',
+            child: const Text('Récupérer les dérnières données de quote',
                 style: TextStyle(color: Colors.white))),
         const SizedBox(height: 10),
         ElevatedButton(
             onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const MyApp(index: 2)),
+                ),
+              );
               WishlistModel.recupJsonDataWishlist();
             },
-            child: const Text('recuperer data wishlist',
+            child: const Text('Récupérer les dérnières données de wishlist',
                 style: TextStyle(color: Colors.white)))
       ],
     );

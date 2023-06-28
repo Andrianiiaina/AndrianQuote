@@ -36,6 +36,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
   @override
   void initState() {
     super.initState();
+    selectedDate = DateTime.now();
     if (widget.idBook != -1) {
       book = BookModel.getBook(widget.idBook);
       authorController.text = book.author;
@@ -44,13 +45,14 @@ class _BookFormulaireState extends State<BookFormulaire> {
       categoryController.text = book.category;
       versionController.text = book.version;
       nbrpageController.text = book.nbrPage.toString();
+      selectedDate = book.date;
+      noteController.text = book.note;
       try {
         stara = int.parse(book.note);
       } catch (e) {
         stara = 0;
       }
     }
-    selectedDate = DateTime.now();
   }
 
   _pickPhoto(ImageSource source) async {
@@ -87,7 +89,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
             child: Column(
               children: [
                 textWidget("Ajouter un livre"),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 if (currentImage.isNotEmpty)
                   Image.file(
                     File(currentImage),
@@ -122,7 +124,6 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   controller: categoryController,
                   items: Models.bookCategory,
                 ),
-
                 SelectFormField(
                   decoration: InputDecoration(
                       hintText: versionController.text, labelText: 'Langage'),
@@ -136,7 +137,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 DateTimeFormField(
                   decoration: InputDecoration(
                       hintText:
-                          "Date: ${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}"),
+                          "Date: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
                   mode: DateTimeFieldPickerMode.date,
                   initialDate: selectedDate,
                   onDateSelected: (DateTime value) {
@@ -147,10 +148,10 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 ),
                 TextFormField(
                   controller: noteController,
-                  decoration: const InputDecoration(hintText: "Note[0-10]"),
+                  decoration:
+                      const InputDecoration(label: Text("${"Note [0-10]"}")),
                   readOnly: false,
                   keyboardType: TextInputType.number,
-                  maxLength: 2,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     var number = 0;
@@ -161,8 +162,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     return null;
                   },
                 ),
-                // SizedBox(height: 50, child: star(stara)),
-
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {

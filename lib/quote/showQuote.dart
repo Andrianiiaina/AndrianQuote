@@ -1,7 +1,8 @@
-import 'package:andrianiaiina_quote/widgets/style.dart';
 import 'package:flutter/material.dart';
 import '../models/QuoteModel.dart';
 import '../main.dart';
+import '../widgets/style.dart';
+import '../widgets/quote_formulaire.dart';
 
 class ShowQuote extends StatefulWidget {
   final int idQuote;
@@ -16,7 +17,6 @@ class ShowQuote extends StatefulWidget {
 class _ShowQuoteState extends State<ShowQuote> {
   late int idQuote;
   late QuotyClass? quote;
-  late bool isReadOnly;
 
   @override
   void initState() {
@@ -27,15 +27,6 @@ class _ShowQuoteState extends State<ShowQuote> {
   _initState() {
     idQuote = widget.idQuote;
     quote = QuoteModel.getQuote(idQuote);
-    isReadOnly = true;
-  }
-
-  _update(String quoteE) async {
-    await QuoteModel.updateQuote(idQuote, quote!.author, quote!.book, quoteE);
-    _initState();
-    setState(() {
-      isReadOnly = true;
-    });
   }
 
   _delete(int index) async {
@@ -69,14 +60,10 @@ class _ShowQuoteState extends State<ShowQuote> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    (isReadOnly == true)
-                        ? isReadOnly = false
-                        : _update(_quote.text);
+                    showForm(context, QuoteFormulaire(id: widget.idQuote));
                   });
                 },
-                icon: (isReadOnly == false)
-                    ? const Icon(Icons.save)
-                    : const Icon(Icons.edit)),
+                icon: const Icon(Icons.edit)),
             IconButton(
                 onPressed: () {
                   _delete(idQuote);
@@ -84,7 +71,9 @@ class _ShowQuoteState extends State<ShowQuote> {
                 icon: const Icon(Icons.delete))
           ],
         ),
-        body: Container(
+        body: SingleChildScrollView(
+            child: Container(
+          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -94,18 +83,17 @@ class _ShowQuoteState extends State<ShowQuote> {
           ),
           child: Column(
             children: [
-              // textWidget("auteur-book"),
               Text(
                 "${quote!.author} - ${quote!.book}",
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               const SizedBox(height: 20),
-              textareaWidget(_quote, "Quote...", isReadOnly),
-
+              //textareaWidget(_quote, "Quote...", isReadOnly),
+              Text(quote!.quote),
               const SizedBox(height: 10),
             ],
           ),
-        ));
+        )));
   }
 }

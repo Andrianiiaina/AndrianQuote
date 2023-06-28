@@ -30,12 +30,13 @@ class bookPage_State extends State<BookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Books'),
+        title: Text('Books (${books.length.toString()})'),
         actions: [
           if (isSearching == true)
             SizedBox(
               width: 180,
               child: TextField(
+                autofocus: true,
                 decoration: const InputDecoration(hintText: "search..."),
                 onChanged: (q) {
                   search(q);
@@ -75,7 +76,7 @@ class bookPage_State extends State<BookPage> {
             Expanded(
               flex: 1,
               child: SelectFormField(
-                labelText: 'ordre',
+                labelText: 'order',
                 items: const [
                   {'value': 'ASC', 'label': 'ASC'},
                   {'value': 'DESC', 'label': 'DESC'}

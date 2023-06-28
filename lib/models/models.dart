@@ -1,5 +1,6 @@
 class Models {
   static final List<Map<String, dynamic>> bookCategory = [
+    {'value': 'tout', 'label': 'Touts'},
     {'value': 'BD/mangas', 'label': 'BD/mangas'},
     {'value': 'Biographie', 'label': 'Biographie/Autobiographie'},
     {'value': 'Classique', 'label': 'Classique'},
@@ -16,12 +17,12 @@ class Models {
     {'value': 'SF /Fantasy', 'label': 'SF /Fantasy'},
     {'value': 'Théatre/Poesie', 'label': 'Théatre/Poesie'},
     {'value': 'Thriller', 'label': 'Thriller'},
-    {'value': 'tout', 'label': 'tout'},
+    {'value': 'autre', 'label': 'Autre'},
   ];
   static final List<Map<String, dynamic>> bookversion = [
     {'value': 'Francaise', 'label': 'Francaise'},
     {'value': 'Anglaise', '': 'Anglaise'},
     {'value': 'Malgache', 'label': 'Malgache'},
-    {'value': 'tout', 'label': 'tout'}
+    {'value': 'tout', 'label': 'Toutes'}
   ];
 }

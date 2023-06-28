@@ -1,7 +1,7 @@
 import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'wishlist.dart';
+import 'wishlist/wishlist.dart';
 import 'quote/quote.dart';
 import 'book/book.dart';
 import '../models/WishlistModel.dart';
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             BottomNavigationBarItem(
                 icon:
                     Icon(Icons.book, color: Color.fromARGB(197, 255, 255, 255)),
-                label: 'books',
+                label: 'Books',
                 tooltip: "Books"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark,

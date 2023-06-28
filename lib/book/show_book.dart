@@ -1,12 +1,10 @@
 import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
-
+import 'dart:io';
 import '/main.dart';
 import 'package:flutter/material.dart';
 import '../models/BookModel.dart';
-import 'dart:io';
 import '../widgets/style.dart';
 
-//todo:redirection after modification
 class ShowBook extends StatefulWidget {
   final int idBook;
   final bool isFinished;
@@ -31,18 +29,6 @@ class _ShowBookState extends State<ShowBook> {
     } catch (e) {
       note = 0;
     }
-  }
-
-  _deleteBook(int id) async {
-    await BookModel.deleteBook(id);
-    const idPage = 0;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: idPage)),
-      ),
-    );
   }
 
   @override
@@ -75,73 +61,110 @@ class _ShowBookState extends State<ShowBook> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          if (book!.couverture.isNotEmpty)
-            Image.file(File(book!.couverture), width: 180),
-          const SizedBox(height: 30),
-          if (widget.isFinished == true)
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
             SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width / 4,
-                child: star(note))
-          else
-            ElevatedButton(
-              child: const Text(
-                "Ajouter aux livres lus",
-                style: TextStyle(color: Colors.white),
+              height: MediaQuery.of(context).size.height * 30 / 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 110,
+                    width: 80,
+                    child: (book!.couverture.isEmpty)
+                        ? const Image(
+                            image: AssetImage('assets/p (10).jpg'),
+                          )
+                        : Image.file(
+                            File(book!.couverture),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 110,
+                    width: 180,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${book?.title}",
+                            overflow: TextOverflow.visible,
+                            softWrap: true,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
+                          "${book?.author}",
+                          style:
+                              const TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(child: star(note)),
+                                Expanded(child: Text('(${note}/10)'))
+                              ]),
+                          height: 50,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all((book!.note == "5")
-                      ? const Color.fromARGB(255, 216, 3, 253)
-                      : (book!.note == "4")
-                          ? const Color.fromARGB(255, 233, 121, 253)
-                          : const Color.fromARGB(255, 172, 119, 182))),
-              onPressed: () {
-                showForm(
-                    context,
-                    BookFormulaire(
-                      idBook: widget.idBook,
-                    ));
-              },
             ),
-          Text(
-            "Auteur: ${book?.author}",
-            style: const TextStyle(fontSize: 16),
-          ),
-          Text("Categorie: ${book?.category}",
-              style: const TextStyle(fontSize: 16)),
-          const SizedBox(height: 20),
-          Row(children: [
-            Flexible(child: listTileWidget("Pages", book!.nbrPage.toString())),
-            Flexible(child: listTileWidget("Langage", book!.version)),
-            Flexible(
-                child: listTileWidget("Date",
-                    "${book!.date.year}-${book!.date.month}-${book!.date.day}")),
-          ]),
-          const SizedBox(height: 20),
-          ListTile(
-            title: const Text(
-              "A propos",
-              style: TextStyle(fontSize: 18, fontFamily: 'verdana'),
+            Container(
+              padding: const EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width,
+              constraints:
+                  BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                  color: Color.fromARGB(255, 68, 66, 66)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'A propos de ce livre:',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(book!.resume,
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 206, 198, 198))),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Categorie: ${book!.category}\nNombre de page: ${book!.nbrPage.toString()}\nVersion: ${book!.version}\nLu le: ${book!.date.year}-${book!.date.month}-${book!.date.day}",
+                    style: const TextStyle(
+                      letterSpacing: 1,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            subtitle: Text(book!.resume),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget listTileWidget(titre, soutitre) {
-    return ListTile(
-      title: Text(
-        titre,
-        style: const TextStyle(fontSize: 13, fontFamily: 'verdana'),
-      ),
-      subtitle: Text(
-        soutitre,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+  _deleteBook(int id) async {
+    await BookModel.deleteBook(id);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const MyApp(index: 0)),
       ),
     );
   }

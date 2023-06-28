@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+Color oneC = const Color.fromARGB(255, 210, 3, 247);
+Color twoC = const Color.fromARGB(255, 119, 62, 129);
+Color threeC = const Color.fromARGB(255, 202, 142, 214);
 Widget textWidget(texte) {
   return Text(
     texte,
     style: const TextStyle(
-        fontSize: 20,
+        fontSize: 25,
         color: Color.fromARGB(255, 230, 116, 250),
         fontWeight: FontWeight.bold,
         fontFamily: "San Francisco"),
@@ -15,7 +18,7 @@ Widget textWidget(texte) {
 Widget textFieldWidget(controller, text, readOnly) {
   return TextFormField(
     controller: controller,
-    decoration: InputDecoration(hintText: text),
+    decoration: InputDecoration(label: Text(text)),
     readOnly: readOnly,
     keyboardType: TextInputType.multiline,
     validator: (value) {
@@ -28,7 +31,7 @@ Widget textFieldWidget(controller, text, readOnly) {
 Widget textFieldWidgetNumber(controller, text, readOnly) {
   return TextFormField(
     controller: controller,
-    decoration: InputDecoration(hintText: text),
+    decoration: InputDecoration(label: Text(text)),
     readOnly: readOnly,
     keyboardType: TextInputType.number,
     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -39,9 +42,9 @@ Widget textareaWidget(controller, text, readOnly) {
   return TextField(
     readOnly: readOnly,
     controller: controller,
-    decoration: InputDecoration(hintText: text),
+    decoration: InputDecoration(label: Text(text)),
     keyboardType: TextInputType.multiline,
-    maxLines: 16,
+    maxLines: 20,
     minLines: 3,
   );
 }
@@ -54,13 +57,10 @@ Future showForm(BuildContext context, child) async {
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    elevation: 2,
+    elevation: 1,
     builder: (_) => Container(
-      padding: EdgeInsets.only(
-          left: 10,
-          top: 0,
-          right: 10,
-          bottom: MediaQuery.of(context).viewInsets.bottom),
+      height: MediaQuery.of(context).size.height,
+      alignment: Alignment.topCenter,
       child: child,
     ),
   );
@@ -72,17 +72,17 @@ Widget star(int nbr) {
       itemCount: 5,
       itemBuilder: ((context, index) {
         final int r = (nbr % 2);
-        final int q = (nbr ~/ 2) - 1;
+        final int q = (nbr ~/ 2);
         return Icon(
           (index < q)
               ? Icons.star
-              : (index == q + 1 && r != 0)
+              : (r == 1 && index == q)
                   ? Icons.star_half
                   : Icons.star,
           size: 15,
-          color: (index < q + r)
+          color: (index < q)
               ? const Color.fromARGB(255, 236, 149, 252)
-              : (index == q + 1 && r != 0)
+              : (index == q && r == 1)
                   ? const Color.fromARGB(255, 236, 149, 252)
                   : Colors.grey,
         );
