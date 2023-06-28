@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Fenitra book',
+      title: 'Quotee',
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(),
       ),
