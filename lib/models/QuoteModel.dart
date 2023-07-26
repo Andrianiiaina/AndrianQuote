@@ -10,7 +10,12 @@ class QuoteModel {
     return box.keys.map((e) {
       final value = box.get(e);
       return QuotyClass(
-          id: e, author: value!.author, book: value.book, quote: value.quote);
+        id: e,
+        author: value!.author,
+        book: value.book,
+        quote: value.quote,
+        fond: value.fond,
+      );
     }).toList();
   }
 
@@ -22,18 +27,19 @@ class QuoteModel {
     return box.get(id);
   }
 
-  static addQuote(author, book, quote) async {
+  static addQuote(author, book, quote, fond) async {
     await box.add(QuotyClass(
       author: author,
       book: book,
       quote: quote,
+      fond: fond,
     ));
   }
 
-  static updateQuote(
-      int idQuote, String author, String book, String quoteE) async {
-    await box.put(
-        idQuote, QuotyClass(author: author, book: book, quote: quoteE));
+  static updateQuote(int idQuote, String author, String book, String quoteE,
+      String fond) async {
+    await box.put(idQuote,
+        QuotyClass(author: author, book: book, quote: quoteE, fond: fond));
   }
 
   static recupJsonDataQuote() async {

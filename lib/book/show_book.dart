@@ -119,20 +119,21 @@ class _ShowBookState extends State<ShowBook> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
               constraints:
                   BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                  color: Color.fromARGB(255, 68, 66, 66)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30)),
+                color: Theme.of(context).backgroundColor,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'A propos de ce livre:',
+                    'A propos:',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -143,8 +144,9 @@ class _ShowBookState extends State<ShowBook> {
                           color: Color.fromARGB(255, 206, 198, 198))),
                   const SizedBox(height: 20),
                   Text(
-                    "Categorie: ${book!.category}\nNombre de page: ${book!.nbrPage.toString()}\nVersion: ${book!.version}\nLu le: ${book!.date.year}-${book!.date.month}-${book!.date.day}",
+                    "Categorie: ${book!.category}\n${book!.nbrPage.toString()} pages\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}",
                     style: const TextStyle(
+                      color: Colors.white,
                       letterSpacing: 1,
                       fontSize: 14,
                     ),

@@ -10,9 +10,9 @@ Widget cardBook(book, context) {
     note = 0;
   }
   return Container(
+    color: Theme.of(context).backgroundColor.withOpacity(0.05),
     key: ValueKey(book.id),
-    color: const Color.fromARGB(255, 71, 70, 70),
-    margin: const EdgeInsets.all(3),
+    margin: const EdgeInsets.all(2),
     child: ListTile(
         title: Text(book.title,
             maxLines: 1,

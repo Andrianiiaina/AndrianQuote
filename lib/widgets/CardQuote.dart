@@ -1,21 +1,20 @@
 import '/quote/showQuote.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 Widget cardQuote(currentQuote, BuildContext context) {
-  final int x = Random().nextInt(36);
   return Container(
     alignment: Alignment.center,
     height: 160,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('assets/p (${x + 1}).jpg'),
+          image: AssetImage(currentQuote.fond),
           fit: BoxFit.cover,
           opacity: 0.6),
     ),
     padding: const EdgeInsets.only(top: 10),
     margin: const EdgeInsets.all(7),
     child: ListTile(
+      textColor: Colors.white,
       title: Text(
         currentQuote.quote,
         textAlign: TextAlign.center,
@@ -39,8 +38,7 @@ Widget cardQuote(currentQuote, BuildContext context) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: ((context) =>
-                ShowQuote(idQuote: currentQuote.id, idFond: x)),
+            builder: ((context) => ShowQuote(idQuote: currentQuote.id)),
           ),
         );
       },

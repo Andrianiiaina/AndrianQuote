@@ -11,11 +11,14 @@ class QuotyClass extends HiveObject {
   String book;
   @HiveField(2)
   String quote;
+  @HiveField(3)
+  String fond;
 
   QuotyClass({
     this.id,
     required this.author,
     required this.book,
     required this.quote,
+    required this.fond,
   });
 }

@@ -63,7 +63,7 @@ class _WishlistState extends State<Wishlist> {
               children: [
                 for (int i = 0; i < wishlistsFiltered.length; i++)
                   Container(
-                      color: const Color.fromARGB(255, 49, 44, 49),
+                      color: Theme.of(context).backgroundColor.withOpacity(0.1),
                       margin: const EdgeInsets.all(2),
                       key: ValueKey(wishlistsFiltered[i].id),
                       child: ListTile(

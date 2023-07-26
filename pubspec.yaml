@@ -40,6 +40,8 @@ dependencies:
   path_provider: ^2.0.11
   select_form_field: ^2.2.0
   date_field: ^3.0.5
+  provider: ^6.0.5
+  shared_preferences: ^2.0.0
   
 dev_dependencies:
   flutter_test:

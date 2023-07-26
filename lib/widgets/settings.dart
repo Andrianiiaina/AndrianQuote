@@ -5,6 +5,7 @@ import '../models/BookModel.dart';
 import '../models/sauvegarde.dart';
 import '../models/QuoteModel.dart';
 import '../main.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -17,8 +18,21 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        ListTile(
+          title: Text('Darkmode'),
+          trailing: Consumer<ThemeProvider>(
+            builder: ((context, themeProvider, _) {
+              return Switch(
+                  value: themeProvider.currentThemeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    themeProvider.toggleTheme(value);
+                  });
+            }),
+          ),
+        ),
         ElevatedButton(
             onPressed: () {
               sauvegarde.exportToJson();

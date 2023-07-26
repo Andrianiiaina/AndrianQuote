@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'bookClass.dart';
 import 'wishlistClass.dart';
+import 'dart:math';
 
 final boxQuote = Hive.box<QuotyClass>('quoty');
 final boxBook = Hive.box<BookClass>('book');
@@ -70,9 +71,9 @@ class sauvegarde {
   }
 
   static majQuote() async {
-    //Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir!.path;
+    Directory appDir = await getApplicationDocumentsDirectory();
+    // final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir.path;
     String filePathQuote = '$appDirPath/fileQuoteJson.json';
 
     String jsonStringQuote = await File(filePathQuote).readAsString();
@@ -81,18 +82,19 @@ class sauvegarde {
 
     return jsonDataQuote.map((data) {
       return QuotyClass(
-        id: data["id"],
-        book: data["book"],
-        author: data["author"],
-        quote: data["quote"],
-      );
+          id: data["id"],
+          book: data["book"],
+          author: data["author"],
+          quote: data["quote"],
+          //  fond: data["fond"]);
+          fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
     }).toList();
   }
 
   static majBook() async {
-    // Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir!.path;
+    Directory appDir = await getApplicationDocumentsDirectory();
+    // final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir.path;
     // String filePathBook = '$appDirPath/fileBookJson.json';
     String filePathBook = '$appDirPath/fileBookJson.json';
     String jsonStringBook = await File(filePathBook).readAsString();

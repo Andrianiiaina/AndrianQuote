@@ -23,9 +23,9 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       note: fields[3] as String,
       resume: fields[4] as String,
       category: fields[5] as String,
-      couverture: fields[7] as String,
-      nbrPage: fields[8] as String,
-      date: fields[9] as DateTime,
+      couverture: fields[6] as String,
+      nbrPage: fields[7] as String,
+      date: fields[8] as DateTime,
     );
   }
 
@@ -45,11 +45,11 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       ..write(obj.resume)
       ..writeByte(5)
       ..write(obj.category)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.couverture)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.nbrPage)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.date);
   }
 

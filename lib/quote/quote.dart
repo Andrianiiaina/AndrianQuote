@@ -3,6 +3,8 @@ import '../widgets/quote_formulaire.dart';
 import '../widgets/CardQuote.dart';
 import '../widgets/style.dart';
 import '../models/QuoteModel.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);
@@ -21,6 +23,24 @@ class _QuotePageState extends State<QuotePage> {
     _filterdItems = _items;
     _filterdItems.shuffle();
     isSearching = false;
+    getPdfFileNames();
+  }
+
+  getPdfFileNames() async {
+    List<String> filenames = [];
+    try {
+      Directory appDir = await getApplicationDocumentsDirectory();
+      List<FileSystemEntity> files = appDir.listSync();
+      for (FileSystemEntity file in files) {
+        if (file is File && file.path.endsWith('.pdf')) {
+          String fileName = file.path;
+          filenames.add(fileName);
+        }
+      }
+      print(filenames.length);
+    } catch (e) {
+      print("un erreur s'est produit, sorry: $e");
+    }
   }
 
   @override
@@ -34,6 +54,7 @@ class _QuotePageState extends State<QuotePage> {
               width: 180,
               child: TextField(
                 decoration: const InputDecoration(hintText: "search..."),
+                autofocus: true,
                 onChanged: (q) {
                   search(q);
                 },

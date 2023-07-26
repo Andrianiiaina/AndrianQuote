@@ -5,6 +5,10 @@ import '../widgets/book_formulaire.dart';
 import '../main.dart';
 import '../models/BookModel.dart';
 import '../models/QuoteModel.dart';
+import 'dart:math';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class QuoteFormulaire extends StatefulWidget {
   final int id;
@@ -20,6 +24,29 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
   late QuotyClass quote;
   final TextEditingController _book = TextEditingController();
   final TextEditingController _quoty = TextEditingController();
+  String _imageFile = "";
+  String currentImage = "";
+  late BookClass book;
+  final ImagePicker _picker = ImagePicker();
+
+  _pickPhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(source: source);
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final imagesDir = Directory('${appDir.path}/quotes');
+
+      if (!imagesDir.existsSync()) imagesDir.createSync(recursive: true);
+
+      final newImagePath =
+          '${imagesDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg}';
+
+      setState(() {
+        currentImage = pickedFile.path;
+        _imageFile = newImagePath;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,9 +69,9 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height,
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(20),
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
             image: DecorationImage(
                 opacity: 0.3,
@@ -52,9 +79,30 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                 fit: BoxFit.cover)),
         child: Column(
           children: [
-            const SizedBox(height: 50),
-            textWidget("Ajouter un quote"),
             const SizedBox(height: 30),
+            textWidget("Nouveau quote"),
+            const SizedBox(height: 15),
+            if (currentImage.isNotEmpty)
+              Image.file(
+                File(currentImage),
+                height: 150,
+                width: 150,
+              ),
+            FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                _pickPhoto(ImageSource.gallery);
+              },
+              heroTag: 'image0',
+              tooltip: 'profil_author',
+              child: const Icon(Icons.photo),
+              backgroundColor: Colors.white,
+            ),
+            const Text(
+              "Fond du quote",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
@@ -66,6 +114,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                     items: bookField,
                   ),
                 ),
+
                 //Ajouter d'autre Auteur
 
                 IconButton(
@@ -78,13 +127,20 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                     icon: const Icon(Icons.add))
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             textareaWidget(_quoty, 'Quote...', false),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () async {
-                List<String> book = _book.text.split("-");
-                _createQuote(book[1], book[0], _quoty.text);
+                final int x = Random().nextInt(36);
+                final imageFile = File(currentImage);
+                if (!File(_imageFile).existsSync() && currentImage != "") {
+                  await imageFile.copy(_imageFile);
+                }
+                if (currentImage == "") _imageFile = "assets/p (${x + 1}).jpg";
+
+                _createQuote(_book.text.split("-")[1], _book.text.split("-")[0],
+                    _quoty.text, _imageFile);
 
                 ///notif oe bien enregistrer
               },
@@ -93,17 +149,18 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
 
-  Future<void> _createQuote(author, book, quote) async {
+  Future<void> _createQuote(author, book, quote, fond) async {
     if (widget.id == -1) {
-      await QuoteModel.addQuote(author, book, quote);
+      await QuoteModel.addQuote(author, book, quote, fond);
     } else {
-      await QuoteModel.updateQuote(widget.id, author, book, quote);
+      await QuoteModel.updateQuote(widget.id, author, book, quote, fond);
     }
 
     Navigator.pushReplacement(

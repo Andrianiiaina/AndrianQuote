@@ -20,19 +20,22 @@ class QuotyClassAdapter extends TypeAdapter<QuotyClass> {
       author: fields[0] as String,
       book: fields[1] as String,
       quote: fields[2] as String,
+      fond: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, QuotyClass obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.author)
       ..writeByte(1)
       ..write(obj.book)
       ..writeByte(2)
-      ..write(obj.quote);
+      ..write(obj.quote)
+      ..writeByte(3)
+      ..write(obj.fond);
   }
 
   @override

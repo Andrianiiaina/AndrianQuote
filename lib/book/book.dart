@@ -54,52 +54,54 @@ class bookPage_State extends State<BookPage> {
       ),
       body: Column(
         children: [
-          Row(children: [
-            Expanded(
-              flex: 3,
-              child: SelectFormField(
-                labelText: 'Category',
-                items: Models.bookCategory,
-                onChanged: (value) {
-                  setState(() {
-                    if (value == 'tout') {
-                      filteredBooks = books;
-                    } else {
-                      filteredBooks = books
-                          .where((element) => element.category == value)
-                          .toList();
-                    }
-                  });
-                },
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(children: [
+              Expanded(
+                flex: 3,
+                child: SelectFormField(
+                  labelText: 'Category',
+                  items: Models.bookCategory,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == 'tout') {
+                        filteredBooks = books;
+                      } else {
+                        filteredBooks = books
+                            .where((element) => element.category == value)
+                            .toList();
+                      }
+                    });
+                  },
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SelectFormField(
-                labelText: 'order',
-                items: const [
-                  {'value': 'ASC', 'label': 'ASC'},
-                  {'value': 'DESC', 'label': 'DESC'}
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    if (value == 'ASC') {
-                      setState(() {
-                        filteredBooks
-                            .sort(((a, b) => a.title.compareTo(b.title)));
-                      });
-                    } else {
-                      setState(() {
-                        filteredBooks
-                            .sort(((a, b) => b.title.compareTo(a.title)));
-                      });
-                    }
-                  });
-                },
+              Expanded(
+                flex: 1,
+                child: SelectFormField(
+                  labelText: 'order',
+                  items: const [
+                    {'value': 'ASC', 'label': 'ASC'},
+                    {'value': 'DESC', 'label': 'DESC'}
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == 'ASC') {
+                        setState(() {
+                          filteredBooks
+                              .sort(((a, b) => a.title.compareTo(b.title)));
+                        });
+                      } else {
+                        setState(() {
+                          filteredBooks
+                              .sort(((a, b) => b.title.compareTo(a.title)));
+                        });
+                      }
+                    });
+                  },
+                ),
               ),
-            ),
-          ]),
-          const SizedBox(height: 5),
+            ]),
+          ),
           Expanded(
             flex: 5,
             child: ListView.builder(

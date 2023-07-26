@@ -81,7 +81,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  opacity: 0.5,
+                  opacity: 0.8,
                   image: AssetImage('assets/p (18).jpg'),
                   fit: BoxFit.cover)),
           child: Form(
