@@ -20,7 +20,8 @@ class sauvegarde {
         'id': e,
         'author': value!.author,
         'book': value.book,
-        'quote': value.quote
+        'quote': value.quote,
+        'fond': value.fond,
       };
       return mapData;
     }).toList();
@@ -71,9 +72,9 @@ class sauvegarde {
   }
 
   static majQuote() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    // final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir.path;
+    // Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir!.path;
     String filePathQuote = '$appDirPath/fileQuoteJson.json';
 
     String jsonStringQuote = await File(filePathQuote).readAsString();
@@ -86,15 +87,15 @@ class sauvegarde {
           book: data["book"],
           author: data["author"],
           quote: data["quote"],
-          //  fond: data["fond"]);
-          fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
+          fond: data["fond"]);
+      //fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
     }).toList();
   }
 
   static majBook() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    // final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir.path;
+    // Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir!.path;
     // String filePathBook = '$appDirPath/fileBookJson.json';
     String filePathBook = '$appDirPath/fileBookJson.json';
     String jsonStringBook = await File(filePathBook).readAsString();

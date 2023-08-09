@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/book/manage_pdf.dart';
 import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -52,7 +53,8 @@ class _MyAppState extends State<MyApp> {
   late int currentPage;
   final screen = [
     const BookPage(),
-    const QuotePage(),
+    //const QuotePage(),
+    const ManagePdf(),
     const Wishlist(),
   ];
   @override
