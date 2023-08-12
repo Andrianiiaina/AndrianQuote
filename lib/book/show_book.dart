@@ -108,7 +108,7 @@ class _ShowBookState extends State<ShowBook> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(child: star(note)),
-                                Expanded(child: Text('(${note}/10)'))
+                                Expanded(child: Text('($note/10)'))
                               ]),
                           height: 50,
                         ),
@@ -124,7 +124,7 @@ class _ShowBookState extends State<ShowBook> {
               constraints:
                   BoxConstraints(minHeight: MediaQuery.of(context).size.height),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
                 color: Theme.of(context).backgroundColor,

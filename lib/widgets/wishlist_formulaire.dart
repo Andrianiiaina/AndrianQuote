@@ -73,7 +73,6 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
               ),
               textFieldWidgetNumber(nbrpageController, "Nombre de page", false),
               textareaWidget(resumeController, "Resumé", false),
-              SizedBox(height: 100, child: priority()),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKeyWish.currentState!.validate()) {
@@ -83,7 +82,6 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
                       version: versionController.text,
                       resume: resumeController.text,
                       category: categoryController.text,
-                      priority: stara.toString(),
                       nbrPage: nbrpageController.text,
                     );
                     if (widget.idWishlist == -1) {
@@ -135,45 +133,6 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
       MaterialPageRoute(
         builder: ((context) => const MyApp(index: idPage)),
       ),
-    );
-  }
-
-  Widget priority() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Priorité:',
-          style: TextStyle(
-              color: Color.fromARGB(255, 196, 192, 192), fontSize: 15),
-        ),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Expanded(child: priorityButton(1, "Love troop", oneC)),
-          const SizedBox(width: 5),
-          Expanded(child: priorityButton(2, "Love it", twoC)),
-          const SizedBox(width: 5),
-          Expanded(child: priorityButton(3, "Like it", threeC)),
-        ])
-      ],
-    );
-  }
-
-  Widget priorityButton(star, String titre, color) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          stara = star;
-        });
-      },
-      child: Text(
-        titre,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.w400, fontSize: 12),
-      ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(color),
-          padding: MaterialStateProperty.all(const EdgeInsets.all(15))),
     );
   }
 }

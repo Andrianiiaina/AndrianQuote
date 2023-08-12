@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Color oneC = const Color.fromARGB(255, 210, 3, 247);
-Color twoC = const Color.fromARGB(255, 119, 62, 129);
-Color threeC = const Color.fromARGB(255, 202, 142, 214);
+final bottomDatas = [
+  const BottomNavigationBarItem(
+      icon: const Icon(Icons.book), label: 'Books', tooltip: "Books"),
+  const BottomNavigationBarItem(
+      icon: const Icon(Icons.bookmark), label: 'quote', tooltip: "Quotes"),
+  const BottomNavigationBarItem(
+      icon: const Icon(Icons.watch_later),
+      label: 'wishlist',
+      tooltip: "wishlist"),
+];
+var themeLight = ThemeData.light().copyWith(
+  backgroundColor: Colors.deepPurple,
+  listTileTheme: ListTileThemeData(textColor: Colors.black54),
+  hintColor: Colors.grey,
+  primaryColorLight: Colors.white,
+  colorScheme: const ColorScheme(
+      brightness: Brightness.light,
+      primary: Colors.deepPurple,
+      onPrimary: Colors.white,
+      secondary: Colors.purple,
+      onSecondary: Colors.purple,
+      error: Colors.red,
+      onError: Colors.red,
+      background: Colors.purple,
+      onBackground: Colors.purple,
+      surface: Colors.purple,
+      onSurface: Colors.white), //ex: style underline
+);
+
 Widget textWidget(texte) {
   return Text(
     texte,

@@ -39,6 +39,7 @@ class sauvegarde {
         'couverture': value.couverture,
         'nbrPage': value.nbrPage,
         'date': value.date.toString(),
+        'status': 'finished',
       };
       return mapData;
     }).toList();
@@ -49,7 +50,6 @@ class sauvegarde {
         'author': value!.author,
         'title': value.title,
         'version': value.version,
-        'priority': value.priority,
         'resume': value.resume,
         'category': value.category,
         'nbrPage': value.nbrPage,
@@ -113,15 +113,16 @@ class sauvegarde {
         couverture: data["couverture"],
         nbrPage: data["nbrPage"],
         date: DateTime(2023, 1, 1),
+        status: 'finished',
       );
     }).toList();
   }
 
   static majWishlist() async {
-    // Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir!.path;
-    String filePathWishlist = '$appDirPath/fileWishlistJson.json';
+    Directory appDir = await getApplicationDocumentsDirectory();
+    //  final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir.path;
+    String filePathWishlist = '$appDirPath/fileWishlistJson7.json';
     String jsonStringWishlist = await File(filePathWishlist).readAsString();
 
     List<dynamic> jsonDataWishlist = json.decode(jsonStringWishlist);
@@ -131,7 +132,6 @@ class sauvegarde {
         title: data["title"],
         author: data["author"],
         version: data["version"],
-        priority: data["priority"],
         resume: data["resume"],
         category: data["category"],
         nbrPage: data["nbrPage"],

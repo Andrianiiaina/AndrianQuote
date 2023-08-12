@@ -22,6 +22,8 @@ class BookClass extends HiveObject {
   String nbrPage;
   @HiveField(8)
   DateTime date;
+  @HiveField(9)
+  String status;
 
   BookClass(
       {this.id,
@@ -33,5 +35,6 @@ class BookClass extends HiveObject {
       required this.category,
       required this.couverture,
       required this.nbrPage,
-      required this.date});
+      required this.date,
+      required this.status});
 }

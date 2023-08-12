@@ -30,7 +30,7 @@ class bookPage_State extends State<BookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Books (${books.length.toString()})'),
+        title: Text('Livres (${books.length - 1})'),
         actions: [
           if (isSearching == true)
             SizedBox(
@@ -106,9 +106,9 @@ class bookPage_State extends State<BookPage> {
             flex: 5,
             child: ListView.builder(
                 controller: ScrollController(),
-                itemCount: filteredBooks.length,
+                itemCount: filteredBooks.length - 1,
                 itemBuilder: ((context, index) {
-                  BookClass book = filteredBooks[index];
+                  BookClass book = filteredBooks[index + 1];
                   return cardBook(book, context);
                 })),
           )

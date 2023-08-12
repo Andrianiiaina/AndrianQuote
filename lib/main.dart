@@ -1,10 +1,11 @@
-import 'package:andrianiaiina_quote/book/manage_pdf.dart';
+import 'package:andrianiaiina_quote/models/biblioClass.dart';
 import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'wishlist/wishlist.dart';
 import 'quote/quote.dart';
 import 'book/book.dart';
+import 'widgets/style.dart';
 import '../models/WishlistModel.dart';
 import '../models/BookModel.dart';
 import '../models/QuoteModel.dart';
@@ -16,13 +17,35 @@ void main() async {
   Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
   Hive.registerAdapter(WishlistClassAdapter());
+  Hive.registerAdapter(BiblioClassAdapter());
 
-  //await Hive.deleteBoxFromDisk("quoty");
+  //await Hive.deleteBoxFromDisk("biblio");
   //await Hive.deleteBoxFromDisk("book");
+  //await Hive.deleteBoxFromDisk("wishlist");
+  //await Hive.deleteBoxFromDisk("quoty");
+
   await Hive.openBox<QuotyClass>("quoty");
   await Hive.openBox<BookClass>("book");
   await Hive.openBox<WishlistClass>("wishlist");
+  await Hive.openBox<BiblioClass>("biblio");
 
+  final book = Hive.box<BookClass>('book');
+
+  if (!book.containsKey(0)) {
+    book.put(
+        0,
+        BookClass(
+            title: "",
+            author: "",
+            version: "",
+            note: "",
+            resume: "A utiliser quand quote.book n'est pas dans book",
+            category: "all",
+            couverture: "",
+            nbrPage: "",
+            date: DateTime(2023, 1, 1),
+            status: "finished"));
+  }
   runApp(const MyApp(
     index: 1,
   ));
@@ -53,8 +76,7 @@ class _MyAppState extends State<MyApp> {
   late int currentPage;
   final screen = [
     const BookPage(),
-    //const QuotePage(),
-    const ManagePdf(),
+    const QuotePage(),
     const Wishlist(),
   ];
   @override
@@ -69,11 +91,11 @@ class _MyAppState extends State<MyApp> {
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: ((context, value, _) {
-          _loadSavedTheme(context, value);
+          _loadSavedTheme(value);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Fenitra book',
-            theme: theme_light,
+            theme: themeLight,
             darkTheme: ThemeData.dark(),
             themeMode: value.currentThemeMode,
             home: Scaffold(
@@ -93,7 +115,7 @@ class _MyAppState extends State<MyApp> {
                     currentPage = index;
                   });
                 },
-                items: _bottomDatas,
+                items: bottomDatas,
                 //backgroundColor: Colors.black,
               ),
             ),
@@ -104,38 +126,8 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-final theme_light = ThemeData.light().copyWith(
-  backgroundColor: Colors.deepPurple,
-  listTileTheme: ListTileThemeData(textColor: Colors.black54),
-  hintColor: Colors.grey,
-  primaryColorLight: Colors.white,
-  colorScheme: const ColorScheme(
-      brightness: Brightness.light,
-      primary: Colors.deepPurple,
-      onPrimary: Colors.white,
-      secondary: Colors.purple,
-      onSecondary: Colors.purple,
-      error: Colors.red,
-      onError: Colors.red,
-      background: Colors.purple,
-      onBackground: Colors.purple,
-      surface: Colors.purple,
-      onSurface: Colors.white), //ex: style underline
-);
-
-_loadSavedTheme(BuildContext context, ThemeProvider themeProvider) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+_loadSavedTheme(ThemeProvider themeProvider) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? true;
   themeProvider.toggleTheme(isDarkMode);
 }
-
-final _bottomDatas = [
-  const BottomNavigationBarItem(
-      icon: const Icon(Icons.book), label: 'Books', tooltip: "Books"),
-  const BottomNavigationBarItem(
-      icon: const Icon(Icons.bookmark), label: 'quote', tooltip: "Quotes"),
-  const BottomNavigationBarItem(
-      icon: const Icon(Icons.watch_later),
-      label: 'wishlist',
-      tooltip: "wishlist"),
-];

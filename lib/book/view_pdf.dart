@@ -1,9 +1,11 @@
+import 'package:andrianiaiina_quote/models/biblioModel.dart';
+import 'package:andrianiaiina_quote/wishlist/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfx/pdfx.dart';
 
 class PdfViewPage extends StatefulWidget {
-  final String file_path;
-  const PdfViewPage({Key? key, required this.file_path}) : super(key: key);
+  final int biblio;
+  const PdfViewPage({Key? key, required this.biblio}) : super(key: key);
 
   @override
   State<PdfViewPage> createState() => _PdfViewPageState();
@@ -11,39 +13,62 @@ class PdfViewPage extends StatefulWidget {
 
 class _PdfViewPageState extends State<PdfViewPage> {
   //late PdfControllerPinch pdfPinchController;
+  late BiblioClass biblio;
   late PdfController pdfController;
-  int initialPage = 1;
+  late NavigatorState _navigator;
+
   int currentPage = 1;
   bool isVercticalScrolling = false;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+    biblio = BiblioModel.getBiblio(widget.biblio);
+    currentPage = biblio.currentPage;
     pdfController = PdfController(
-      document: PdfDocument.openFile(widget.file_path),
-      initialPage: initialPage,
+      document: PdfDocument.openFile(biblio.filepath),
+      initialPage: currentPage,
     );
-    /**
-    *  pdfPinchController = PdfControllerPinch(
-        document: PdfDocument.openFile(widget.file_path),
-        initialPage: initialPage);
-    */
+  }
+
+  @override
+  void didChangeDependencies() {
+    _navigator = Navigator.of(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    pdfController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey ke = GlobalKey(debugLabel: "manage");
     return Scaffold(
-      appBar: AppBar(title: Text(widget.file_path.split('/').last), actions: [
-        PdfPageNumber(
-          controller: pdfController,
-          // When `loadingState != PdfLoadingState.success`  `pagesCount` equals null_
-          builder: (_, state, loadingState, pagesCount) => Container(
-            alignment: Alignment.center,
-            child: Text(
-              '$currentPage/${pagesCount ?? 0}',
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () => _navigator.push(
+                    MaterialPageRoute(
+                        builder: ((context) => Wishlist(
+                              key: ke,
+                            ))),
+                  ),
+              icon: Icon(Icons.arrow_back)),
+          title: Text(biblio.filepath.split('/').last),
+          actions: [
+            PdfPageNumber(
+              controller: pdfController,
+              // When `loadingState != PdfLoadingState.success`  `pagesCount` equals null_
+              builder: (_, state, loadingState, pagesCount) => Container(
+                alignment: Alignment.center,
+                child: Text(
+                  '$currentPage/${pagesCount ?? 0}',
+                ),
+              ),
             ),
-          ),
-        ),
-      ]),
+          ]),
       //PdfViewPinch rehefa android
       body: PdfView(
         controller: pdfController,
@@ -52,6 +77,12 @@ class _PdfViewPageState extends State<PdfViewPage> {
           setState(() {
             currentPage = page;
           });
+          final x = BiblioClass(
+              filepath: biblio.filepath,
+              imagepath: "imagepath",
+              currentPage: currentPage,
+              nbrPage: pdfController.pagesCount ?? 0);
+          BiblioModel.putBiblio(widget.biblio, x);
         },
       ),
     );

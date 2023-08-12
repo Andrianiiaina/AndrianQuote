@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import '../widgets/wishlist_formulaire.dart';
 import '../widgets/style.dart';
 import '../models/WishlistModel.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:file_picker/file_picker.dart';
+import '../book/view_pdf.dart';
+import '../models/biblioModel.dart';
+import '../widgets/book_formulaire.dart';
 
 class Wishlist extends StatefulWidget {
   const Wishlist({Key? key}) : super(key: key);
@@ -14,10 +19,12 @@ class Wishlist extends StatefulWidget {
 class _WishlistState extends State<Wishlist> {
   List<WishlistClass> wishlists = WishlistModel.getAllData();
   late List<WishlistClass> wishlistsFiltered;
+  late List biblios;
   @override
   void initState() {
     super.initState();
     wishlistsFiltered = wishlists;
+    biblios = BiblioModel.getBiblios().toList();
   }
 
   @override
@@ -27,9 +34,102 @@ class _WishlistState extends State<Wishlist> {
     return Scaffold(
       appBar: AppBar(title: Text('Wishlists (${wishlists.length.toString()})')),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-              child: Container(
+          Text("Livre du moment"),
+          Container(
+            padding: const EdgeInsets.all(5),
+            height: 190,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 3,
+              shrinkWrap: true,
+              itemBuilder: ((context, index) {
+                if (biblios.length > index) {
+                  return Container(
+                      color: Theme.of(context).backgroundColor.withOpacity(0.1),
+                      margin: const EdgeInsets.all(2),
+                      width: MediaQuery.of(context).size.width / 3.2,
+                      child: GestureDetector(
+                          child: Column(
+                            children: [
+                              const Image(
+                                image: AssetImage("assets/p (8).jpg"),
+                                height: 140,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(height: 2),
+                              LinearProgressIndicator(
+                                value: biblios[index].nbrPage != 0
+                                    ? (biblios[index].currentPage) /
+                                        biblios[index].nbrPage
+                                    : 0,
+                                backgroundColor: Colors.white24,
+                              ),
+                              Text(
+                                biblios[index].filepath.split('/').last,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => PdfViewPage(
+                                        biblio: biblios[index].id,
+                                      ))),
+                            );
+                          },
+                          onLongPress: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => SimpleDialog(
+                                      children: [
+                                        SimpleDialogOption(
+                                            onPressed: () {
+                                              showForm(context,
+                                                  const BookFormulaire());
+                                            },
+                                            child:
+                                                const Text("Ajouter à books")),
+                                        SimpleDialogOption(
+                                            onPressed: () {
+                                              BiblioModel.deleteBiblio(
+                                                  biblios[index].id);
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                biblios =
+                                                    BiblioModel.getBiblios();
+                                              });
+                                            },
+                                            child: const Text("Supprimer")),
+                                      ],
+                                    ));
+                          } //Text],),)
+
+                          ));
+                } else {
+                  return Container(
+                    margin: const EdgeInsets.all(2),
+                    color: Theme.of(context).backgroundColor.withOpacity(0.1),
+                    width: MediaQuery.of(context).size.width / 3.2,
+                    //height: MediaQuery,
+                    child: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        getPdfFileNames();
+                      },
+                    ),
+                  );
+                }
+              }),
+            ),
+          ),
+          /**
+           * Flexible(
+              child: SizedBox(
             width: 200,
             child: TextField(
               onChanged: (val) {
@@ -42,9 +142,11 @@ class _WishlistState extends State<Wishlist> {
                       : wishlistsFiltered = wishlists;
                 });
               },
-              decoration: InputDecoration(hintText: "Nombres de page max"),
-            ),
-          )),
+              decoration:
+                  const InputDecoration(hintText: "Nombres de page max"),
+            ),))
+           */
+          const Text("Listes à souhait"),
           Expanded(
             flex: 5,
             child: ReorderableListView(
@@ -67,12 +169,6 @@ class _WishlistState extends State<Wishlist> {
                       margin: const EdgeInsets.all(2),
                       key: ValueKey(wishlistsFiltered[i].id),
                       child: ListTile(
-                        leading: Icon(Icons.rectangle,
-                            color: (wishlistsFiltered[i].priority == "1")
-                                ? oneC
-                                : (wishlistsFiltered[i].priority == "2")
-                                    ? twoC
-                                    : threeC),
                         title: Text(wishlistsFiltered[i].title,
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
@@ -95,9 +191,9 @@ class _WishlistState extends State<Wishlist> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.small(
+      floatingActionButton: FloatingActionButton(
         heroTag: 'h1',
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).backgroundColor,
         onPressed: () {
           showForm(
             context,
@@ -111,4 +207,64 @@ class _WishlistState extends State<Wishlist> {
       ),
     );
   }
+
+  getPdfFileNames() async {
+    FilePickerResult? result;
+    //verification permission
+    PermissionStatus status = await Permission.storage.status;
+    if (!status.isGranted) {
+      status = await Permission.storage.request();
+
+      if (!status.isGranted) {
+        return;
+      }
+    }
+
+    try {
+      result = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+      if (result!.count > 0 && result.files.first.path!.endsWith('.pdf')) {
+        //0% fona revo mbola tsy nokitihina/ At kitika:update biblio and book
+        final x = BiblioClass(
+            filepath: result.files.first.path.toString(),
+            imagepath: "imagepath",
+            currentPage: 1,
+            nbrPage: 0);
+        setState(() {
+          BiblioModel.addBiblio(x);
+          biblios = BiblioModel.getBiblios();
+        });
+
+        //
+      }
+    } catch (e) {}
+  }
 }
+
+/**
+ * 
+ *  getSuggestions() async {
+    https: //www.bibliosurf.com/?page=api_pnb&id={identifiant}&ean={ean13}&gabarit=api_recommandation_pnb
+    var url = Uri.https('www.bibliosurf.com', '/', {
+      'page': 'api_animation',
+      'id': '8',
+      'clil': '3442',
+    });
+    var response = await http.get(url);
+    var x = json.decode(response.body);
+    if (x is Map) {
+      datas = x.values.first[0]['best sellers'];
+    }
+    for (var i in datas) {
+      var url1 = Uri.https('www.bibliosurf.com', '/', {
+        'page': 'api_pnb',
+        'id': '8',
+        'ean': '9782021529111',
+        'gabarit': 'api_recommandation_pnb',
+      });
+      var responses = await http.get(url1);
+      print(responses.body);
+    }
+    //print(x);
+  }
+ */

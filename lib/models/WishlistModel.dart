@@ -15,7 +15,6 @@ class WishlistModel {
           title: book.title,
           version: book.version,
           category: book.category,
-          priority: book.priority.toString(),
           resume: book.resume,
           nbrPage: book.nbrPage);
     }).toList();

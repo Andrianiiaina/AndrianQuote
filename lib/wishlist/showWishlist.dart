@@ -116,15 +116,17 @@ class _ShowWishlistState extends State<ShowWishlist> {
                 onPressed: () {
                   //addToBook
                   BookClass newBook = BookClass(
-                      title: book!.title,
-                      author: book!.author,
-                      version: book!.version,
-                      note: "0",
-                      resume: book!.resume,
-                      category: book!.category,
-                      couverture: "",
-                      nbrPage: book!.nbrPage,
-                      date: DateTime.now());
+                    title: book!.title,
+                    author: book!.author,
+                    version: book!.version,
+                    note: "0",
+                    resume: book!.resume,
+                    category: book!.category,
+                    couverture: "",
+                    nbrPage: book!.nbrPage,
+                    date: DateTime.now(),
+                    status: 'finished',
+                  );
                   BookModel.addBook(newBook);
                   //DeleteBook in wishlist
                   WishlistModel.deleteWishlist(widget.idWishlist);

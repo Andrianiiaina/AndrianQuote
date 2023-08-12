@@ -11,12 +11,10 @@ class WishlistClass extends HiveObject {
   @HiveField(2)
   String version;
   @HiveField(3)
-  String priority;
-  @HiveField(4)
   String resume;
-  @HiveField(6)
+  @HiveField(4)
   String category;
-  @HiveField(8)
+  @HiveField(5)
   String nbrPage;
 
   WishlistClass({
@@ -24,7 +22,6 @@ class WishlistClass extends HiveObject {
     required this.title,
     required this.author,
     required this.version,
-    required this.priority,
     required this.resume,
     required this.category,
     required this.nbrPage,

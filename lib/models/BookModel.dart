@@ -19,7 +19,8 @@ class BookModel {
           resume: book.resume,
           couverture: book.couverture,
           nbrPage: book.nbrPage,
-          date: book.date);
+          date: book.date,
+          status: book.status);
     }).toList();
   }
 

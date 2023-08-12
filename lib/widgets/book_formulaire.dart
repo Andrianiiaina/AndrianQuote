@@ -173,16 +173,16 @@ class _BookFormulaireState extends State<BookFormulaire> {
                       }
 
                       BookClass boky = BookClass(
-                        title: titleController.text,
-                        author: authorController.text,
-                        version: versionController.text,
-                        note: noteController.text,
-                        resume: resumeController.text,
-                        category: categoryController.text,
-                        couverture: _imageFile,
-                        date: selectedDate,
-                        nbrPage: nbrpageController.text,
-                      );
+                          title: titleController.text,
+                          author: authorController.text,
+                          version: versionController.text,
+                          note: noteController.text,
+                          resume: resumeController.text,
+                          category: categoryController.text,
+                          couverture: _imageFile,
+                          date: selectedDate,
+                          nbrPage: nbrpageController.text,
+                          status: 'finished');
                       if (widget.idBook == -1) {
                         _addBook(boky);
                       } else {
