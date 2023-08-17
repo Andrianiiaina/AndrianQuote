@@ -21,6 +21,7 @@ class bookPage_State extends State<BookPage> {
   @override
   void initState() {
     super.initState();
+    books.removeWhere((element) => element.id == 0);
     filteredBooks = books;
     filteredBooks.sort(((a, b) => b.date.compareTo(a.date)));
     isSearching = false;
@@ -30,7 +31,7 @@ class bookPage_State extends State<BookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Livres (${books.length - 1})'),
+        title: Text('Livres (${books.length})'),
         actions: [
           if (isSearching == true)
             SizedBox(
@@ -78,7 +79,7 @@ class bookPage_State extends State<BookPage> {
               Expanded(
                 flex: 1,
                 child: SelectFormField(
-                  labelText: 'order',
+                  labelText: 'ASC',
                   items: const [
                     {'value': 'ASC', 'label': 'ASC'},
                     {'value': 'DESC', 'label': 'DESC'}
@@ -106,23 +107,24 @@ class bookPage_State extends State<BookPage> {
             flex: 5,
             child: ListView.builder(
                 controller: ScrollController(),
-                itemCount: filteredBooks.length - 1,
+                itemCount: filteredBooks.length,
                 itemBuilder: ((context, index) {
-                  BookClass book = filteredBooks[index + 1];
+                  BookClass book = filteredBooks[index];
                   return cardBook(book, context);
                 })),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
-        heroTag: 'h5',
-        backgroundColor: Colors.black,
+        key: Key("add_book"),
+        heroTag: 'h3',
+        backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {
           showForm(context, const BookFormulaire());
         },
         child: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.deepPurple,
         ),
       ),
     );

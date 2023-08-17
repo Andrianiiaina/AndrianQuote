@@ -33,6 +33,7 @@ class _QuotePageState extends State<QuotePage> {
             SizedBox(
               width: 180,
               child: TextField(
+                style: TextStyle(color: Colors.white70),
                 decoration: const InputDecoration(hintText: "search..."),
                 autofocus: true,
                 onChanged: (q) {
@@ -74,13 +75,15 @@ class _QuotePageState extends State<QuotePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
-        backgroundColor: Colors.black,
+        key: Key("add_quote"),
+        heroTag: 'h2',
+        backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {
           showForm(context, const QuoteFormulaire());
         },
         child: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.deepPurple,
         ),
       ),
     );

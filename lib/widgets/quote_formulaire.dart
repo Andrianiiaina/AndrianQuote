@@ -80,7 +80,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            textWidget("Nouveau quote"),
+            titre("Nouveau quote", context),
             const SizedBox(height: 15),
             if (currentImage.isNotEmpty)
               Image.file(
@@ -88,21 +88,6 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                 height: 150,
                 width: 150,
               ),
-            FloatingActionButton(
-              mini: true,
-              onPressed: () {
-                _pickPhoto(ImageSource.gallery);
-              },
-              heroTag: 'image0',
-              tooltip: 'profil_author',
-              child: const Icon(Icons.photo),
-              backgroundColor: Colors.white,
-            ),
-            const Text(
-              "Fond du quote",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
@@ -112,11 +97,11 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                     controller: _book,
                     type: SelectFormFieldType.dialog,
                     items: bookField,
+                    style: TextStyle(color: Colors.grey.shade600),
                   ),
                 ),
 
                 //Ajouter d'autre Auteur
-
                 IconButton(
                     onPressed: () {
                       showForm(
@@ -124,12 +109,24 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                         const BookFormulaire(),
                       );
                     },
-                    icon: const Icon(Icons.add))
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.deepPurple,
+                    ))
               ],
             ),
             const SizedBox(height: 10),
-            textareaWidget(_quoty, 'Quote...', false),
-            const SizedBox(height: 30),
+            textareaWidgetForm(_quoty, 'Quote...', false),
+            const SizedBox(height: 10),
+            TextButton(
+                onPressed: () {
+                  _pickPhoto(ImageSource.gallery);
+                },
+                child: Text(
+                  "Ajout de fond personnalisé...",
+                  style: TextStyle(color: Colors.grey.shade500),
+                )),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
                 final int x = Random().nextInt(36);

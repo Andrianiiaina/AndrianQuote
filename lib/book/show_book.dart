@@ -45,7 +45,7 @@ class _ShowBookState extends State<ShowBook> {
               );
             },
             icon: const Icon(Icons.arrow_back)),
-        title: const Text(" Details"),
+        title: Text(book!.title.toString()),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -136,18 +136,21 @@ class _ShowBookState extends State<ShowBook> {
                     'A propos:',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  Text(book!.resume,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 206, 198, 198))),
-                  const SizedBox(height: 20),
+                  SizedBox(
+                    child: Text(
+                        book!.resume == "" ? "Aucun resumé..." : book!.resume,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 206, 198, 198))),
+                  ),
+                  const SizedBox(height: 30),
                   Text(
-                    "Categorie: ${book!.category}\n${book!.nbrPage.toString()} pages\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}",
+                    "Categorie: ${book!.category}\nPages:${book!.nbrPage.toString()}\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}",
                     style: const TextStyle(
                       color: Colors.white,
-                      letterSpacing: 1,
+                      letterSpacing: 2,
                       fontSize: 14,
                     ),
                   ),

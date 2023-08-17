@@ -39,7 +39,7 @@ class sauvegarde {
         'couverture': value.couverture,
         'nbrPage': value.nbrPage,
         'date': value.date.toString(),
-        'status': 'finished',
+        'status': value.status,
       };
       return mapData;
     }).toList();
@@ -62,6 +62,7 @@ class sauvegarde {
     File fileQuote = File('$appDirPath/fileQuoteJson.json');
     File fileBook = File('$appDirPath/fileBookJson.json');
     File fileWishlist = File('$appDirPath/fileWishlistJson.json');
+
     String jsonDataQuote = json.encode(dataQuote);
     String jsonDataBook = json.encode(dataBook);
     String jsonDataWishlist = json.encode(dataWishlist);
@@ -88,7 +89,7 @@ class sauvegarde {
           author: data["author"],
           quote: data["quote"],
           fond: data["fond"]);
-      //fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
+      // fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
     }).toList();
   }
 
@@ -102,6 +103,8 @@ class sauvegarde {
 
     List<dynamic> jsonDataBook = json.decode(jsonStringBook);
     return jsonDataBook.map((data) {
+      final x = data["date"].toString().split('-');
+      int day = int.parse(x[2].split(" ")[0]);
       return BookClass(
         id: data["id"],
         title: data["title"],
@@ -112,17 +115,19 @@ class sauvegarde {
         category: data["category"],
         couverture: data["couverture"],
         nbrPage: data["nbrPage"],
-        date: DateTime(2023, 1, 1),
+        //date: data["date"],
+        date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
         status: 'finished',
       );
     }).toList();
   }
 
+//DateTime(data["date"])
   static majWishlist() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    //  final appDir = await getExternalStorageDirectory();
-    String appDirPath = appDir.path;
-    String filePathWishlist = '$appDirPath/fileWishlistJson7.json';
+    // Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir!.path;
+    String filePathWishlist = '$appDirPath/fileWishlistJson.json';
     String jsonStringWishlist = await File(filePathWishlist).readAsString();
 
     List<dynamic> jsonDataWishlist = json.decode(jsonStringWishlist);

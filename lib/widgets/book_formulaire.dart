@@ -26,7 +26,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
   TextEditingController resumeController = TextEditingController();
   TextEditingController nbrpageController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-
+  TextEditingController statusController = TextEditingController();
   String _imageFile = "";
   String currentImage = "";
   late BookClass book;
@@ -82,13 +82,16 @@ class _BookFormulaireState extends State<BookFormulaire> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                   opacity: 0.8,
-                  image: AssetImage('assets/p (18).jpg'),
+                  image: AssetImage('assets/p (26).jpg'),
                   fit: BoxFit.cover)),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                textWidget("Ajouter un livre"),
+                const SizedBox(height: 30),
+                textWidget(widget.idBook == -1
+                    ? "Ajouter un livre"
+                    : "Modification du livre"),
                 const SizedBox(height: 10),
                 if (currentImage.isNotEmpty)
                   Image.file(
@@ -104,16 +107,17 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   heroTag: 'image0',
                   tooltip: 'profil_author',
                   child: const Icon(Icons.photo),
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.grey,
                 ),
                 const Text(
-                  "Couverture du livre",
+                  "Couverture du livre si",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(height: 5),
                 textFieldWidget(authorController, "Nom de l'auteur", false),
                 textFieldWidget(titleController, "Titre du livre", false),
                 SelectFormField(
+                  style: const TextStyle(color: Colors.grey),
                   //initialValue: categoryController.text,
                   decoration: InputDecoration(
                     hintText: categoryController.text,
@@ -130,11 +134,13 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   type: SelectFormFieldType.dropdown,
                   controller: versionController,
                   items: Models.bookversion,
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 textFieldWidgetNumber(
                     nbrpageController, "Nombre de page", false),
-                textareaWidget(resumeController, "Resumé", false),
+                textareaWidgetForm(resumeController, "Resumé", false),
                 DateTimeFormField(
+                  dateTextStyle: const TextStyle(color: Colors.grey),
                   decoration: InputDecoration(
                       hintText:
                           "Date: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
@@ -147,9 +153,9 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   },
                 ),
                 TextFormField(
+                  style: const TextStyle(color: Colors.grey),
                   controller: noteController,
-                  decoration:
-                      const InputDecoration(label: Text("${"Note [0-10]"}")),
+                  decoration: const InputDecoration(label: Text("Note [0-10]")),
                   readOnly: false,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -161,6 +167,18 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     if (number < 0 || number > 10) return "note sur 10";
                     return null;
                   },
+                ),
+                SelectFormField(
+                  decoration: InputDecoration(
+                      hintText: statusController.text, labelText: 'Status'),
+                  type: SelectFormFieldType.dropdown,
+                  controller: statusController,
+                  items: [
+                    {'value': 'finished', 'label': 'Terminé'},
+                    {'value': 'abandonned', 'label': 'Abandonné'},
+                    {'value': 'current', 'label': 'current'},
+                  ],
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -182,7 +200,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                           couverture: _imageFile,
                           date: selectedDate,
                           nbrPage: nbrpageController.text,
-                          status: 'finished');
+                          status: statusController.text);
                       if (widget.idBook == -1) {
                         _addBook(boky);
                       } else {

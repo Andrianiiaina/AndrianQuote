@@ -53,78 +53,84 @@ class _ShowQuoteState extends State<ShowQuote> {
   Widget build(BuildContext context) {
     TextEditingController _quote = TextEditingController(text: quote?.quote);
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: IconButton(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const MyApp(index: 1)),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back)),
+        title: Text(quote!.book),
+        actions: [
+          IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 1)),
-                  ),
-                );
+                setState(() {
+                  showForm(context, QuoteFormulaire(id: widget.idQuote));
+                });
               },
-              icon: const Icon(Icons.arrow_back)),
-          title: const Text("Quotee details"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    showForm(context, QuoteFormulaire(id: widget.idQuote));
-                  });
-                },
-                icon: const Icon(Icons.edit)),
-            IconButton(
-                onPressed: () {
-                  _delete(idQuote);
-                },
-                icon: const Icon(Icons.delete))
-          ],
+              icon: const Icon(Icons.edit)),
+          IconButton(
+              onPressed: () {
+                _delete(idQuote);
+              },
+              icon: const Icon(Icons.delete))
+        ],
+      ),
+      floatingActionButton: AnimatedOpacity(
+          opacity: showbtn ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 1000),
+          child: FloatingActionButton.small(
+            backgroundColor: Colors.grey,
+            onPressed: () {
+              scrollC.animateTo(0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn);
+            },
+            child: const Icon(
+              Icons.arrow_upward,
+            ),
+          )),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: scrollC,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(quote!.fond),
+                fit: BoxFit.cover,
+                opacity: 0.6),
+          ),
+          child: Column(
+            children: [
+              Text(
+                "${quote!.author} - ${quote!.book}",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                quote!.quote,
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
-        floatingActionButton: AnimatedOpacity(
-            opacity: showbtn ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 1000),
-            child: FloatingActionButton.small(
-              backgroundColor: Colors.grey,
-              onPressed: () {
-                scrollC.animateTo(0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.fastOutSlowIn);
-              },
-              child: const Icon(
-                Icons.arrow_upward,
-              ),
-            )),
-        body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            controller: scrollC,
-            child: Container(
-              height: MediaQuery.of(context).size.height - 50,
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(quote!.fond),
-                    fit: BoxFit.cover,
-                    opacity: 0.6),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    "${quote!.author} - ${quote!.book}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    quote!.quote,
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              ),
-            )));
+      ),
+    );
   }
 }

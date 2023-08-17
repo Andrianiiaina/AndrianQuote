@@ -32,11 +32,16 @@ class _WishlistState extends State<Wishlist> {
     TextEditingController maxC = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Wishlists (${wishlists.length.toString()})')),
+      appBar: AppBar(title: const Text('Wishlists')),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Livre du moment"),
+          Text("Livre du moment",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "San Francisco")),
           Container(
             padding: const EdgeInsets.all(5),
             height: 190,
@@ -59,7 +64,7 @@ class _WishlistState extends State<Wishlist> {
                                 height: 140,
                                 fit: BoxFit.cover,
                               ),
-                              SizedBox(height: 2),
+                              const SizedBox(height: 2),
                               LinearProgressIndicator(
                                 value: biblios[index].nbrPage != 0
                                     ? (biblios[index].currentPage) /
@@ -146,7 +151,13 @@ class _WishlistState extends State<Wishlist> {
                   const InputDecoration(hintText: "Nombres de page max"),
             ),))
            */
-          const Text("Listes à souhait"),
+          Text("Listes à souhait (${wishlists.length.toString()})",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "San Francisco")),
+          const SizedBox(height: 10),
           Expanded(
             flex: 5,
             child: ReorderableListView(
@@ -191,9 +202,9 @@ class _WishlistState extends State<Wishlist> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
         heroTag: 'h1',
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {
           showForm(
             context,
@@ -202,7 +213,7 @@ class _WishlistState extends State<Wishlist> {
         },
         child: const Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.deepPurple,
         ),
       ),
     );

@@ -35,7 +35,7 @@ void main() async {
     book.put(
         0,
         BookClass(
-            title: "",
+            title: "Autre",
             author: "",
             version: "",
             note: "",

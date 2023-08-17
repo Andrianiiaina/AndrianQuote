@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 
 final bottomDatas = [
   const BottomNavigationBarItem(
-      icon: const Icon(Icons.book), label: 'Books', tooltip: "Books"),
+      icon: Icon(Icons.book), label: 'Books', tooltip: "Books"),
   const BottomNavigationBarItem(
-      icon: const Icon(Icons.bookmark), label: 'quote', tooltip: "Quotes"),
+      icon: Icon(Icons.bookmark), label: 'quote', tooltip: "Quotes"),
   const BottomNavigationBarItem(
-      icon: const Icon(Icons.watch_later),
-      label: 'wishlist',
-      tooltip: "wishlist"),
+      icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
 var themeLight = ThemeData.light().copyWith(
   backgroundColor: Colors.deepPurple,
@@ -29,6 +27,26 @@ var themeLight = ThemeData.light().copyWith(
       surface: Colors.purple,
       onSurface: Colors.white), //ex: style underline
 );
+Widget titre(String texte, context) {
+  return Text(texte,
+      style: TextStyle(
+          fontSize: 25,
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+          fontFamily: "San Francisco"));
+}
+
+Widget textareaWidgetForm(controller, text, readOnly) {
+  return TextField(
+    readOnly: readOnly,
+    controller: controller,
+    decoration: InputDecoration(label: Text(text)),
+    keyboardType: TextInputType.multiline,
+    maxLines: 15,
+    minLines: 3,
+    style: TextStyle(color: Colors.grey.shade600),
+  );
+}
 
 Widget textWidget(texte) {
   return Text(
@@ -45,6 +63,7 @@ Widget textFieldWidget(controller, text, readOnly) {
   return TextFormField(
     controller: controller,
     decoration: InputDecoration(label: Text(text)),
+    style: TextStyle(color: Colors.grey.shade600),
     readOnly: readOnly,
     keyboardType: TextInputType.multiline,
     validator: (value) {
@@ -57,6 +76,7 @@ Widget textFieldWidget(controller, text, readOnly) {
 Widget textFieldWidgetNumber(controller, text, readOnly) {
   return TextFormField(
     controller: controller,
+    style: TextStyle(color: Colors.grey),
     decoration: InputDecoration(label: Text(text)),
     readOnly: readOnly,
     keyboardType: TextInputType.number,

@@ -18,11 +18,11 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          title: Text('Darkmode'),
+          title: Text('Darkmode', style: TextStyle(color: Colors.white)),
           trailing: Consumer<ThemeProvider>(
             builder: ((context, themeProvider, _) {
               return Switch(

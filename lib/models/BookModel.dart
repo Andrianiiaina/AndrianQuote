@@ -9,6 +9,7 @@ class BookModel {
   static getAllData() {
     return box.keys.map((e) {
       final book = box.get(e);
+
       return BookClass(
           id: e,
           author: book!.author,

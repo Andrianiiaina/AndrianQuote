@@ -21,7 +21,6 @@ class _PdfViewPageState extends State<PdfViewPage> {
   bool isVercticalScrolling = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     biblio = BiblioModel.getBiblio(widget.biblio);
     currentPage = biblio.currentPage;
@@ -55,7 +54,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
                               key: ke,
                             ))),
                   ),
-              icon: Icon(Icons.arrow_back)),
+              icon: const Icon(Icons.arrow_back)),
           title: Text(biblio.filepath.split('/').last),
           actions: [
             PdfPageNumber(
