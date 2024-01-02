@@ -45,7 +45,7 @@ class _ShowBookState extends State<ShowBook> {
               );
             },
             icon: const Icon(Icons.arrow_back)),
-        title: Text(book!.title.toString()),
+        title: Text(book!.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),

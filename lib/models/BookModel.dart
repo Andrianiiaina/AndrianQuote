@@ -11,17 +11,20 @@ class BookModel {
       final book = box.get(e);
 
       return BookClass(
-          id: e,
-          author: book!.author,
-          title: book.title,
-          version: book.version,
-          category: book.category,
-          note: book.note.toString(),
-          resume: book.resume,
-          couverture: book.couverture,
-          nbrPage: book.nbrPage,
-          date: book.date,
-          status: book.status);
+        id: e,
+        author: book!.author,
+        title: book.title,
+        version: book.version,
+        category: book.category,
+        note: book.note.toString(),
+        resume: book.resume,
+        couverture: book.couverture,
+        nbrPage: book.nbrPage,
+        date: book.date,
+        status: book.status,
+        isPaper: book.isPaper,
+        debut: book.debut,
+      );
     }).toList();
   }
 

@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'bookClass.dart';
 import 'wishlistClass.dart';
-import 'dart:math';
 
 final boxQuote = Hive.box<QuotyClass>('quoty');
 final boxBook = Hive.box<BookClass>('book');
@@ -40,6 +39,10 @@ class sauvegarde {
         'nbrPage': value.nbrPage,
         'date': value.date.toString(),
         'status': value.status,
+        'debut': value.date.toString(),
+        'isPaper': true,
+        //'debut': value.debut,
+        //'isPaper': value.isPaper,
       };
       return mapData;
     }).toList();
@@ -56,25 +59,24 @@ class sauvegarde {
       };
       return mapData;
     }).toList();
-    //Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
+    Directory appDir = await getApplicationDocumentsDirectory();
+    //final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     File fileQuote = File('$appDirPath/fileQuoteJson.json');
     File fileBook = File('$appDirPath/fileBookJson.json');
     File fileWishlist = File('$appDirPath/fileWishlistJson.json');
-
-    String jsonDataQuote = json.encode(dataQuote);
-    String jsonDataBook = json.encode(dataBook);
-    String jsonDataWishlist = json.encode(dataWishlist);
-
-    await fileQuote.writeAsString(jsonDataQuote);
-    await fileBook.writeAsString(jsonDataBook);
-    await fileWishlist.writeAsString(jsonDataWishlist);
+    try {
+      await fileBook.writeAsString(json.encode(dataBook));
+      await fileQuote.writeAsString(json.encode(dataQuote));
+      await fileWishlist.writeAsString(json.encode(dataWishlist));
+    } catch (e) {
+      print(e);
+    }
   }
 
   static majQuote() async {
-    // Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
+    Directory appDir = await getApplicationDocumentsDirectory();
+    //final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     String filePathQuote = '$appDirPath/fileQuoteJson.json';
 
@@ -88,14 +90,14 @@ class sauvegarde {
           book: data["book"],
           author: data["author"],
           quote: data["quote"],
-          fond: data["fond"]);
-      // fond: 'assets/p (${Random().nextInt(36) + 1}).jpg');
+          //fond: data["fond"]);
+          fond: 'assets/p (1).jpg');
     }).toList();
   }
 
   static majBook() async {
-    // Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
+    Directory appDir = await getApplicationDocumentsDirectory();
+    //final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     // String filePathBook = '$appDirPath/fileBookJson.json';
     String filePathBook = '$appDirPath/fileBookJson.json';
@@ -104,6 +106,7 @@ class sauvegarde {
     List<dynamic> jsonDataBook = json.decode(jsonStringBook);
     return jsonDataBook.map((data) {
       final x = data["date"].toString().split('-');
+      final y = data["debut"].toString().split('-');
       int day = int.parse(x[2].split(" ")[0]);
       return BookClass(
         id: data["id"],
@@ -117,15 +120,17 @@ class sauvegarde {
         nbrPage: data["nbrPage"],
         //date: data["date"],
         date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
+        debut: DateTime.now(),
         status: 'finished',
+        isPaper: true,
       );
     }).toList();
   }
 
 //DateTime(data["date"])
   static majWishlist() async {
-    // Directory appDir = await getApplicationDocumentsDirectory();
-    final appDir = await getExternalStorageDirectory();
+    Directory appDir = await getApplicationDocumentsDirectory();
+    //final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     String filePathWishlist = '$appDirPath/fileWishlistJson.json';
     String jsonStringWishlist = await File(filePathWishlist).readAsString();

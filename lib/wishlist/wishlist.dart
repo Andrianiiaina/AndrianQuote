@@ -5,7 +5,7 @@ import '../widgets/style.dart';
 import '../models/WishlistModel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
-import '../book/view_pdf.dart';
+//import '../book/view_pdfdart';
 import '../models/biblioModel.dart';
 import '../widgets/book_formulaire.dart';
 
@@ -79,13 +79,14 @@ class _WishlistState extends State<Wishlist> {
                             ],
                           ),
                           onTap: () {
-                            Navigator.pushReplacement(
+                            /**Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: ((context) => PdfViewPage(
                                         biblio: biblios[index].id,
                                       ))),
                             );
+                             */
                           },
                           onLongPress: () {
                             showDialog(

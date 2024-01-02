@@ -7,6 +7,10 @@ final bottomDatas = [
   const BottomNavigationBarItem(
       icon: Icon(Icons.bookmark), label: 'quote', tooltip: "Quotes"),
   const BottomNavigationBarItem(
+      icon: Icon(Icons.graphic_eq),
+      label: 'statistique',
+      tooltip: "Statistiques"),
+  const BottomNavigationBarItem(
       icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
 var themeLight = ThemeData.light().copyWith(

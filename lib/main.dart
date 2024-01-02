@@ -1,4 +1,5 @@
 import 'package:andrianiaiina_quote/models/biblioClass.dart';
+import 'package:andrianiaiina_quote/statistic.dart';
 import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -35,16 +36,19 @@ void main() async {
     book.put(
         0,
         BookClass(
-            title: "Autre",
-            author: "",
-            version: "",
-            note: "",
-            resume: "A utiliser quand quote.book n'est pas dans book",
-            category: "all",
-            couverture: "",
-            nbrPage: "",
-            date: DateTime(2023, 1, 1),
-            status: "finished"));
+          title: "Autre",
+          author: "",
+          version: "",
+          note: "",
+          resume: "A utiliser quand quote.book n'est pas dans book",
+          category: "all",
+          couverture: "",
+          nbrPage: "",
+          date: DateTime.now(),
+          debut: DateTime.now(),
+          status: "finished",
+          isPaper: true,
+        ));
   }
   runApp(const MyApp(
     index: 1,
@@ -77,6 +81,7 @@ class _MyAppState extends State<MyApp> {
   final screen = [
     const BookPage(),
     const QuotePage(),
+    const StatisticPage(),
     const Wishlist(),
   ];
   @override
@@ -91,7 +96,7 @@ class _MyAppState extends State<MyApp> {
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: ((context, value, _) {
-          _loadSavedTheme(value);
+          //_loadSavedTheme(value);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Fenitra book',

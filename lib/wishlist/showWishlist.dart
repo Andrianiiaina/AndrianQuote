@@ -125,6 +125,8 @@ class _ShowWishlistState extends State<ShowWishlist> {
                     couverture: "",
                     nbrPage: book!.nbrPage,
                     date: DateTime.now(),
+                    debut: DateTime.now(),
+                    isPaper: true,
                     status: 'finished',
                   );
                   BookModel.addBook(newBook);

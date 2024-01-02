@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'bookClass.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 8)
 class BookClass extends HiveObject {
   dynamic id;
   @HiveField(0)
@@ -24,17 +24,24 @@ class BookClass extends HiveObject {
   DateTime date;
   @HiveField(9)
   String status;
+  @HiveField(10)
+  DateTime debut;
+  @HiveField(11)
+  bool isPaper;
 
-  BookClass(
-      {this.id,
-      required this.title,
-      required this.author,
-      required this.version,
-      required this.note,
-      required this.resume,
-      required this.category,
-      required this.couverture,
-      required this.nbrPage,
-      required this.date,
-      required this.status});
+  BookClass({
+    this.id,
+    required this.title,
+    required this.author,
+    required this.version,
+    required this.note,
+    required this.resume,
+    required this.category,
+    required this.couverture,
+    required this.nbrPage,
+    required this.date,
+    required this.status,
+    required this.debut,
+    required this.isPaper,
+  });
 }

@@ -26,3 +26,15 @@ class Models {
     {'value': 'tout', 'label': 'Toutes'}
   ];
 }
+
+class finishedPerMonth {
+  DateTime month;
+  int bookTotal;
+  finishedPerMonth(this.month, this.bookTotal);
+}
+
+class bestCategories {
+  String category;
+  int number;
+  bestCategories(this.category, this.number);
+}

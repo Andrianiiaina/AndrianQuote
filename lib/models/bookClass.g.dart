@@ -8,7 +8,7 @@ part of 'bookClass.dart';
 
 class BookClassAdapter extends TypeAdapter<BookClass> {
   @override
-  final int typeId = 2;
+  final int typeId = 8;
 
   @override
   BookClass read(BinaryReader reader) {
@@ -27,13 +27,15 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       nbrPage: fields[7] as String,
       date: fields[8] as DateTime,
       status: fields[9] as String,
+      debut: fields[10] as DateTime,
+      isPaper: fields[11] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookClass obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -53,7 +55,11 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       ..writeByte(8)
       ..write(obj.date)
       ..writeByte(9)
-      ..write(obj.status);
+      ..write(obj.status)
+      ..writeByte(10)
+      ..write(obj.debut)
+      ..writeByte(11)
+      ..write(obj.isPaper);
   }
 
   @override

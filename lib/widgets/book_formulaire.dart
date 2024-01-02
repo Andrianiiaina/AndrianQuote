@@ -27,11 +27,14 @@ class _BookFormulaireState extends State<BookFormulaire> {
   TextEditingController nbrpageController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  TextEditingController isPaperController = TextEditingController();
+
   String _imageFile = "";
   String currentImage = "";
   late BookClass book;
   final ImagePicker _picker = ImagePicker();
   late DateTime selectedDate;
+  late DateTime selectedDebut;
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -46,6 +49,8 @@ class _BookFormulaireState extends State<BookFormulaire> {
       versionController.text = book.version;
       nbrpageController.text = book.nbrPage.toString();
       selectedDate = book.date;
+      selectedDebut = book.debut;
+      isPaperController.text = book.isPaper.toString();
       noteController.text = book.note;
       try {
         stara = int.parse(book.note);
@@ -143,6 +148,19 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   dateTextStyle: const TextStyle(color: Colors.grey),
                   decoration: InputDecoration(
                       hintText:
+                          "Debut: ${selectedDebut.year}-${selectedDebut.month}-${selectedDebut.day}"),
+                  mode: DateTimeFieldPickerMode.date,
+                  initialDate: selectedDebut,
+                  onDateSelected: (DateTime value) {
+                    setState(() {
+                      selectedDebut = value;
+                    });
+                  },
+                ),
+                DateTimeFormField(
+                  dateTextStyle: const TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                      hintText:
                           "Date: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
                   mode: DateTimeFieldPickerMode.date,
                   initialDate: selectedDate,
@@ -180,6 +198,17 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   ],
                   style: const TextStyle(color: Colors.grey),
                 ),
+                SelectFormField(
+                  decoration: InputDecoration(
+                      hintText: isPaperController.text, labelText: 'Version?'),
+                  type: SelectFormFieldType.dropdown,
+                  controller: isPaperController,
+                  items: [
+                    {'value': 'paper', 'label': 'Papier'},
+                    {'value': 'electroc', 'label': 'Electronique'},
+                  ],
+                  style: const TextStyle(color: Colors.grey),
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
@@ -199,8 +228,11 @@ class _BookFormulaireState extends State<BookFormulaire> {
                           category: categoryController.text,
                           couverture: _imageFile,
                           date: selectedDate,
+                          debut: selectedDebut,
                           nbrPage: nbrpageController.text,
-                          status: statusController.text);
+                          status: statusController.text,
+                          isPaper:
+                              isPaperController.text == 'paper' ? true : false);
                       if (widget.idBook == -1) {
                         _addBook(boky);
                       } else {
