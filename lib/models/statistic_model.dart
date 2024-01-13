@@ -83,12 +83,11 @@ StatisticClass getData(year) {
       categories.add({x: 0});
     }
   }
-
   return StatisticClass(
       year: year,
       finished: finished,
-      current: books.where((x) => x.status == "current").length,
-      abandonned: books.where((x) => x.status == "abandonned").length,
+      current: books.where((x) => x.status.contains("current")).length,
+      abandonned: books.where((x) => x.status.contains("aband")).length,
       categories: categories,
       digitalBook: finished - paperBooks,
       digitalPages: finishedPages - paperPages,

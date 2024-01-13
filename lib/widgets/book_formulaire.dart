@@ -125,7 +125,6 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 textFieldWidget(titleController, "Titre du livre", false),
                 SelectFormField(
                   style: const TextStyle(color: Colors.grey),
-                  initialValue: "autre",
                   decoration: InputDecoration(
                     hintText: categoryController.text,
                     labelText: 'Categorie',
@@ -155,12 +154,12 @@ class _BookFormulaireState extends State<BookFormulaire> {
                       hintText:
                           "Debut: ${selectedDebut.year}-${selectedDebut.month}-${selectedDebut.day}"),
                   mode: DateTimeFieldPickerMode.date,
-                  initialDate: selectedDebut,
                   onDateSelected: (DateTime value) {
                     setState(() {
                       selectedDebut = value;
                     });
                   },
+                  initialDate: selectedDebut,
                 ),
                 DateTimeFormField(
                   dateTextStyle: const TextStyle(color: Colors.grey),
@@ -202,7 +201,6 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     {'value': 'current', 'label': 'current'},
                   ],
                   style: const TextStyle(color: Colors.grey),
-                  initialValue: "current",
                 ),
                 SelectFormField(
                   decoration: InputDecoration(
@@ -214,7 +212,6 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     {'value': 'numeric', 'label': 'Numérique'},
                   ],
                   style: const TextStyle(color: Colors.grey),
-                  initialValue: "paper",
                 ),
                 Container(
                   height: 40,

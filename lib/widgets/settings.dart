@@ -18,78 +18,103 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ListTile(
-          title: const Text('Darkmode', style: TextStyle(color: Colors.white)),
-          trailing: Consumer<ThemeProvider>(
-            builder: ((context, themeProvider, _) {
-              return Switch(
-                  value: themeProvider.currentThemeMode == ThemeMode.dark,
-                  onChanged: (value) {
-                    themeProvider.toggleTheme(value);
-                  });
-            }),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image(
+            image: const AssetImage('assets/p (22).jpg'),
+            height: 120,
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
           ),
-        ),
-        ElevatedButton(
-            onPressed: () {
-              statisticModel.populateStatistic();
-            },
-            child: const Text(
-              'populate',
-              style: TextStyle(color: Colors.white),
-            )),
-        ElevatedButton(
-            onPressed: () {
-              sauvegarde.exportToJson();
-            },
-            child: const Text(
-              'Sauvegarder sur internet',
-              style: TextStyle(color: Colors.white),
-            )),
-        const SizedBox(height: 10),
-        ElevatedButton(
-            onPressed: () {
-              BookModel.recupJsonDataBook();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const MyApp(index: 0)),
-                ),
-              );
-            },
-            child: const Text('Récupérer les dérnières données de book',
-                style: TextStyle(color: Colors.white))),
-        const SizedBox(height: 10),
-        ElevatedButton(
-            onPressed: () {
-              QuoteModel.recupJsonDataQuote();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const MyApp(index: 1)),
-                ),
-              );
-            },
-            child: const Text('Récupérer les dérnières données de quote',
-                style: TextStyle(color: Colors.white))),
-        const SizedBox(height: 10),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const MyApp(index: 2)),
-                ),
-              );
-              WishlistModel.recupJsonDataWishlist();
-            },
-            child: const Text('Récupérer les dérnières données de wishlist',
-                style: TextStyle(color: Colors.white)))
-      ],
+          const SizedBox(height: 10),
+          ListTile(
+            title:
+                const Text('Darkmode', style: TextStyle(color: Colors.white70)),
+            trailing: Consumer<ThemeProvider>(
+              builder: ((context, themeProvider, _) {
+                return Switch(
+                    activeColor: Colors.white70,
+                    value: themeProvider.currentThemeMode == ThemeMode.dark,
+                    onChanged: (value) {
+                      themeProvider.toggleTheme(value);
+                    });
+              }),
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                sauvegarde.exportToJson();
+              },
+              child: const Text(
+                'Sauvegarder sur internet',
+                style: TextStyle(color: Colors.white70),
+              )),
+          const SizedBox(height: 10),
+          TextButton(
+              onPressed: () {
+                statisticModel.populateStatistic();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const MyApp(index: 2)),
+                  ),
+                );
+              },
+              child: const Text(
+                'Mettre à jours la statistique',
+                style: TextStyle(color: Colors.white70),
+              )),
+          const SizedBox(height: 10),
+          TextButton(
+              onPressed: () {
+                BookModel.recupJsonDataBook();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const MyApp(index: 0)),
+                  ),
+                );
+              },
+              child: const Text(
+                'Récupérer les dérnières données de book',
+                style: TextStyle(color: Colors.white70),
+              )),
+          const SizedBox(height: 10),
+          TextButton(
+              onPressed: () {
+                QuoteModel.recupJsonDataQuote();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const MyApp(index: 1)),
+                  ),
+                );
+              },
+              child: const Text(
+                'Récupérer les dérnières données de quote',
+                style: TextStyle(color: Colors.white70),
+              )),
+          const SizedBox(height: 10),
+          TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const MyApp(index: 3)),
+                  ),
+                );
+                WishlistModel.recupJsonDataWishlist();
+              },
+              child: const Text(
+                'Récupérer les dérnières données de wishlist',
+                style: TextStyle(color: Colors.white70),
+              )),
+        ],
+      ),
     );
   }
 }

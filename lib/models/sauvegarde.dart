@@ -46,6 +46,7 @@ class sauvegarde {
         //'debut': value.debut,
         //'isPaper': value.isPaper,
       };
+
       return mapData;
     }).toList();
     List<Map<String, dynamic>> dataWishlist = boxWishlist.keys.map((e) {
@@ -61,12 +62,12 @@ class sauvegarde {
       };
       return mapData;
     }).toList();
-    Directory appDir = await getApplicationDocumentsDirectory();
-    //final appDir = await getExternalStorageDirectory();
+    //Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
-    File fileQuote = File('$appDirPath/fileQuoteJson.json');
     File fileBook = File('$appDirPath/fileBookJson.json');
     File fileWishlist = File('$appDirPath/fileWishlistJson.json');
+    File fileQuote = File('$appDirPath/fileQuoteJson.json');
     try {
       await fileBook.writeAsString(json.encode(dataBook));
       await fileQuote.writeAsString(json.encode(dataQuote));
@@ -77,8 +78,8 @@ class sauvegarde {
   }
 
   static majQuote() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    //final appDir = await getExternalStorageDirectory();
+    // Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     String filePathQuote = '$appDirPath/fileQuoteJson.json';
 
@@ -92,14 +93,14 @@ class sauvegarde {
           book: data["book"],
           author: data["author"],
           quote: data["quote"],
-          //fond: data["fond"]);
-          fond: 'assets/p (${Random().nextInt(35) + 1}).jpg');
+          fond: data["fond"]);
+      //fond: 'assets/p (${Random().nextInt(35) + 1}).jpg');
     }).toList();
   }
 
   static majBook() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    //final appDir = await getExternalStorageDirectory();
+    //Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     // String filePathBook = '$appDirPath/fileBookJson.json';
     String filePathBook = '$appDirPath/fileBookJson.json';
@@ -123,8 +124,8 @@ class sauvegarde {
         //date: data["date"],
         date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
         debut: DateTime.now(),
-        status: 'finished',
-        isPaper: true,
+        status: data['status'],
+        isPaper: data['isPaper'],
       );
     }).toList();
   }

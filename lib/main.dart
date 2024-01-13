@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: ((context, value, _) {
-          //_loadSavedTheme(value);
+          _loadSavedTheme(value);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Fenitra book',

@@ -179,4 +179,5 @@ Widget statisticText(String title) {
 Widget drawer = const Drawer(
   backgroundColor: Colors.transparent,
   child: Settings(),
+  width: 220,
 );
