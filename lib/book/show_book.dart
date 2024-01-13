@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/models/statisticModel.dart';
 import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
 import 'dart:io';
 import '/main.dart';
@@ -165,7 +166,7 @@ class _ShowBookState extends State<ShowBook> {
 
   _deleteBook(int id) async {
     await BookModel.deleteBook(id);
-
+    await statisticModel.populateStatistic();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

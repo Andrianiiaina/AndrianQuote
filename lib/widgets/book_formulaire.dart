@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/models/statisticModel.dart';
 import 'package:flutter/material.dart';
 import 'package:select_form_field/select_form_field.dart';
 import '../models/BookModel.dart';
@@ -40,6 +41,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
+    selectedDebut = DateTime.now();
     if (widget.idBook != -1) {
       book = BookModel.getBook(widget.idBook);
       authorController.text = book.author;
@@ -262,7 +264,11 @@ class _BookFormulaireState extends State<BookFormulaire> {
 
   _addBook(BookClass values) async {
     await BookModel.addBook(values);
-
+    try {
+      await statisticModel.populateStatistic();
+    } catch (e) {
+      print(e);
+    }
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -273,6 +279,12 @@ class _BookFormulaireState extends State<BookFormulaire> {
 
   _updateBook(idBook, BookClass values) async {
     await BookModel.updateBook(idBook, values);
+    try {
+      await statisticModel.populateStatistic();
+    } catch (e) {
+      print(e);
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

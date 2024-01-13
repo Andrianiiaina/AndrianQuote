@@ -32,6 +32,7 @@ class _WishlistState extends State<Wishlist> {
     TextEditingController maxC = TextEditingController();
 
     return Scaffold(
+      drawer: drawer,
       appBar: AppBar(title: const Text('Wishlists')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'settings.dart';
 
 final bottomDatas = [
   const BottomNavigationBarItem(
@@ -138,3 +139,39 @@ Widget star(int nbr) {
         );
       }));
 }
+
+Widget statisticButton(String title) {
+  return Expanded(
+      flex: 1,
+      child: Container(
+        child: Text(title),
+        height: 100,
+        margin: EdgeInsets.all(5),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.white10,
+            border: Border.all(color: Colors.purpleAccent),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+      ));
+}
+
+Widget statisticText(String title) {
+  return Container(
+    child: Text(
+      title,
+      style: TextStyle(fontWeight: FontWeight.w400),
+    ),
+    padding: EdgeInsets.all(10),
+    margin: EdgeInsets.all(2),
+    alignment: Alignment.topLeft,
+    decoration: BoxDecoration(
+        color: Colors.white10,
+        border: Border.all(color: const Color.fromARGB(255, 153, 91, 164)),
+        borderRadius: BorderRadius.all(Radius.circular(15))),
+  );
+}
+
+Widget drawer = Drawer(
+  backgroundColor: Colors.transparent,
+  child: Settings(),
+);

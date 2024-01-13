@@ -1,6 +1,5 @@
 import 'package:andrianiaiina_quote/models/biblioClass.dart';
 import 'package:andrianiaiina_quote/statistic.dart';
-import 'package:andrianiaiina_quote/widgets/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'wishlist/wishlist.dart';
@@ -12,6 +11,7 @@ import '../models/BookModel.dart';
 import '../models/QuoteModel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/statisticModel.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -19,8 +19,9 @@ void main() async {
   Hive.registerAdapter(BookClassAdapter());
   Hive.registerAdapter(WishlistClassAdapter());
   Hive.registerAdapter(BiblioClassAdapter());
+  Hive.registerAdapter(statisticClassAdapter());
 
-  //await Hive.deleteBoxFromDisk("biblio");
+  //await Hive.deleteBoxFromDisk("stats");
   //await Hive.deleteBoxFromDisk("book");
   //await Hive.deleteBoxFromDisk("wishlist");
   //await Hive.deleteBoxFromDisk("quoty");
@@ -29,6 +30,7 @@ void main() async {
   await Hive.openBox<BookClass>("book");
   await Hive.openBox<WishlistClass>("wishlist");
   await Hive.openBox<BiblioClass>("biblio");
+  await Hive.openBox<statisticClass>("stats");
 
   final book = Hive.box<BookClass>('book');
 
@@ -47,8 +49,9 @@ void main() async {
           date: DateTime.now(),
           debut: DateTime.now(),
           status: "finished",
-          isPaper: true,
+          isPaper: false,
         ));
+    statisticModel.populateStatistic();
   }
   runApp(const MyApp(
     index: 1,
@@ -104,10 +107,6 @@ class _MyAppState extends State<MyApp> {
             darkTheme: ThemeData.dark(),
             themeMode: value.currentThemeMode,
             home: Scaffold(
-              drawer: const Drawer(
-                backgroundColor: Colors.transparent,
-                child: Settings(),
-              ),
               body: IndexedStack(
                 index: currentPage,
                 children: screen,

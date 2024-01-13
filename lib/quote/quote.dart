@@ -26,6 +26,7 @@ class _QuotePageState extends State<QuotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: drawer,
       appBar: AppBar(
         title: const Text('Quotee'),
         actions: [

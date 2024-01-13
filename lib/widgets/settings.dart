@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/models/statisticModel.dart';
 import 'package:flutter/material.dart';
 
 import '../models/WishlistModel.dart';
@@ -33,6 +34,14 @@ class _SettingsState extends State<Settings> {
             }),
           ),
         ),
+        ElevatedButton(
+            onPressed: () {
+              statisticModel.populateStatistic();
+            },
+            child: const Text(
+              'populate',
+              style: TextStyle(color: Colors.white),
+            )),
         ElevatedButton(
             onPressed: () {
               sauvegarde.exportToJson();

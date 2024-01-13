@@ -30,6 +30,7 @@ class bookPage_State extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: drawer,
       appBar: AppBar(
         title: Text('Livres (${books.length})'),
         actions: [

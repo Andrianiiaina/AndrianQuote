@@ -1,7 +1,10 @@
-import 'models/BookModel.dart';
+import 'package:andrianiaiina_quote/models/statisticModel.dart';
+import 'package:andrianiaiina_quote/widgets/style.dart';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'models/models.dart';
+
+import 'package:select_form_field/select_form_field.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({Key? key}) : super(key: key);
@@ -11,70 +14,72 @@ class StatisticPage extends StatefulWidget {
 }
 
 class _StatisticPageState extends State<StatisticPage> {
-  int finished = 0;
-  int pages = 0;
-  int current = 0;
-  int abandonned = 0;
-  int electroPages = 0;
-  int electroBooks = 0;
-  int paperBooks = 0;
-  int paperPages = 0;
-  int englishBook = 0;
-  int frenchBook = 0;
-  final year = 2023;
-  List<finishedPerMonth> datas = [];
-  List<bestCategories> categories = [];
+  int year = 2024;
+  TextEditingController yearController = TextEditingController();
+  final List<statisticClass> allStats = statisticModel.getAllData().toList();
+  late statisticClass stat;
+  late int perDay;
+
   @override
   void initState() {
     super.initState();
-    fetchStatistics(year);
+    stat = fetchStatistics(year);
+    perDay = DateTime.now().year == year
+        ? (stat.totalFinishedPage /
+                DateTime.now().difference(DateTime(year)).inDays)
+            .round()
+        : stat.pagesPerDay;
   }
 
-  fetchStatistics(int year) async {
-    List<BookClass> books = BookModel.getAllData().toList();
-    books = books.where((element) => year <= element.date.year).toList();
-    books.sort((a, b) => a.date.compareTo(b.date));
-    final List<BookClass> finishedBook =
-        books.where((value) => value.status == "finished").toList();
-    Map<DateTime, int> monthly = {};
-    Map<String, int> catego = {};
-    setState(() {
-      current = books.where((x) => x.status == "current").length;
-      abandonned = books.where((x) => x.status == "abandonned").length;
-
-      finished = finishedBook.length;
-      paperBooks = finishedBook.where((x) => x.isPaper == true).length;
-      electroBooks = finished - paperBooks;
-
-      finishedBook.forEach((element) {
-        int p = int.tryParse(element.nbrPage) ?? 0;
-        pages = pages += p;
-        if (element.isPaper) paperPages += p;
-        DateTime monthK = DateTime(element.date.year, element.date.month);
-        catego.update(element.category, (value) => value + 1,
-            ifAbsent: () => 0);
-        monthly.update(monthK, (currentValue) => currentValue + 1,
-            ifAbsent: () => 0);
-      });
-      electroPages = pages - paperPages;
-
-      englishBook = finishedBook.where((x) => x.version == "Anglaise").length;
-
-      frenchBook = finished - englishBook;
-    });
-    monthly.forEach((key, value) {
-      datas.add(finishedPerMonth(key, value));
-    });
-    catego.forEach((key, value) {
-      categories.add(bestCategories(key, value));
-    });
+  statisticClass fetchStatistics(int year) {
+    return allStats.firstWhere((e) => e.year == year,
+        orElse: () => statisticClass(
+            year: 0,
+            finished: 0,
+            current: 0,
+            abandonned: 0,
+            categories: [],
+            digitalBook: 0,
+            digitalPages: 0,
+            englishVersion: 0,
+            finishedPerMonth: [],
+            frenchVersion: 0,
+            pagesPerDay: 0,
+            paperBook: 0,
+            paperPages: 0,
+            totalFinishedPage: 0));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: drawer,
       appBar: AppBar(
-        title: Text('Statistique'),
+        title: const Text('Statistique'),
+        actions: [
+          Container(
+            child: SelectFormField(
+              style: const TextStyle(color: Colors.grey),
+              initialValue: '2024',
+              type: SelectFormFieldType.dropdown,
+              items: [
+                {'value': 2022, 'label': '2022'},
+                {'value': 2023, 'label': '2023'},
+                {'value': 2024, 'label': '2024'},
+              ],
+              onChanged: (value) async {
+                setState(() {
+                  stat = fetchStatistics(int.parse(value));
+
+                  perDay = (stat.totalFinishedPage /
+                          DateTime.now().difference(DateTime(year)).inDays)
+                      .round();
+                });
+              },
+            ),
+            width: 80,
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -83,85 +88,84 @@ class _StatisticPageState extends State<StatisticPage> {
               height: 80,
               child: Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text("Lus: ${finished.toString()}")),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text("${pages.toString()} pages")),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                            "${current.toString()} courrants \n ${abandonned.toString()} abandonnés ")),
-                    flex: 1,
-                  ),
+                  statisticButton("${stat.finished.toString()} livres lus"),
+                  statisticButton("${stat.totalFinishedPage.toString()} pages"),
+                  statisticButton(
+                      "${stat.current.toString()} en cours \n${stat.abandonned.toString()} abandonnés "),
                 ],
               ),
             ),
             Container(
               height: 300,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width,
               child: SfCartesianChart(
-                title: const ChartTitle(text: "Statistique des livre lus"),
+                title: const ChartTitle(text: "Statistique des livres lus"),
                 primaryXAxis: const DateTimeCategoryAxis(
                   intervalType: DateTimeIntervalType.months,
                   interval: 1,
                 ),
-                series: <CartesianSeries<finishedPerMonth, DateTime>>[
-                  ColumnSeries<finishedPerMonth, DateTime>(
-                      dataSource: datas.reversed.take(7).toList(),
-                      xValueMapper: (finishedPerMonth book, _) => book.month,
-                      yValueMapper: (finishedPerMonth book, _) =>
-                          book.bookTotal)
+                series: <CartesianSeries<Map<DateTime, int>, DateTime>>[
+                  ColumnSeries<Map<DateTime, int>, DateTime>(
+                      dataSource: stat.finishedPerMonth,
+                      xValueMapper: (Map<DateTime, int> book, _) =>
+                          book.entries.first.key,
+                      yValueMapper: (Map<DateTime, int> book, _) =>
+                          book.entries.first.value),
                 ],
               ),
             ),
             Container(
               height: 200,
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width,
               child: SfCircularChart(
                 title: const ChartTitle(text: "Statistiques des categories"),
-                series: <CircularSeries>[
-                  PieSeries<bestCategories, String>(
+                series: <CircularSeries<Map<String, int>, String>>[
+                  PieSeries<Map<String, int>, String>(
                     dataLabelSettings: const DataLabelSettings(
                         isVisible: true,
                         labelPosition: ChartDataLabelPosition.outside,
                         useSeriesColor: true,
                         showZeroValue: false),
-                    dataSource: categories,
-                    xValueMapper: (bestCategories c, _) => c.category,
-                    yValueMapper: (bestCategories c, _) => c.number,
-                    dataLabelMapper: (bestCategories c, _) => c.category,
+                    dataSource: stat.categories,
+                    xValueMapper: (Map<String, int> c, _) =>
+                        c.entries.first.key.toString(),
+                    yValueMapper: (Map<String, int> c, _) =>
+                        c.entries.first.value,
+                    dataLabelMapper: (Map<String, int> c, _) =>
+                        c.entries.first.key.toString(),
                     radius: '70%',
-                    explode: true,
-                    explodeAll: true,
                   )
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(5),
+              width: MediaQuery.of(context).size.width,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Autres information"),
+                  const SizedBox(
+                    child: Text(
+                      "Autre informations",
+                      style: TextStyle(fontSize: 20, color: Colors.black87),
+                    ),
+                    height: 40,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('$englishBook livres Vo'),
-                      Text('$frenchBook livres Vf')
+                      statisticText('${perDay} pages/jours'),
+                      statisticText('${stat.englishVersion} livres Vf'),
+                      statisticText('${stat.frenchVersion} livres Vo')
                     ],
                   ),
-                  Text(
-                    'Papier: $paperBooks livres/ $paperPages pages',
-                  ),
-                  Text(
-                      'Electronique: $electroBooks livres/ $electroPages  pages')
+                  statisticText(
+                      '${stat.paperBook} livres papier : ${stat.paperPages} pages'),
+                  statisticText(
+                      ' ${stat.digitalBook} livres numerique : ${stat.digitalPages} pages'),
                 ],
               ),
             )
