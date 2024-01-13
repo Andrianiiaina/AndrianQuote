@@ -1,10 +1,10 @@
-import 'package:andrianiaiina_quote/models/statisticModel.dart';
+import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:flutter/material.dart';
 
-import '../models/WishlistModel.dart';
-import '../models/BookModel.dart';
+import '../models/wishlist_model.dart';
+import '../models/book_model.dart';
 import '../models/sauvegarde.dart';
-import '../models/QuoteModel.dart';
+import '../models/quote_model.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ class _SettingsState extends State<Settings> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          title: Text('Darkmode', style: TextStyle(color: Colors.white)),
+          title: const Text('Darkmode', style: TextStyle(color: Colors.white)),
           trailing: Consumer<ThemeProvider>(
             builder: ((context, themeProvider, _) {
               return Switch(

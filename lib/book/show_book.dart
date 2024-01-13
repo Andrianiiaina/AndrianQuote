@@ -1,9 +1,9 @@
-import 'package:andrianiaiina_quote/models/statisticModel.dart';
+import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
 import 'dart:io';
 import '/main.dart';
 import 'package:flutter/material.dart';
-import '../models/BookModel.dart';
+import '../models/book_model.dart';
 import '../widgets/style.dart';
 
 class ShowBook extends StatefulWidget {
@@ -128,7 +128,7 @@ class _ShowBookState extends State<ShowBook> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).colorScheme.background,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

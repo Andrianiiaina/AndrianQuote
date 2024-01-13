@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-part 'bookClass.g.dart';
+part 'book_class.g.dart';
 
 @HiveType(typeId: 8)
 class BookClass extends HiveObject {

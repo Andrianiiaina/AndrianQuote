@@ -1,10 +1,10 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'quotyClass.dart';
+import 'quoty_class.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'bookClass.dart';
-import 'wishlistClass.dart';
+import 'book_class.dart';
+import 'wishlist_class.dart';
 
 final boxQuote = Hive.box<QuotyClass>('quoty');
 final boxBook = Hive.box<BookClass>('book');

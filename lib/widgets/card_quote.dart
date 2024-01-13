@@ -1,4 +1,4 @@
-import '/quote/showQuote.dart';
+import '../quote/show_quote.dart';
 import 'package:flutter/material.dart';
 
 Widget cardQuote(currentQuote, BuildContext context) {

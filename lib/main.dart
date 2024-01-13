@@ -1,4 +1,4 @@
-import 'package:andrianiaiina_quote/models/biblioClass.dart';
+import 'package:andrianiaiina_quote/models/biblio_class.dart';
 import 'package:andrianiaiina_quote/statistic.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,12 +6,12 @@ import 'wishlist/wishlist.dart';
 import 'quote/quote.dart';
 import 'book/book.dart';
 import 'widgets/style.dart';
-import '../models/WishlistModel.dart';
-import '../models/BookModel.dart';
-import '../models/QuoteModel.dart';
+import 'models/wishlist_model.dart';
+import 'models/book_model.dart';
+import 'models/quote_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/statisticModel.dart';
+import 'models/statistic_model.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -19,7 +19,7 @@ void main() async {
   Hive.registerAdapter(BookClassAdapter());
   Hive.registerAdapter(WishlistClassAdapter());
   Hive.registerAdapter(BiblioClassAdapter());
-  Hive.registerAdapter(statisticClassAdapter());
+  Hive.registerAdapter(StatisticClassAdapter());
 
   //await Hive.deleteBoxFromDisk("stats");
   //await Hive.deleteBoxFromDisk("book");
@@ -30,7 +30,7 @@ void main() async {
   await Hive.openBox<BookClass>("book");
   await Hive.openBox<WishlistClass>("wishlist");
   await Hive.openBox<BiblioClass>("biblio");
-  await Hive.openBox<statisticClass>("stats");
+  await Hive.openBox<StatisticClass>("stats");
 
   final book = Hive.box<BookClass>('book');
 

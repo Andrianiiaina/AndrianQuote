@@ -1,7 +1,7 @@
 import 'package:andrianiaiina_quote/models/sauvegarde.dart';
 import 'package:hive/hive.dart';
-import 'wishlistClass.dart';
-export 'wishlistClass.dart';
+import 'wishlist_class.dart';
+export 'wishlist_class.dart';
 
 final box = Hive.box<WishlistClass>('wishlist');
 

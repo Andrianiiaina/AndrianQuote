@@ -1,8 +1,8 @@
 import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
-import '/models/BookModel.dart';
+import '../models/book_model.dart';
 import '/main.dart';
 import 'package:flutter/material.dart';
-import '../models/WishlistModel.dart';
+import '../models/wishlist_model.dart';
 import '../widgets/style.dart';
 import '../widgets/wishlist_formulaire.dart';
 
@@ -111,7 +111,7 @@ class _ShowWishlistState extends State<ShowWishlist> {
                 ),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                  Color.fromARGB(255, 227, 122, 245),
+                  const Color.fromARGB(255, 227, 122, 245),
                 )),
                 onPressed: () {
                   //addToBook

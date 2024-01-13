@@ -1,6 +1,6 @@
-import 'biblioClass.dart';
+import 'biblio_class.dart';
 import 'package:hive/hive.dart';
-export 'biblioClass.dart';
+export 'biblio_class.dart';
 
 final box = Hive.box<BiblioClass>('biblio');
 

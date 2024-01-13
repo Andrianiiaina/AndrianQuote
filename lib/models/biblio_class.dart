@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'biblioClass.g.dart';
+part 'biblio_class.g.dart';
 
 @HiveType(typeId: 4)
 class BiblioClass extends HiveObject {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/QuoteModel.dart';
+import '../models/quote_model.dart';
 import '../main.dart';
 import '../widgets/style.dart';
 import '../widgets/quote_formulaire.dart';
@@ -51,7 +51,6 @@ class _ShowQuoteState extends State<ShowQuote> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _quote = TextEditingController(text: quote?.quote);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

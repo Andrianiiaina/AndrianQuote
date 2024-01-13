@@ -1,19 +1,19 @@
 import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:select_form_field/select_form_field.dart';
-import '../widgets/cardBook.dart';
+import '../widgets/card_book.dart';
 import '../widgets/book_formulaire.dart';
 import '../widgets/style.dart';
-import '../models/BookModel.dart';
+import '../models/book_model.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({Key? key}) : super(key: key);
 
   @override
-  State<BookPage> createState() => bookPage_State();
+  State<BookPage> createState() => BookPageState();
 }
 
-class bookPage_State extends State<BookPage> {
+class BookPageState extends State<BookPage> {
   final List<BookClass> books = BookModel.getAllData().toList();
   List<BookClass> filteredBooks = [];
 
@@ -117,7 +117,7 @@ class bookPage_State extends State<BookPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
-        key: Key("add_book"),
+        key: const Key("add_book"),
         heroTag: 'h3',
         backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {

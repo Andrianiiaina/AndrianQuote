@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'quotyClass.dart';
-export 'quotyClass.dart';
+import 'quoty_class.dart';
+export 'quoty_class.dart';
 import 'sauvegarde.dart';
 
 final box = Hive.box<QuotyClass>('quoty');

@@ -1,12 +1,12 @@
-import 'showWishlist.dart';
+import 'show_wishlist.dart';
 import 'package:flutter/material.dart';
 import '../widgets/wishlist_formulaire.dart';
 import '../widgets/style.dart';
-import '../models/WishlistModel.dart';
+import '../models/wishlist_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
 //import '../book/view_pdfdart';
-import '../models/biblioModel.dart';
+import '../models/biblio_model.dart';
 import '../widgets/book_formulaire.dart';
 
 class Wishlist extends StatefulWidget {
@@ -29,8 +29,6 @@ class _WishlistState extends State<Wishlist> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController maxC = TextEditingController();
-
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(title: const Text('Wishlists')),
@@ -54,7 +52,10 @@ class _WishlistState extends State<Wishlist> {
               itemBuilder: ((context, index) {
                 if (biblios.length > index) {
                   return Container(
-                      color: Theme.of(context).backgroundColor.withOpacity(0.1),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .background
+                          .withOpacity(0.1),
                       margin: const EdgeInsets.all(2),
                       width: MediaQuery.of(context).size.width / 3.2,
                       child: GestureDetector(

@@ -10,7 +10,7 @@ Widget cardBook(book, context) {
     note = 0;
   }
   return Container(
-    color: Theme.of(context).backgroundColor.withOpacity(0.05),
+    color: Theme.of(context).colorScheme.background.withOpacity(0.05),
     key: ValueKey(book.id),
     margin: const EdgeInsets.all(2),
     child: ListTile(

@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'statisticClass.dart';
+part of 'statistic_class.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class statisticClassAdapter extends TypeAdapter<statisticClass> {
+class StatisticClassAdapter extends TypeAdapter<StatisticClass> {
   @override
   final int typeId = 6;
 
   @override
-  statisticClass read(BinaryReader reader) {
+  StatisticClass read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return statisticClass(
+    return StatisticClass(
       year: fields[0] as int,
       finished: fields[1] as int,
       current: fields[2] as int,
@@ -39,7 +39,7 @@ class statisticClassAdapter extends TypeAdapter<statisticClass> {
   }
 
   @override
-  void write(BinaryWriter writer, statisticClass obj) {
+  void write(BinaryWriter writer, StatisticClass obj) {
     writer
       ..writeByte(14)
       ..writeByte(0)
@@ -78,7 +78,7 @@ class statisticClassAdapter extends TypeAdapter<statisticClass> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is statisticClassAdapter &&
+      other is StatisticClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

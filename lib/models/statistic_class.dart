@@ -1,9 +1,8 @@
 import 'package:hive/hive.dart';
-import 'models.dart';
-part 'statisticClass.g.dart';
+part 'statistic_class.g.dart';
 
 @HiveType(typeId: 6)
-class statisticClass extends HiveObject {
+class StatisticClass extends HiveObject {
   dynamic id;
   @HiveField(0)
   int year;
@@ -34,7 +33,7 @@ class statisticClass extends HiveObject {
   @HiveField(13)
   int pagesPerDay;
 
-  statisticClass({
+  StatisticClass({
     this.id,
     required this.year,
     required this.finished,

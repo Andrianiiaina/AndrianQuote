@@ -1,41 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'biblioClass.dart';
+part of 'quoty_class.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BiblioClassAdapter extends TypeAdapter<BiblioClass> {
+class QuotyClassAdapter extends TypeAdapter<QuotyClass> {
   @override
-  final int typeId = 4;
+  final int typeId = 0;
 
   @override
-  BiblioClass read(BinaryReader reader) {
+  QuotyClass read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BiblioClass(
-      filepath: fields[0] as String,
-      imagepath: fields[1] as String,
-      currentPage: fields[2] as int,
-      nbrPage: fields[3] as int,
+    return QuotyClass(
+      author: fields[0] as String,
+      book: fields[1] as String,
+      quote: fields[2] as String,
+      fond: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, BiblioClass obj) {
+  void write(BinaryWriter writer, QuotyClass obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.filepath)
+      ..write(obj.author)
       ..writeByte(1)
-      ..write(obj.imagepath)
+      ..write(obj.book)
       ..writeByte(2)
-      ..write(obj.currentPage)
+      ..write(obj.quote)
       ..writeByte(3)
-      ..write(obj.nbrPage);
+      ..write(obj.fond);
   }
 
   @override
@@ -44,7 +44,7 @@ class BiblioClassAdapter extends TypeAdapter<BiblioClass> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BiblioClassAdapter &&
+      other is QuotyClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

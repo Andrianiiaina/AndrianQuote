@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-part 'wishlistClass.g.dart';
+part 'wishlist_class.g.dart';
 
 @HiveType(typeId: 3)
 class WishlistClass extends HiveObject {

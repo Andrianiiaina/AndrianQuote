@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'quotyClass.g.dart';
+part 'quoty_class.g.dart';
 
 @HiveType(typeId: 0)
 class QuotyClass extends HiveObject {

@@ -1,17 +1,17 @@
 import 'package:hive/hive.dart';
-import 'statisticClass.dart';
-import 'BookModel.dart';
-export 'statisticClass.dart';
-import 'statisticModel.dart';
+import 'statistic_class.dart';
+import 'book_model.dart';
+export 'statistic_class.dart';
+import 'statistic_model.dart';
 import 'models.dart';
 
-final box = Hive.box<statisticClass>('stats');
+final box = Hive.box<StatisticClass>('stats');
 
 class statisticModel {
   static getAllData() {
     return box.keys.map((e) {
       final value = box.get(e);
-      return statisticClass(
+      return StatisticClass(
         finished: value!.finished,
         categories: value.categories,
         current: value.current,
@@ -42,7 +42,7 @@ class statisticModel {
   }
 }
 
-statisticClass getData(year) {
+StatisticClass getData(year) {
   int finishedPages = 0;
   int paperPages = 0;
   Map<DateTime, int> monthly = {};
@@ -62,7 +62,7 @@ statisticClass getData(year) {
   final paperBooks = finishedBook.where((x) => x.isPaper == true).length;
   final numericBooks = finished - paperBooks;
 
-  finishedBook.forEach((element) {
+  for (var element in finishedBook) {
     int p = int.tryParse(element.nbrPage) ?? 0;
     finishedPages = finishedPages += p;
     if (element.isPaper) paperPages += p;
@@ -71,7 +71,7 @@ statisticClass getData(year) {
     catego.update(element.category, (value) => value + 1, ifAbsent: () => 0);
     monthly.update(monthK, (currentValue) => currentValue + 1,
         ifAbsent: () => 0);
-  });
+  }
 
   final numericPages = finishedPages - paperPages;
   final englishBook = finishedBook.where((x) => x.version == "Anglaise").length;
@@ -81,7 +81,7 @@ statisticClass getData(year) {
   monthly.forEach((key, value) {
     datas.add({key: value});
   });
-  Models.bookCategory1.forEach((element) {
+  for (var element in Models.bookCategory) {
     final String x = element.entries.first.value;
     if (catego.keys.contains(x)) {
       final category = catego.entries.firstWhere((element) => element.key == x);
@@ -89,9 +89,9 @@ statisticClass getData(year) {
     } else {
       categories.add({x: 0});
     }
-  });
+  }
 
-  return statisticClass(
+  return StatisticClass(
       year: year,
       finished: finished,
       current: current,

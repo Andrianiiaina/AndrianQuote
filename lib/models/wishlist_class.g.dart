@@ -1,41 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quotyClass.dart';
+part of 'wishlist_class.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuotyClassAdapter extends TypeAdapter<QuotyClass> {
+class WishlistClassAdapter extends TypeAdapter<WishlistClass> {
   @override
-  final int typeId = 0;
+  final int typeId = 3;
 
   @override
-  QuotyClass read(BinaryReader reader) {
+  WishlistClass read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuotyClass(
-      author: fields[0] as String,
-      book: fields[1] as String,
-      quote: fields[2] as String,
-      fond: fields[3] as String,
+    return WishlistClass(
+      title: fields[0] as String,
+      author: fields[1] as String,
+      version: fields[2] as String,
+      resume: fields[3] as String,
+      category: fields[4] as String,
+      nbrPage: fields[5] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, QuotyClass obj) {
+  void write(BinaryWriter writer, WishlistClass obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.author)
+      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.book)
+      ..write(obj.author)
       ..writeByte(2)
-      ..write(obj.quote)
+      ..write(obj.version)
       ..writeByte(3)
-      ..write(obj.fond);
+      ..write(obj.resume)
+      ..writeByte(4)
+      ..write(obj.category)
+      ..writeByte(5)
+      ..write(obj.nbrPage);
   }
 
   @override
@@ -44,7 +50,7 @@ class QuotyClassAdapter extends TypeAdapter<QuotyClass> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QuotyClassAdapter &&
+      other is WishlistClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

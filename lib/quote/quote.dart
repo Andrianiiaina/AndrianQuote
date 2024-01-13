@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/quote_formulaire.dart';
-import '../widgets/CardQuote.dart';
+import '../widgets/card_quote.dart';
 import '../widgets/style.dart';
-import '../models/QuoteModel.dart';
+import '../models/quote_model.dart';
 
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _QuotePageState extends State<QuotePage> {
             SizedBox(
               width: 180,
               child: TextField(
-                style: TextStyle(color: Colors.white70),
+                style: const TextStyle(color: Colors.white70),
                 decoration: const InputDecoration(hintText: "search..."),
                 autofocus: true,
                 onChanged: (q) {
@@ -76,7 +76,7 @@ class _QuotePageState extends State<QuotePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
-        key: Key("add_quote"),
+        key: const Key("add_quote"),
         heroTag: 'h2',
         backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {

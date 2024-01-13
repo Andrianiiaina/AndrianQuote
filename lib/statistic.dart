@@ -1,4 +1,4 @@
-import 'package:andrianiaiina_quote/models/statisticModel.dart';
+import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:andrianiaiina_quote/widgets/style.dart';
 
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ class StatisticPage extends StatefulWidget {
 class _StatisticPageState extends State<StatisticPage> {
   int year = 2024;
   TextEditingController yearController = TextEditingController();
-  final List<statisticClass> allStats = statisticModel.getAllData().toList();
-  late statisticClass stat;
+  final List<StatisticClass> allStats = statisticModel.getAllData().toList();
+  late StatisticClass stat;
   late int perDay;
 
   @override
@@ -31,9 +31,9 @@ class _StatisticPageState extends State<StatisticPage> {
         : stat.pagesPerDay;
   }
 
-  statisticClass fetchStatistics(int year) {
+  StatisticClass fetchStatistics(int year) {
     return allStats.firstWhere((e) => e.year == year,
-        orElse: () => statisticClass(
+        orElse: () => StatisticClass(
             year: 0,
             finished: 0,
             current: 0,
@@ -57,12 +57,12 @@ class _StatisticPageState extends State<StatisticPage> {
       appBar: AppBar(
         title: const Text('Statistique'),
         actions: [
-          Container(
+          SizedBox(
             child: SelectFormField(
               style: const TextStyle(color: Colors.grey),
               initialValue: '2024',
               type: SelectFormFieldType.dropdown,
-              items: [
+              items: const [
                 {'value': 2022, 'label': '2022'},
                 {'value': 2023, 'label': '2023'},
                 {'value': 2024, 'label': '2024'},
@@ -97,7 +97,7 @@ class _StatisticPageState extends State<StatisticPage> {
             ),
             Container(
               height: 300,
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               width: MediaQuery.of(context).size.width,
               child: SfCartesianChart(
                 title: const ChartTitle(text: "Statistique des livres lus"),
@@ -117,7 +117,7 @@ class _StatisticPageState extends State<StatisticPage> {
             ),
             Container(
               height: 200,
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               width: MediaQuery.of(context).size.width,
               child: SfCircularChart(
                 title: const ChartTitle(text: "Statistiques des categories"),
@@ -141,7 +141,7 @@ class _StatisticPageState extends State<StatisticPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               padding: const EdgeInsets.all(5),
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -157,7 +157,7 @@ class _StatisticPageState extends State<StatisticPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      statisticText('${perDay} pages/jours'),
+                      statisticText('$perDay pages/jours'),
                       statisticText('${stat.englishVersion} livres Vf'),
                       statisticText('${stat.frenchVersion} livres Vo')
                     ],

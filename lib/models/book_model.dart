@@ -1,7 +1,7 @@
 import 'package:andrianiaiina_quote/models/sauvegarde.dart';
 import 'package:hive/hive.dart';
-import 'bookClass.dart';
-export 'bookClass.dart';
+import 'book_class.dart';
+export 'book_class.dart';
 
 final box = Hive.box<BookClass>('book');
 

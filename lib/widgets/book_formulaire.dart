@@ -1,7 +1,7 @@
-import 'package:andrianiaiina_quote/models/statisticModel.dart';
+import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:select_form_field/select_form_field.dart';
-import '../models/BookModel.dart';
+import '../models/book_model.dart';
 import 'style.dart';
 import '../main.dart';
 import 'package:image_picker/image_picker.dart';
@@ -128,7 +128,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   //initialValue: categoryController.text,
                   decoration: InputDecoration(
                     hintText: categoryController.text,
-                    labelText: 'Category',
+                    labelText: 'Categorie',
                   ),
 
                   type: SelectFormFieldType.dropdown,
@@ -193,7 +193,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                       hintText: statusController.text, labelText: 'Status'),
                   type: SelectFormFieldType.dropdown,
                   controller: statusController,
-                  items: [
+                  items: const [
                     {'value': 'finished', 'label': 'Terminé'},
                     {'value': 'abandonned', 'label': 'Abandonné'},
                     {'value': 'current', 'label': 'current'},
@@ -202,60 +202,59 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 ),
                 SelectFormField(
                   decoration: InputDecoration(
-                      hintText: isPaperController.text, labelText: 'Version?'),
+                      hintText: isPaperController.text, labelText: 'Version'),
                   type: SelectFormFieldType.dropdown,
                   controller: isPaperController,
-                  items: [
+                  items: const [
                     {'value': 'paper', 'label': 'Papier'},
-                    {'value': 'electroc', 'label': 'Electronique'},
+                    {'value': 'numeric', 'label': 'Numérique'},
                   ],
                   style: const TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      final imageFile = File(currentImage);
-                      if (!File(_imageFile).existsSync() &&
-                          currentImage != "") {
-                        await imageFile.copy(_imageFile);
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.all(15),
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        final imageFile = File(currentImage);
+                        if (!File(_imageFile).existsSync() &&
+                            currentImage != "") {
+                          await imageFile.copy(_imageFile);
+                        }
+
+                        BookClass boky = BookClass(
+                            title: titleController.text,
+                            author: authorController.text,
+                            version: versionController.text,
+                            note: noteController.text,
+                            resume: resumeController.text,
+                            category: categoryController.text,
+                            couverture: _imageFile,
+                            date: selectedDate,
+                            debut: selectedDebut,
+                            nbrPage: nbrpageController.text,
+                            status: statusController.text,
+                            isPaper: isPaperController.text == 'paper'
+                                ? true
+                                : false);
+                        if (widget.idBook == -1) {
+                          _addBook(boky);
+                        } else {
+                          _updateBook(widget.idBook, boky);
+                        }
                       }
 
-                      BookClass boky = BookClass(
-                          title: titleController.text,
-                          author: authorController.text,
-                          version: versionController.text,
-                          note: noteController.text,
-                          resume: resumeController.text,
-                          category: categoryController.text,
-                          couverture: _imageFile,
-                          date: selectedDate,
-                          debut: selectedDebut,
-                          nbrPage: nbrpageController.text,
-                          status: statusController.text,
-                          isPaper:
-                              isPaperController.text == 'paper' ? true : false);
-                      if (widget.idBook == -1) {
-                        _addBook(boky);
-                      } else {
-                        _updateBook(widget.idBook, boky);
-                      }
-                    }
-
-                    //message bien enregistrer
-                  },
-                  child: const Text(
-                    'Enregistrer',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      //message bien enregistrer
+                    },
+                    child: const Text(
+                      'Enregistrer',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 230, 116, 250)),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(15))),
-                ),
-                const SizedBox(height: 10),
+                )
               ],
             ),
           )),
