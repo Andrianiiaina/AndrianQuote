@@ -123,7 +123,7 @@ class _ShowWishlistState extends State<ShowWishlist> {
                     resume: book!.resume,
                     category: book!.category,
                     couverture: "",
-                    nbrPage: book!.nbrPage,
+                    nbrPage: int.parse(book!.nbrPage),
                     date: DateTime.now(),
                     debut: DateTime.now(),
                     isPaper: true,

@@ -20,15 +20,15 @@ class BookFormulaire extends StatefulWidget {
 
 class _BookFormulaireState extends State<BookFormulaire> {
   int stara = 0;
-  TextEditingController authorController = TextEditingController();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController versionController = TextEditingController();
-  TextEditingController resumeController = TextEditingController();
-  TextEditingController nbrpageController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
-  TextEditingController statusController = TextEditingController();
-  TextEditingController isPaperController = TextEditingController();
+  TextEditingController authorController = TextEditingController(text: "");
+  TextEditingController titleController = TextEditingController(text: "");
+  TextEditingController categoryController = TextEditingController(text: "");
+  TextEditingController versionController = TextEditingController(text: "");
+  TextEditingController resumeController = TextEditingController(text: "");
+  TextEditingController nbrpageController = TextEditingController(text: "");
+  TextEditingController noteController = TextEditingController(text: "");
+  TextEditingController statusController = TextEditingController(text: "");
+  TextEditingController isPaperController = TextEditingController(text: "");
 
   String _imageFile = "";
   String currentImage = "";
@@ -125,12 +125,11 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 textFieldWidget(titleController, "Titre du livre", false),
                 SelectFormField(
                   style: const TextStyle(color: Colors.grey),
-                  //initialValue: categoryController.text,
+                  initialValue: "autre",
                   decoration: InputDecoration(
                     hintText: categoryController.text,
                     labelText: 'Categorie',
                   ),
-
                   type: SelectFormFieldType.dropdown,
                   controller: categoryController,
                   items: Models.bookCategory,
@@ -142,6 +141,10 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   controller: versionController,
                   items: Models.bookversion,
                   style: const TextStyle(color: Colors.grey),
+                  validator: (value) {
+                    if (value == "") return "Veuillez remplir ce champ";
+                    return null;
+                  },
                 ),
                 textFieldWidgetNumber(
                     nbrpageController, "Nombre de page", false),
@@ -199,6 +202,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     {'value': 'current', 'label': 'current'},
                   ],
                   style: const TextStyle(color: Colors.grey),
+                  initialValue: "current",
                 ),
                 SelectFormField(
                   decoration: InputDecoration(
@@ -210,6 +214,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     {'value': 'numeric', 'label': 'Numérique'},
                   ],
                   style: const TextStyle(color: Colors.grey),
+                  initialValue: "paper",
                 ),
                 Container(
                   height: 40,
@@ -234,7 +239,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                             couverture: _imageFile,
                             date: selectedDate,
                             debut: selectedDebut,
-                            nbrPage: nbrpageController.text,
+                            nbrPage: int.parse(nbrpageController.text),
                             status: statusController.text,
                             isPaper: isPaperController.text == 'paper'
                                 ? true

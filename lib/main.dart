@@ -45,7 +45,7 @@ void main() async {
           resume: "A utiliser quand quote.book n'est pas dans book",
           category: "all",
           couverture: "",
-          nbrPage: "",
+          nbrPage: 0,
           date: DateTime.now(),
           debut: DateTime.now(),
           status: "finished",

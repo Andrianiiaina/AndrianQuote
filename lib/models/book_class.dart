@@ -19,7 +19,7 @@ class BookClass extends HiveObject {
   @HiveField(6)
   String couverture;
   @HiveField(7)
-  String nbrPage;
+  int nbrPage;
   @HiveField(8)
   DateTime date;
   @HiveField(9)

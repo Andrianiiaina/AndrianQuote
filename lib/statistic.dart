@@ -24,7 +24,11 @@ class _StatisticPageState extends State<StatisticPage> {
   void initState() {
     super.initState();
     stat = fetchStatistics(year);
-    perDay = DateTime.now().year == year
+    perDay = getPerDay(year);
+  }
+
+  int getPerDay(year) {
+    return DateTime.now().year == year
         ? (stat.totalFinishedPage /
                 DateTime.now().difference(DateTime(year)).inDays)
             .round()
@@ -70,10 +74,7 @@ class _StatisticPageState extends State<StatisticPage> {
               onChanged: (value) async {
                 setState(() {
                   stat = fetchStatistics(int.parse(value));
-
-                  perDay = (stat.totalFinishedPage /
-                          DateTime.now().difference(DateTime(year)).inDays)
-                      .round();
+                  perDay = getPerDay(int.parse(value));
                 });
               },
             ),

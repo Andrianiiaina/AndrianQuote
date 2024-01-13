@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'settings.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 final bottomDatas = [
   const BottomNavigationBarItem(
@@ -86,6 +87,10 @@ Widget textFieldWidgetNumber(controller, text, readOnly) {
     readOnly: readOnly,
     keyboardType: TextInputType.number,
     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    validator: (value) {
+      if (value == "") return "Veuillez remplir ce champ";
+      return null;
+    },
   );
 }
 

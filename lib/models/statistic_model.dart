@@ -55,15 +55,11 @@ StatisticClass getData(year) {
   final finishedBook =
       books.where((value) => value.status == "finished").toList();
 
-  final current = books.where((x) => x.status == "current").length;
-  final abandonned = books.where((x) => x.status == "abandonned").length;
-
   final finished = finishedBook.length;
   final paperBooks = finishedBook.where((x) => x.isPaper == true).length;
-  final numericBooks = finished - paperBooks;
 
   for (var element in finishedBook) {
-    int p = int.tryParse(element.nbrPage) ?? 0;
+    int p = element.nbrPage;
     finishedPages = finishedPages += p;
     if (element.isPaper) paperPages += p;
     DateTime monthK = DateTime(element.date.year, element.date.month);
@@ -73,11 +69,8 @@ StatisticClass getData(year) {
         ifAbsent: () => 0);
   }
 
-  final numericPages = finishedPages - paperPages;
   final englishBook = finishedBook.where((x) => x.version == "Anglaise").length;
-  final frenchBook = finished - englishBook;
 
-  final int pagesPerDay = (finishedPages / 365).round();
   monthly.forEach((key, value) {
     datas.add({key: value});
   });
@@ -94,15 +87,15 @@ StatisticClass getData(year) {
   return StatisticClass(
       year: year,
       finished: finished,
-      current: current,
-      abandonned: abandonned,
+      current: books.where((x) => x.status == "current").length,
+      abandonned: books.where((x) => x.status == "abandonned").length,
       categories: categories,
-      digitalBook: numericBooks,
-      digitalPages: numericPages,
+      digitalBook: finished - paperBooks,
+      digitalPages: finishedPages - paperPages,
       englishVersion: englishBook,
       finishedPerMonth: datas,
-      frenchVersion: frenchBook,
-      pagesPerDay: pagesPerDay,
+      frenchVersion: finished - englishBook,
+      pagesPerDay: (finishedPages / 365).round(),
       paperBook: paperBooks,
       paperPages: paperPages,
       totalFinishedPage: finishedPages);

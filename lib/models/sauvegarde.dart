@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'quoty_class.dart';
@@ -91,7 +93,7 @@ class sauvegarde {
           author: data["author"],
           quote: data["quote"],
           //fond: data["fond"]);
-          fond: 'assets/p (1).jpg');
+          fond: 'assets/p (${Random().nextInt(35) + 1}).jpg');
     }).toList();
   }
 
@@ -117,7 +119,7 @@ class sauvegarde {
         resume: data["resume"],
         category: data["category"],
         couverture: data["couverture"],
-        nbrPage: data["nbrPage"],
+        nbrPage: int.tryParse(data["nbrPage"].toString()) ?? 0,
         //date: data["date"],
         date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
         debut: DateTime.now(),

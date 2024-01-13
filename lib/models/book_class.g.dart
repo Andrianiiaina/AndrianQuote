@@ -24,7 +24,7 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       resume: fields[4] as String,
       category: fields[5] as String,
       couverture: fields[6] as String,
-      nbrPage: fields[7] as String,
+      nbrPage: fields[7] as int,
       date: fields[8] as DateTime,
       status: fields[9] as String,
       debut: fields[10] as DateTime,
