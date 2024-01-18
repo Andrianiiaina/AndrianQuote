@@ -59,7 +59,7 @@ class _StatisticPageState extends State<StatisticPage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        title: const Text('Statistique'),
+        title: const Text('Statistiques'),
         actions: [
           SizedBox(
             child: SelectFormField(
@@ -78,7 +78,7 @@ class _StatisticPageState extends State<StatisticPage> {
                 });
               },
             ),
-            width: 80,
+            width: 100,
           )
         ],
       ),
@@ -92,7 +92,7 @@ class _StatisticPageState extends State<StatisticPage> {
                   statisticButton("${stat.finished.toString()} livres lus"),
                   statisticButton("${stat.totalFinishedPage.toString()} pages"),
                   statisticButton(
-                      "${stat.current.toString()} en cours \n${stat.abandonned.toString()} abandonnés "),
+                      "${stat.current.toString()} en cours \n${stat.abandonned.toString()} abandonnés"),
                 ],
               ),
             ),
@@ -104,6 +104,11 @@ class _StatisticPageState extends State<StatisticPage> {
                 title: const ChartTitle(text: "Statistique des livres lus"),
                 primaryXAxis: const DateTimeCategoryAxis(
                   intervalType: DateTimeIntervalType.months,
+                  interval: 1,
+                  //dateFormat: DateFormat().m,
+                ),
+                primaryYAxis: NumericAxis(
+                  initialVisibleMinimum: 0,
                   interval: 1,
                 ),
                 series: <CartesianSeries<Map<DateTime, int>, DateTime>>[
@@ -121,7 +126,7 @@ class _StatisticPageState extends State<StatisticPage> {
               margin: const EdgeInsets.only(top: 20),
               width: MediaQuery.of(context).size.width,
               child: SfCircularChart(
-                title: const ChartTitle(text: "Statistiques des categories"),
+                title: const ChartTitle(text: "Statistique des categories"),
                 series: <CircularSeries<Map<String, int>, String>>[
                   PieSeries<Map<String, int>, String>(
                     dataLabelSettings: const DataLabelSettings(
@@ -150,23 +155,24 @@ class _StatisticPageState extends State<StatisticPage> {
                 children: [
                   const SizedBox(
                     child: Text(
-                      "Autre informations",
-                      style: TextStyle(fontSize: 20, color: Colors.black87),
+                      "Autres informations",
+                      style: TextStyle(
+                          fontSize: 16, color: Color.fromARGB(198, 0, 0, 0)),
                     ),
                     height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      statisticText('$perDay pages/jours'),
-                      statisticText('${stat.englishVersion} livres Vf'),
-                      statisticText('${stat.frenchVersion} livres Vo')
+                      statisticText('${stat.englishVersion} livres en anglais'),
+                      statisticText('${stat.frenchVersion} livres en francais')
                     ],
                   ),
+                  statisticText('$perDay pages par jour en moyenne.'),
                   statisticText(
-                      '${stat.paperBook} livres papier : ${stat.paperPages} pages'),
+                      '${stat.paperBook} livres en papier: ${stat.paperPages} pages.'),
                   statisticText(
-                      ' ${stat.digitalBook} livres numerique : ${stat.digitalPages} pages'),
+                      ' ${stat.digitalBook} livres numerique: ${stat.digitalPages} pages.'),
                 ],
               ),
             )

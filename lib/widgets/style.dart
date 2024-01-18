@@ -16,23 +16,24 @@ final bottomDatas = [
       icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
 var themeLight = ThemeData.light().copyWith(
-  listTileTheme: const ListTileThemeData(textColor: Colors.black54),
-  hintColor: Colors.grey,
-  primaryColorLight: Colors.white,
-  colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: Colors.deepPurple,
-          onPrimary: Colors.white,
-          secondary: Colors.purple,
-          onSecondary: Colors.purple,
-          error: Colors.red,
-          onError: Colors.red,
-          background: Colors.purple,
-          onBackground: Colors.purple,
-          surface: Colors.purple,
-          onSurface: Colors.white)
-      .copyWith(background: Colors.deepPurple), //ex: style underline
-);
+    listTileTheme: const ListTileThemeData(textColor: Colors.black54),
+    hintColor: Colors.grey,
+    primaryColorLight: Colors.white,
+    colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Colors.deepPurple,
+            onPrimary: Colors.white,
+            secondary: Colors.purple,
+            onSecondary: Colors.purple,
+            error: Colors.red,
+            onError: Colors.red,
+            background: Colors.purple,
+            onBackground: Colors.purple,
+            surface: Colors.purple,
+            onSurface: Colors.white)
+        .copyWith(
+      background: Colors.purple,
+    ));
 Widget titre(String texte, context) {
   return Text(texte,
       style: TextStyle(
@@ -179,5 +180,42 @@ Widget statisticText(String title) {
 Widget drawer = const Drawer(
   backgroundColor: Colors.transparent,
   child: Settings(),
-  width: 220,
+  width: 300,
 );
+Widget searchWidget(search, filter) {
+  return Row(
+    children: [
+      Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Colors.purple)),
+          margin: EdgeInsets.only(left: 9, right: 9, top: 2),
+          child: TextField(
+            autofocus: false,
+            decoration: const InputDecoration(
+                hintText: "search...",
+                hintStyle: TextStyle(color: Color.fromARGB(143, 80, 46, 138)),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.purple,
+                ),
+                border: InputBorder.none),
+            onChanged: (q) {
+              search(q);
+            },
+          ),
+        ),
+        flex: 8,
+      ),
+      Expanded(
+          child: IconButton(
+        icon: Icon(
+          Icons.sort_rounded,
+          color: Colors.purple,
+        ),
+        onPressed: () {},
+      ))
+    ],
+  );
+}

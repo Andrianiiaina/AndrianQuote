@@ -1,6 +1,4 @@
-import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:select_form_field/select_form_field.dart';
 import '../widgets/card_book.dart';
 import '../widgets/book_formulaire.dart';
 import '../widgets/style.dart';
@@ -17,14 +15,12 @@ class BookPageState extends State<BookPage> {
   final List<BookClass> books = BookModel.getAllData().toList();
   List<BookClass> filteredBooks = [];
 
-  late bool isSearching;
   @override
   void initState() {
     super.initState();
     books.removeWhere((element) => element.id == 0);
     filteredBooks = books;
     filteredBooks.sort(((a, b) => b.date.compareTo(a.date)));
-    isSearching = false;
   }
 
   @override
@@ -33,77 +29,10 @@ class BookPageState extends State<BookPage> {
       drawer: drawer,
       appBar: AppBar(
         title: Text('Livres (${books.length})'),
-        actions: [
-          if (isSearching == true)
-            SizedBox(
-              width: 180,
-              child: TextField(
-                autofocus: true,
-                decoration: const InputDecoration(hintText: "search..."),
-                onChanged: (q) {
-                  search(q);
-                },
-              ),
-            ),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  isSearching = !isSearching;
-                });
-              },
-              icon: const Icon(Icons.search))
-        ],
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(children: [
-              Expanded(
-                flex: 3,
-                child: SelectFormField(
-                  labelText: 'Category',
-                  items: Models.bookCategory,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == 'tout') {
-                        filteredBooks = books;
-                      } else {
-                        filteredBooks = books
-                            .where((element) => element.category == value)
-                            .toList();
-                      }
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: SelectFormField(
-                  labelText: 'ASC',
-                  items: const [
-                    {'value': 'ASC', 'label': 'ASC'},
-                    {'value': 'DESC', 'label': 'DESC'}
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == 'ASC') {
-                        setState(() {
-                          filteredBooks
-                              .sort(((a, b) => a.title.compareTo(b.title)));
-                        });
-                      } else {
-                        setState(() {
-                          filteredBooks
-                              .sort(((a, b) => b.title.compareTo(a.title)));
-                        });
-                      }
-                    });
-                  },
-                ),
-              ),
-            ]),
-          ),
+          searchWidget(search, "filter"),
           Expanded(
             flex: 5,
             child: ListView.builder(

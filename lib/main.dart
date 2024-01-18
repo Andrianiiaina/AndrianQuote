@@ -12,9 +12,14 @@ import 'models/quote_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/statistic_model.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await Hive.initFlutter();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
   Hive.registerAdapter(WishlistClassAdapter());
@@ -38,7 +43,7 @@ void main() async {
     book.put(
         0,
         BookClass(
-          title: "Autre",
+          title: "Inconnu",
           author: "",
           version: "",
           note: "",
@@ -51,7 +56,6 @@ void main() async {
           status: "finished",
           isPaper: false,
         ));
-    statisticModel.populateStatistic();
   }
   runApp(const MyApp(
     index: 1,
@@ -112,15 +116,16 @@ class _MyAppState extends State<MyApp> {
                 children: screen,
               ),
               bottomNavigationBar: BottomNavigationBar(
+                unselectedItemColor: Colors.purple.withOpacity(0.8),
+                selectedItemColor: Colors.purple,
                 currentIndex: currentPage,
-
                 onTap: (index) {
                   setState(() {
                     currentPage = index;
                   });
                 },
                 items: bottomDatas,
-                //backgroundColor: Colors.black,
+                backgroundColor: Colors.black,
               ),
             ),
           );

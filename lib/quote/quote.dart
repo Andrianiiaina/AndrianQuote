@@ -3,6 +3,7 @@ import '../widgets/quote_formulaire.dart';
 import '../widgets/card_quote.dart';
 import '../widgets/style.dart';
 import '../models/quote_model.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);
@@ -29,51 +30,30 @@ class _QuotePageState extends State<QuotePage> {
       drawer: drawer,
       appBar: AppBar(
         title: const Text('Quotee'),
-        actions: [
-          if (isSearching == true)
-            SizedBox(
-              width: 180,
-              child: TextField(
-                style: const TextStyle(color: Colors.white70),
-                decoration: const InputDecoration(hintText: "search..."),
-                autofocus: true,
-                onChanged: (q) {
-                  search(q);
-                },
-              ),
-            ),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  isSearching = !isSearching;
-                });
-              },
-              icon: const Icon(Icons.search))
-        ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: 3,
-              child: _filterdItems.isEmpty
-                  ? Text(isSearching == true
-                      ? "Aucun resultat."
-                      : "Aucun quote disponible.")
-                  : ListView.builder(
-                      controller: ScrollController(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: _filterdItems.length,
-                      itemBuilder: ((context, index) {
-                        final currentQuote = _filterdItems[index];
-                        return cardQuote(currentQuote, context);
-                      }),
-                    ),
-            ),
-          ),
-        ],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/p (6).jpg"),
+              fit: BoxFit.cover,
+              opacity: 0.9),
+        ),
+        child: _filterdItems.isEmpty
+            ? Text(isSearching == true
+                ? "Aucun resultat."
+                : "Aucun quote disponible.")
+            : MasonryGridView.count(
+                controller: ScrollController(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: _filterdItems.length,
+                crossAxisCount: 2,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                itemBuilder: (context, index) {
+                  final currentQuote = _filterdItems[index];
+                  return cardQuote(index, currentQuote, context);
+                }),
       ),
       floatingActionButton: FloatingActionButton.small(
         key: const Key("add_quote"),

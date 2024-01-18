@@ -54,6 +54,8 @@ class _BookFormulaireState extends State<BookFormulaire> {
       selectedDebut = book.debut;
       isPaperController.text = book.isPaper.toString();
       noteController.text = book.note;
+      statusController.text = book.status;
+      isPaperController.text = book.isPaper ? 'paper' : 'numeric';
       try {
         stara = int.parse(book.note);
       } catch (e) {

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'quoty_class.dart';
@@ -7,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'book_class.dart';
 import 'wishlist_class.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final boxQuote = Hive.box<QuotyClass>('quoty');
 final boxBook = Hive.box<BookClass>('book');
@@ -75,6 +74,18 @@ class sauvegarde {
     } catch (e) {
       print(e);
     }
+
+    try {
+      final storageRef = FirebaseStorage.instance.ref();
+      final spaceRef1 = storageRef.child("fileBookJson.json");
+      final spaceRef2 = storageRef.child("fileQuoteJson.json");
+      final spaceRef3 = storageRef.child("fileWishlistJson.json");
+      await spaceRef1.putFile(fileBook);
+      await spaceRef2.putFile(fileQuote);
+      await spaceRef3.putFile(fileWishlist);
+    } catch (e) {
+      print(e);
+    }
   }
 
   static majQuote() async {
@@ -123,7 +134,7 @@ class sauvegarde {
         nbrPage: int.tryParse(data["nbrPage"].toString()) ?? 0,
         //date: data["date"],
         date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
-        debut: DateTime.now(),
+        debut: DateTime(int.parse(y[0]), int.parse(y[1]), day),
         status: data['status'],
         isPaper: data['isPaper'],
       );
@@ -132,8 +143,8 @@ class sauvegarde {
 
 //DateTime(data["date"])
   static majWishlist() async {
-    Directory appDir = await getApplicationDocumentsDirectory();
-    //final appDir = await getExternalStorageDirectory();
+    //Directory appDir = await getApplicationDocumentsDirectory();
+    final appDir = await getExternalStorageDirectory();
     String appDirPath = appDir!.path;
     String filePathWishlist = '$appDirPath/fileWishlistJson.json';
     String jsonStringWishlist = await File(filePathWishlist).readAsString();

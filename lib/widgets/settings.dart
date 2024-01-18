@@ -7,6 +7,8 @@ import '../models/sauvegarde.dart';
 import '../models/quote_model.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -25,8 +27,8 @@ class _SettingsState extends State<Settings> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image(
-            image: const AssetImage('assets/p (22).jpg'),
-            height: 120,
+            image: const AssetImage('assets/p (4).jpg'),
+            height: 150,
             fit: BoxFit.cover,
             width: MediaQuery.of(context).size.width,
           ),
@@ -37,7 +39,8 @@ class _SettingsState extends State<Settings> {
             trailing: Consumer<ThemeProvider>(
               builder: ((context, themeProvider, _) {
                 return Switch(
-                    activeColor: Colors.white70,
+                    inactiveTrackColor: Colors.white,
+                    activeTrackColor: Colors.white,
                     value: themeProvider.currentThemeMode == ThemeMode.dark,
                     onChanged: (value) {
                       themeProvider.toggleTheme(value);
@@ -45,14 +48,6 @@ class _SettingsState extends State<Settings> {
               }),
             ),
           ),
-          TextButton(
-              onPressed: () {
-                sauvegarde.exportToJson();
-              },
-              child: const Text(
-                'Sauvegarder sur internet',
-                style: TextStyle(color: Colors.white70),
-              )),
           const SizedBox(height: 10),
           TextButton(
               onPressed: () {
@@ -65,28 +60,16 @@ class _SettingsState extends State<Settings> {
                 );
               },
               child: const Text(
-                'Mettre à jours la statistique',
+                'Mettre à jours les statistiques',
                 style: TextStyle(color: Colors.white70),
               )),
+          const SizedBox(height: 10),
           const SizedBox(height: 10),
           TextButton(
               onPressed: () {
                 BookModel.recupJsonDataBook();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 0)),
-                  ),
-                );
-              },
-              child: const Text(
-                'Récupérer les dérnières données de book',
-                style: TextStyle(color: Colors.white70),
-              )),
-          const SizedBox(height: 10),
-          TextButton(
-              onPressed: () {
                 QuoteModel.recupJsonDataQuote();
+                WishlistModel.recupJsonDataWishlist();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -95,24 +78,24 @@ class _SettingsState extends State<Settings> {
                 );
               },
               child: const Text(
-                'Récupérer les dérnières données de quote',
+                'Récupérer les dérnières données sauvegardées.',
                 style: TextStyle(color: Colors.white70),
               )),
-          const SizedBox(height: 10),
           TextButton(
               onPressed: () {
+                sauvegarde.exportToJson();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 3)),
+                    builder: ((context) => const MyApp(index: 1)),
                   ),
                 );
-                WishlistModel.recupJsonDataWishlist();
               },
               child: const Text(
-                'Récupérer les dérnières données de wishlist',
+                'Sauvegarder sur internet',
                 style: TextStyle(color: Colors.white70),
               )),
+          const SizedBox(height: 10),
         ],
       ),
     );

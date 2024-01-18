@@ -26,13 +26,15 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
   @override
   void initState() {
     super.initState();
-    wishlist = WishlistModel.getWishlist(widget.idWishlist);
-    authorController.text = wishlist.author;
-    titleController.text = wishlist.title;
-    resumeController.text = wishlist.resume;
-    categoryController.text = wishlist.category;
-    versionController.text = wishlist.version;
-    nbrpageController.text = wishlist.nbrPage.toString();
+    if (widget.idWishlist != -1) {
+      wishlist = WishlistModel.getWishlist(widget.idWishlist);
+      authorController.text = wishlist.author;
+      titleController.text = wishlist.title;
+      resumeController.text = wishlist.resume;
+      categoryController.text = wishlist.category;
+      versionController.text = wishlist.version;
+      nbrpageController.text = wishlist.nbrPage.toString();
+    }
   }
 
   @override
@@ -113,7 +115,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
 
   _addWishlist(WishlistClass values) async {
     await WishlistModel.addWishlist(values);
-    const idPage = 2;
+    const idPage = 3;
 
     Navigator.pushReplacement(
       context,
@@ -125,7 +127,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
 
   _updateWishlist(idWishlist, WishlistClass values) async {
     await WishlistModel.updateWishlist(idWishlist, values);
-    const idPage = 2;
+    const idPage = 3;
 
     Navigator.pushReplacement(
       context,

@@ -64,7 +64,6 @@ class _ShowQuoteState extends State<ShowQuote> {
               );
             },
             icon: const Icon(Icons.arrow_back)),
-        title: Text(quote!.book),
         actions: [
           IconButton(
               onPressed: () {
@@ -94,29 +93,20 @@ class _ShowQuoteState extends State<ShowQuote> {
               Icons.arrow_upward,
             ),
           )),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        controller: scrollC,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(quote!.fond),
-                fit: BoxFit.cover,
-                opacity: 0.6),
-          ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(quote!.fond), fit: BoxFit.cover, opacity: 0.7),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          controller: scrollC,
           child: Column(
             children: [
-              Text(
-                "${quote!.author} - ${quote!.book}",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white),
-              ),
-              const SizedBox(height: 20),
               Text(
                 quote!.quote,
                 textAlign: TextAlign.start,
@@ -126,6 +116,14 @@ class _ShowQuoteState extends State<ShowQuote> {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
+              Text(
+                "${quote!.author} - ${quote!.book}",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic),
+              ),
             ],
           ),
         ),

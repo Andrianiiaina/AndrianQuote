@@ -126,24 +126,30 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                   "Ajout de fond personnalisé...",
                   style: TextStyle(color: Colors.grey.shade500),
                 )),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                final int x = Random().nextInt(36);
-                final imageFile = File(currentImage);
-                if (!File(_imageFile).existsSync() && currentImage != "") {
-                  await imageFile.copy(_imageFile);
-                }
-                if (currentImage == "") _imageFile = "assets/p (${x + 1}).jpg";
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              margin: const EdgeInsets.all(15),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final int x = Random().nextInt(36);
+                  final imageFile = File(currentImage);
+                  if (!File(_imageFile).existsSync() && currentImage != "") {
+                    await imageFile.copy(_imageFile);
+                  }
+                  if (currentImage == "")
+                    _imageFile = "assets/p (${x + 1}).jpg";
 
-                _createQuote(_book.text.split("-")[1], _book.text.split("-")[0],
-                    _quoty.text, _imageFile);
+                  _createQuote(_book.text.split("-")[1],
+                      _book.text.split("-")[0], _quoty.text, _imageFile);
 
-                ///notif oe bien enregistrer
-              },
-              child: const Text(
-                'Enregistrer le quote',
-                style: TextStyle(color: Colors.white),
+                  ///notif oe bien enregistrer
+                },
+                child: const Text(
+                  'Enregistrer le quote',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             const SizedBox(height: 30),
