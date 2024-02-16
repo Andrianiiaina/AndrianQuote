@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:select_form_field/select_form_field.dart';
 import '../widgets/style.dart';
 import '../widgets/book_formulaire.dart';
-import '../main.dart';
 import '../models/book_model.dart';
 import '../models/quote_model.dart';
 import 'dart:math';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class QuoteFormulaire extends StatefulWidget {
   final int id;
@@ -24,28 +21,8 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
   late QuotyClass quote;
   final TextEditingController _book = TextEditingController();
   final TextEditingController _quoty = TextEditingController();
-  String _imageFile = "";
-  String currentImage = "";
+
   late BookClass book;
-  final ImagePicker _picker = ImagePicker();
-
-  _pickPhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final imagesDir = Directory('${appDir.path}/quotes');
-
-      if (!imagesDir.existsSync()) imagesDir.createSync(recursive: true);
-
-      final newImagePath =
-          '${imagesDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg}';
-
-      setState(() {
-        currentImage = pickedFile.path;
-        _imageFile = newImagePath;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -82,12 +59,6 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
             const SizedBox(height: 30),
             titre("Nouveau quote", context),
             const SizedBox(height: 15),
-            if (currentImage.isNotEmpty)
-              Image.file(
-                File(currentImage),
-                height: 150,
-                width: 150,
-              ),
             Row(
               children: [
                 Expanded(
@@ -118,14 +89,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
             const SizedBox(height: 10),
             textareaWidgetForm(_quoty, 'Quote...', false),
             const SizedBox(height: 10),
-            TextButton(
-                onPressed: () {
-                  _pickPhoto(ImageSource.gallery);
-                },
-                child: Text(
-                  "Ajout de fond personnalisé...",
-                  style: TextStyle(color: Colors.grey.shade500),
-                )),
+            //add personnalized backgroundcolor
             Container(
               width: MediaQuery.of(context).size.width,
               height: 40,
@@ -133,15 +97,22 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
               child: ElevatedButton(
                 onPressed: () async {
                   final int x = Random().nextInt(36);
-                  final imageFile = File(currentImage);
-                  if (!File(_imageFile).existsSync() && currentImage != "") {
-                    await imageFile.copy(_imageFile);
+                  if (widget.id == -1) {
+                    await QuoteModel.addQuote(
+                        _book.text.split("-")[1],
+                        _book.text.split("-")[0],
+                        _quoty.text,
+                        "assets/p (${x + 1}).jpg");
+                  } else {
+                    await QuoteModel.updateQuote(
+                        widget.id,
+                        _book.text.split("-")[1],
+                        _book.text.split("-")[0],
+                        _quoty.text,
+                        "assets/p (${x + 1}).jpg");
                   }
-                  if (currentImage == "")
-                    _imageFile = "assets/p (${x + 1}).jpg";
-
-                  _createQuote(_book.text.split("-")[1],
-                      _book.text.split("-")[0], _quoty.text, _imageFile);
+                  showMessage(context, "Opération réussie.");
+                  context.go('/');
 
                   ///notif oe bien enregistrer
                 },
@@ -155,21 +126,6 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
             const SizedBox(height: 30),
           ],
         ),
-      ),
-    );
-  }
-
-  Future<void> _createQuote(author, book, quote, fond) async {
-    if (widget.id == -1) {
-      await QuoteModel.addQuote(author, book, quote, fond);
-    } else {
-      await QuoteModel.updateQuote(widget.id, author, book, quote, fond);
-    }
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 1)),
       ),
     );
   }

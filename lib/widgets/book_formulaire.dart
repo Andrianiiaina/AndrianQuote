@@ -1,9 +1,9 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:select_form_field/select_form_field.dart';
 import '../models/book_model.dart';
 import 'style.dart';
-import '../main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -272,12 +272,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
     } catch (e) {
       print(e);
     }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 0)),
-      ),
-    );
+    context.go('/books');
   }
 
   _updateBook(idBook, BookClass values) async {
@@ -288,11 +283,6 @@ class _BookFormulaireState extends State<BookFormulaire> {
       print(e);
     }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 0)),
-      ),
-    );
+    context.go('/books');
   }
 }

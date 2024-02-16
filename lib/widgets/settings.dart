@@ -1,5 +1,7 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
+import 'package:andrianiaiina_quote/widgets/style.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/wishlist_model.dart';
 import '../models/book_model.dart';
@@ -7,8 +9,7 @@ import '../models/sauvegarde.dart';
 import '../models/quote_model.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,8 +36,7 @@ class _SettingsState extends State<Settings> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            title:
-                const Text('Darkmode', style: TextStyle(color: Colors.white70)),
+            title: const Text('Darkmode'),
             trailing: Consumer<ThemeProvider>(
               builder: ((context, themeProvider, _) {
                 return Switch(
@@ -51,51 +52,54 @@ class _SettingsState extends State<Settings> {
           const SizedBox(height: 10),
           TextButton(
               onPressed: () {
-                statisticModel.populateStatistic();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 2)),
-                  ),
-                );
+                try {
+                  statisticModel.populateStatistic();
+                } catch (e) {
+                  showMessage(context,
+                      "Une erreur s'est produite, veuillez réessayer.");
+                }
+                context.go('/');
               },
-              child: const Text(
-                'Mettre à jours les statistiques',
-                style: TextStyle(color: Colors.white70),
-              )),
+              child: const Text('Mettre à jour les statistiques')),
           const SizedBox(height: 10),
           const SizedBox(height: 10),
           TextButton(
               onPressed: () {
-                BookModel.recupJsonDataBook();
-                QuoteModel.recupJsonDataQuote();
-                WishlistModel.recupJsonDataWishlist();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 1)),
-                  ),
-                );
+                try {
+                  BookModel.recupJsonDataBook();
+                  QuoteModel.recupJsonDataQuote();
+                  WishlistModel.recupJsonDataWishlist();
+                } catch (e) {
+                  showMessage(context,
+                      "Une erreur s'est produite.\n Si vous avez bien exporté vos données antérierement, contactez nous.\n Si vous aviez changer d'appareil, connecter vous à votre compte et dans parametre, appuyer sur restauration données.");
+                }
+                context.go('/');
+                Navigator.pop(context);
               },
-              child: const Text(
-                'Récupérer les dérnières données sauvegardées.',
-                style: TextStyle(color: Colors.white70),
-              )),
+              child: const Text('Récupérer les données sauvegardées.')),
           TextButton(
               onPressed: () {
                 sauvegarde.exportToJson();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const MyApp(index: 1)),
-                  ),
-                );
+                context.go('/');
+                Navigator.pop(context);
               },
-              child: const Text(
-                'Sauvegarder sur internet',
-                style: TextStyle(color: Colors.white70),
-              )),
-          const SizedBox(height: 10),
+              child: const Text('Sauvegarder sur internet.')),
+          TextButton(
+              onPressed: () {
+                sauvegarde.dataRestauration();
+                Navigator.pop(context);
+              },
+              child: const Text('Restaurer les données.')),
+          TextButton(
+              onPressed: () {
+                _auth.currentUser != null
+                    ? _auth.signOut()
+                    : context.go('/login');
+
+                Navigator.pop(context);
+              },
+              child: Text(
+                  _auth.currentUser != null ? 'Deconnection' : 'Inscription')),
         ],
       ),
     );

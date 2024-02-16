@@ -1,16 +1,14 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
-import '/main.dart';
 import 'package:flutter/material.dart';
 import '../models/book_model.dart';
 import '../widgets/style.dart';
 
 class ShowBook extends StatefulWidget {
   final int idBook;
-  final bool isFinished;
-  const ShowBook({Key? key, required this.idBook, required this.isFinished})
-      : super(key: key);
+  const ShowBook({Key? key, required this.idBook}) : super(key: key);
 
   @override
   State<ShowBook> createState() => _ShowBookState();
@@ -32,20 +30,17 @@ class _ShowBookState extends State<ShowBook> {
     }
   }
 
+  _deleteBook(int id) async {
+    await BookModel.deleteBook(id);
+    await statisticModel.populateStatistic();
+    showMessage(context, "Le livre a bien été supprimé.");
+    context.go('/books');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const MyApp(index: 0)),
-                ),
-              );
-            },
-            icon: const Icon(Icons.arrow_back)),
         title: Text(book!.title),
         actions: [
           IconButton(
@@ -57,7 +52,10 @@ class _ShowBookState extends State<ShowBook> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              _deleteBook(widget.idBook);
+              ShowConfirmation(context, "Confirmation",
+                  "Etes-vous sur de vouloir supprimer ce livre?", () {
+                _deleteBook(widget.idBook);
+              });
             },
           ),
         ],
@@ -160,17 +158,6 @@ class _ShowBookState extends State<ShowBook> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  _deleteBook(int id) async {
-    await BookModel.deleteBook(id);
-    await statisticModel.populateStatistic();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 0)),
       ),
     );
   }

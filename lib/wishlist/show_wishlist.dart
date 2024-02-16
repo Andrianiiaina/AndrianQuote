@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/wishlist_model.dart';
 import '../widgets/style.dart';
 import '../widgets/wishlist_formulaire.dart';
+import 'package:go_router/go_router.dart';
 
 //todo:redirection after modification
 class ShowWishlist extends StatefulWidget {
@@ -23,28 +24,13 @@ class _ShowWishlistState extends State<ShowWishlist> {
     book = WishlistModel.getWishlist(widget.idWishlist);
   }
 
-  _deleteWishlist(int id) async {
-    await WishlistModel.deleteWishlist(id);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: 2)),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => const MyApp(index: 2)),
-                ),
-              );
+              context.go('/wishlists');
             },
             icon: const Icon(Icons.arrow_back)),
         actions: [
@@ -58,7 +44,8 @@ class _ShowWishlistState extends State<ShowWishlist> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              _deleteWishlist(widget.idWishlist);
+              WishlistModel.deleteWishlist(widget.idWishlist);
+              context.go('/wishlists');
             },
           ),
         ],

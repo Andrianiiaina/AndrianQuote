@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'quoty_class.dart';
@@ -6,10 +8,12 @@ import 'dart:io';
 import 'book_class.dart';
 import 'wishlist_class.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final boxQuote = Hive.box<QuotyClass>('quoty');
 final boxBook = Hive.box<BookClass>('book');
 final boxWishlist = Hive.box<WishlistClass>('wishlist');
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 // ignore: camel_case_types
 class sauvegarde {
@@ -74,17 +78,41 @@ class sauvegarde {
     } catch (e) {
       print(e);
     }
+    if (_auth.currentUser != null) {
+      try {
+        final childRef = _auth.currentUser!.uid;
+        final storageRef = FirebaseStorage.instance.ref();
+        final spaceRef1 = storageRef.child("$childRef/fileBookJson.json");
+        final spaceRef2 = storageRef.child("$childRef/fileQuoteJson.json");
+        final spaceRef3 = storageRef.child("$childRef/fileWishlistJson.json");
+        await spaceRef1.putFile(fileBook);
+        await spaceRef2.putFile(fileQuote);
+        await spaceRef3.putFile(fileWishlist);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
 
-    try {
-      final storageRef = FirebaseStorage.instance.ref();
-      final spaceRef1 = storageRef.child("fileBookJson.json");
-      final spaceRef2 = storageRef.child("fileQuoteJson.json");
-      final spaceRef3 = storageRef.child("fileWishlistJson.json");
-      await spaceRef1.putFile(fileBook);
-      await spaceRef2.putFile(fileQuote);
-      await spaceRef3.putFile(fileWishlist);
-    } catch (e) {
-      print(e);
+  static dataRestauration() async {
+    final appDir = await getExternalStorageDirectory();
+    String appDirPath = appDir!.path;
+    if (_auth.currentUser != null) {
+      try {
+        final childRef = _auth.currentUser!.uid;
+        final storageRef = FirebaseStorage.instance.ref("");
+        final spaceRef1 = storageRef.child("$childRef/fileBookJson.json");
+        final spaceRef2 = storageRef.child("$childRef/fileQuoteJson.json");
+        final spaceRef3 = storageRef.child("$childRef/fileWishlistJson.json");
+
+        File fileBook = File('$appDirPath/fileBookJson.json');
+        File fileWishlist = File('$appDirPath/fileWishlistJson.json');
+        File fileQuote = File('$appDirPath/fileQuoteJson.json');
+
+        final DownloadTask task1 = spaceRef1.writeToFile(fileBook);
+        final DownloadTask task2 = spaceRef2.writeToFile(fileQuote);
+        final DownloadTask task3 = spaceRef3.writeToFile(fileWishlist);
+      } catch (e) {}
     }
   }
 

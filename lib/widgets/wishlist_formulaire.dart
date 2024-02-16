@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:select_form_field/select_form_field.dart';
 import '../models/wishlist_model.dart';
 import 'style.dart';
-import '../main.dart';
 import '../models/models.dart';
 
 class WishlistFormulaire extends StatefulWidget {
@@ -42,6 +42,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
+        height: MediaQuery.of(context).size.height,
         alignment: Alignment.center,
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
@@ -82,7 +83,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKeyWish.currentState!.validate()) {
-                      WishlistClass boky = WishlistClass(
+                      WishlistClass book = WishlistClass(
                         title: titleController.text,
                         author: authorController.text,
                         version: versionController.text,
@@ -91,13 +92,16 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
                         nbrPage: nbrpageController.text,
                       );
                       if (widget.idWishlist == -1) {
-                        _addWishlist(boky);
+                        await WishlistModel.addWishlist(book);
                       } else {
-                        _updateWishlist(widget.idWishlist, boky);
+                        await WishlistModel.updateWishlist(
+                            widget.idWishlist, book);
                       }
+                      context.go('/wishlists');
                     }
 
                     //message bien enregistrer
+                    showMessage(context, "Wishlist bien enregistré.");
                   },
                   child: const Text(
                     'Enregistrer',
@@ -109,30 +113,6 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  _addWishlist(WishlistClass values) async {
-    await WishlistModel.addWishlist(values);
-    const idPage = 3;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: idPage)),
-      ),
-    );
-  }
-
-  _updateWishlist(idWishlist, WishlistClass values) async {
-    await WishlistModel.updateWishlist(idWishlist, values);
-    const idPage = 3;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const MyApp(index: idPage)),
       ),
     );
   }

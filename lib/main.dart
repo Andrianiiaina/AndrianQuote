@@ -1,10 +1,7 @@
 import 'package:andrianiaiina_quote/models/biblio_class.dart';
-import 'package:andrianiaiina_quote/statistic.dart';
+import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'wishlist/wishlist.dart';
-import 'quote/quote.dart';
-import 'book/book.dart';
 import 'widgets/style.dart';
 import 'models/wishlist_model.dart';
 import 'models/book_model.dart';
@@ -57,9 +54,7 @@ void main() async {
           isPaper: false,
         ));
   }
-  runApp(const MyApp(
-    index: 1,
-  ));
+  runApp(const MyApp(index: 1));
 }
 
 class MyApp extends StatefulWidget {
@@ -84,19 +79,6 @@ class ThemeProvider with ChangeNotifier {
 }
 
 class _MyAppState extends State<MyApp> {
-  late int currentPage;
-  final screen = [
-    const BookPage(),
-    const QuotePage(),
-    const StatisticPage(),
-    const Wishlist(),
-  ];
-  @override
-  void initState() {
-    super.initState();
-    currentPage = widget.index;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -104,30 +86,13 @@ class _MyAppState extends State<MyApp> {
       child: Consumer<ThemeProvider>(
         builder: ((context, value, _) {
           _loadSavedTheme(value);
-          return MaterialApp(
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Fenitra book',
             theme: themeLight,
             darkTheme: ThemeData.dark(),
             themeMode: value.currentThemeMode,
-            home: Scaffold(
-              body: IndexedStack(
-                index: currentPage,
-                children: screen,
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                unselectedItemColor: Colors.purple.withOpacity(0.8),
-                selectedItemColor: Colors.purple,
-                currentIndex: currentPage,
-                onTap: (index) {
-                  setState(() {
-                    currentPage = index;
-                  });
-                },
-                items: bottomDatas,
-                backgroundColor: Colors.black,
-              ),
-            ),
+            routerConfig: Models.router,
           );
         }),
       ),

@@ -121,7 +121,10 @@ class _WishlistState extends State<Wishlist> {
                 } else {
                   return Container(
                     margin: const EdgeInsets.all(2),
-                    color: Theme.of(context).backgroundColor.withOpacity(0.1),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .background
+                        .withOpacity(0.1),
                     width: MediaQuery.of(context).size.width / 3.2,
                     //height: MediaQuery,
                     child: IconButton(
@@ -154,7 +157,7 @@ class _WishlistState extends State<Wishlist> {
                   const InputDecoration(hintText: "Nombres de page max"),
             ),))
            */
-          Text("Listes à souhait (${wishlists.length.toString()})",
+          Text("Pile à lire (${wishlists.length.toString()})",
               style: TextStyle(
                   fontSize: 18,
                   color: Theme.of(context).colorScheme.primary,
@@ -179,7 +182,10 @@ class _WishlistState extends State<Wishlist> {
               children: [
                 for (int i = 0; i < wishlistsFiltered.length; i++)
                   Container(
-                      color: Theme.of(context).backgroundColor.withOpacity(0.1),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .background
+                          .withOpacity(0.1),
                       margin: const EdgeInsets.all(2),
                       key: ValueKey(wishlistsFiltered[i].id),
                       child: ListTile(

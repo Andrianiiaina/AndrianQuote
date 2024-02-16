@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'settings.dart';
-import 'package:select_form_field/select_form_field.dart';
 
 final bottomDatas = [
   const BottomNavigationBarItem(
@@ -16,13 +15,17 @@ final bottomDatas = [
       icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
 var themeLight = ThemeData.light().copyWith(
+    appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        titleTextStyle: TextStyle(
+            color: Colors.purple, fontSize: 18, fontFamily: "Roboto")),
     listTileTheme: const ListTileThemeData(textColor: Colors.black54),
     hintColor: Colors.grey,
     primaryColorLight: Colors.white,
     colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: Colors.deepPurple,
-            onPrimary: Colors.white,
+            onPrimary: Colors.purple,
             secondary: Colors.purple,
             onSecondary: Colors.purple,
             error: Colors.red,
@@ -30,10 +33,11 @@ var themeLight = ThemeData.light().copyWith(
             background: Colors.purple,
             onBackground: Colors.purple,
             surface: Colors.purple,
-            onSurface: Colors.white)
+            onSurface: Colors.purple)
         .copyWith(
-      background: Colors.purple,
+      background: Colors.white,
     ));
+
 Widget titre(String texte, context) {
   return Text(texte,
       style: TextStyle(
@@ -123,6 +127,37 @@ Future showForm(BuildContext context, child) async {
   );
 }
 
+Future ShowConfirmation(
+    BuildContext context, _title, _content, Function _operation) async {
+  await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(_title),
+          content: Text(_content),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  _operation();
+                },
+                child: const Text('Confirmer')),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Annuler')),
+          ],
+        );
+      });
+}
+
+showMessage(BuildContext context, _content) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(_content),
+    duration: const Duration(seconds: 3),
+  ));
+}
+
 Widget star(int nbr) {
   return ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -178,44 +213,27 @@ Widget statisticText(String title) {
 }
 
 Widget drawer = const Drawer(
-  backgroundColor: Colors.transparent,
   child: Settings(),
   width: 300,
 );
-Widget searchWidget(search, filter) {
-  return Row(
-    children: [
-      Expanded(
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Colors.purple)),
-          margin: EdgeInsets.only(left: 9, right: 9, top: 2),
-          child: TextField(
-            autofocus: false,
-            decoration: const InputDecoration(
-                hintText: "search...",
-                hintStyle: TextStyle(color: Color.fromARGB(143, 80, 46, 138)),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.purple,
-                ),
-                border: InputBorder.none),
-            onChanged: (q) {
-              search(q);
-            },
-          ),
-        ),
-        flex: 8,
-      ),
-      Expanded(
-          child: IconButton(
-        icon: Icon(
-          Icons.sort_rounded,
-          color: Colors.purple,
-        ),
-        onPressed: () {},
-      ))
-    ],
-  );
+Widget searchWidget(search) {
+  return Container(
+      height: 48,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: Colors.purple)),
+      margin: const EdgeInsets.only(left: 9, right: 9, top: 2),
+      child: TextField(
+        autofocus: false,
+        decoration: const InputDecoration(
+            hintText: "search...",
+            prefixIcon: Icon(
+              Icons.search,
+              color: Colors.purple,
+            ),
+            border: InputBorder.none),
+        onChanged: (q) {
+          search(q);
+        },
+      ));
 }

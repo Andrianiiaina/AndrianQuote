@@ -63,7 +63,7 @@ class _StatisticPageState extends State<StatisticPage> {
         actions: [
           SizedBox(
             child: SelectFormField(
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.white),
               initialValue: '2024',
               type: SelectFormFieldType.dropdown,
               items: const [
@@ -107,7 +107,7 @@ class _StatisticPageState extends State<StatisticPage> {
                   interval: 1,
                   //dateFormat: DateFormat().m,
                 ),
-                primaryYAxis: NumericAxis(
+                primaryYAxis: const NumericAxis(
                   initialVisibleMinimum: 0,
                   interval: 1,
                 ),
