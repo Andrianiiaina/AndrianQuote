@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'quoty_class.dart';
@@ -45,7 +43,7 @@ class sauvegarde {
         'date': value.date.toString(),
         'status': value.status,
         'debut': value.date.toString(),
-        'isPaper': true,
+        'isPaper': value.isPaper,
         //'debut': value.debut,
         //'isPaper': value.isPaper,
       };
@@ -75,9 +73,7 @@ class sauvegarde {
       await fileBook.writeAsString(json.encode(dataBook));
       await fileQuote.writeAsString(json.encode(dataQuote));
       await fileWishlist.writeAsString(json.encode(dataWishlist));
-    } catch (e) {
-      print(e);
-    }
+    } finally {}
     if (_auth.currentUser != null) {
       try {
         final childRef = _auth.currentUser!.uid;
@@ -88,9 +84,7 @@ class sauvegarde {
         await spaceRef1.putFile(fileBook);
         await spaceRef2.putFile(fileQuote);
         await spaceRef3.putFile(fileWishlist);
-      } catch (e) {
-        print(e);
-      }
+      } finally {}
     }
   }
 
@@ -109,10 +103,10 @@ class sauvegarde {
         File fileWishlist = File('$appDirPath/fileWishlistJson.json');
         File fileQuote = File('$appDirPath/fileQuoteJson.json');
 
-        final DownloadTask task1 = spaceRef1.writeToFile(fileBook);
-        final DownloadTask task2 = spaceRef2.writeToFile(fileQuote);
-        final DownloadTask task3 = spaceRef3.writeToFile(fileWishlist);
-      } catch (e) {}
+        spaceRef1.writeToFile(fileBook);
+        spaceRef2.writeToFile(fileQuote);
+        spaceRef3.writeToFile(fileWishlist);
+      } finally {}
     }
   }
 
@@ -160,7 +154,6 @@ class sauvegarde {
         category: data["category"],
         couverture: data["couverture"],
         nbrPage: int.tryParse(data["nbrPage"].toString()) ?? 0,
-        //date: data["date"],
         date: DateTime(int.parse(x[0]), int.parse(x[1]), day),
         debut: DateTime(int.parse(y[0]), int.parse(y[1]), day),
         status: data['status'],
@@ -169,7 +162,6 @@ class sauvegarde {
     }).toList();
   }
 
-//DateTime(data["date"])
   static majWishlist() async {
     //Directory appDir = await getApplicationDocumentsDirectory();
     final appDir = await getExternalStorageDirectory();

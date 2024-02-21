@@ -1,3 +1,5 @@
+import 'package:andrianiaiina_quote/widgets/search_result.dart';
+import 'package:andrianiaiina_quote/wishlist/show_wishlist.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:andrianiaiina_quote/authentification/login.dart';
@@ -100,6 +102,22 @@ class Models {
             path: 'wishlists',
             builder: (BuildContext context, GoRouterState state) {
               return const MainPage(index: 3);
+            },
+          ),
+          GoRoute(
+            path: 'wishlist/:id',
+            builder: (BuildContext context, GoRouterState state) {
+              return ShowWishlist(
+                  idWishlist: int.parse(state.pathParameters['id'].toString()));
+            },
+          ),
+          GoRoute(
+            path: 'search_book/:type/:year',
+            builder: (BuildContext context, GoRouterState state) {
+              return SearchBook(
+                type: int.parse(state.pathParameters['type'].toString()),
+                year: int.parse(state.pathParameters['year'].toString()),
+              );
             },
           ),
         ],

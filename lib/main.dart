@@ -1,14 +1,13 @@
-import 'package:andrianiaiina_quote/models/biblio_class.dart';
 import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'widgets/style.dart';
-import 'models/wishlist_model.dart';
-import 'models/book_model.dart';
-import 'models/quote_model.dart';
+import 'models/wishlist_class.dart';
+import 'models/book_class.dart';
+import 'models/quoty_class.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'models/statistic_model.dart';
+import 'models/statistic_class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -20,7 +19,6 @@ void main() async {
   Hive.registerAdapter(QuotyClassAdapter());
   Hive.registerAdapter(BookClassAdapter());
   Hive.registerAdapter(WishlistClassAdapter());
-  Hive.registerAdapter(BiblioClassAdapter());
   Hive.registerAdapter(StatisticClassAdapter());
 
   //await Hive.deleteBoxFromDisk("stats");
@@ -31,12 +29,10 @@ void main() async {
   await Hive.openBox<QuotyClass>("quoty");
   await Hive.openBox<BookClass>("book");
   await Hive.openBox<WishlistClass>("wishlist");
-  await Hive.openBox<BiblioClass>("biblio");
   await Hive.openBox<StatisticClass>("stats");
 
-  final book = Hive.box<BookClass>('book');
-
-  if (!book.containsKey(0)) {
+  /** 
+  final book = Hive.box<BookClass>('book');if (!book.containsKey(0)) {
     book.put(
         0,
         BookClass(
@@ -53,7 +49,7 @@ void main() async {
           status: "finished",
           isPaper: false,
         ));
-  }
+  } */
   runApp(const MyApp(index: 1));
 }
 

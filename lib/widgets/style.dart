@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'settings.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 final bottomDatas = [
   const BottomNavigationBarItem(
@@ -15,6 +16,8 @@ final bottomDatas = [
       icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
 var themeLight = ThemeData.light().copyWith(
+    dialogBackgroundColor: Colors.white,
+    datePickerTheme: const DatePickerThemeData(backgroundColor: Colors.white),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(
@@ -38,43 +41,39 @@ var themeLight = ThemeData.light().copyWith(
       background: Colors.white,
     ));
 
-Widget titre(String texte, context) {
-  return Text(texte,
-      style: TextStyle(
-          fontSize: 25,
-          color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.bold,
-          fontFamily: "San Francisco"));
-}
-
 Widget textareaWidgetForm(controller, text, readOnly) {
   return TextField(
     readOnly: readOnly,
     controller: controller,
-    decoration: InputDecoration(label: Text(text)),
+    decoration: InputDecoration(
+        label: Text(
+      text,
+      style: const TextStyle(decoration: TextDecoration.none),
+    )),
     keyboardType: TextInputType.multiline,
-    maxLines: 15,
+    maxLines: 14,
     minLines: 3,
-    style: TextStyle(color: Colors.grey.shade600),
+    style: const TextStyle(color: Colors.white),
   );
 }
 
-Widget textWidget(texte) {
+Widget textWidget(String text) {
   return Text(
-    texte,
+    text,
     style: const TextStyle(
-        fontSize: 25,
-        color: Color.fromARGB(255, 230, 116, 250),
+        fontSize: 22,
+        color: Colors.white,
         fontWeight: FontWeight.bold,
-        fontFamily: "San Francisco"),
+        fontFamily: "Roboto"),
   );
 }
 
-Widget textFieldWidget(controller, text, readOnly) {
+Widget textFieldWidget(controller, String text, bool readOnly) {
   return TextFormField(
     controller: controller,
     decoration: InputDecoration(label: Text(text)),
-    style: TextStyle(color: Colors.grey.shade600),
+    style:
+        const TextStyle(decoration: TextDecoration.none, color: Colors.white),
     readOnly: readOnly,
     keyboardType: TextInputType.multiline,
     validator: (value) {
@@ -84,10 +83,10 @@ Widget textFieldWidget(controller, text, readOnly) {
   );
 }
 
-Widget textFieldWidgetNumber(controller, text, readOnly) {
+Widget textFieldWidgetNumber(controller, String text, bool readOnly) {
   return TextFormField(
     controller: controller,
-    style: const TextStyle(color: Colors.grey),
+    style: const TextStyle(color: Colors.white),
     decoration: InputDecoration(label: Text(text)),
     readOnly: readOnly,
     keyboardType: TextInputType.number,
@@ -99,14 +98,18 @@ Widget textFieldWidgetNumber(controller, text, readOnly) {
   );
 }
 
-Widget textareaWidget(controller, text, readOnly) {
-  return TextField(
-    readOnly: readOnly,
+Widget selectFormWidget(
+    controller, String title, List<Map<String, dynamic>> datas) {
+  return SelectFormField(
+    decoration: InputDecoration(hintText: controller.text, label: Text(title)),
+    type: SelectFormFieldType.dialog,
     controller: controller,
-    decoration: InputDecoration(label: Text(text)),
-    keyboardType: TextInputType.multiline,
-    maxLines: 20,
-    minLines: 3,
+    items: datas,
+    style: const TextStyle(color: Colors.white),
+    validator: (value) {
+      if (value == "") return "Veuillez remplir ce champ";
+      return null;
+    },
   );
 }
 
@@ -127,7 +130,7 @@ Future showForm(BuildContext context, child) async {
   );
 }
 
-Future ShowConfirmation(
+Future showConfirmation(
     BuildContext context, _title, _content, Function _operation) async {
   await showDialog(
       context: context,
@@ -181,35 +184,25 @@ Widget star(int nbr) {
       }));
 }
 
-Widget statisticButton(String title) {
+Widget statisticButton(String title, action) {
   return Expanded(
-      flex: 1,
-      child: Container(
-        child: Text(title),
-        height: 100,
-        margin: const EdgeInsets.all(5),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: Colors.white10,
-            border: Border.all(color: Colors.purpleAccent),
-            borderRadius: const BorderRadius.all(Radius.circular(15))),
-      ));
-}
-
-Widget statisticText(String title) {
-  return Container(
-    child: Text(
-      title,
-      style: const TextStyle(fontWeight: FontWeight.w400),
-    ),
-    padding: const EdgeInsets.all(10),
-    margin: const EdgeInsets.all(2),
-    alignment: Alignment.topLeft,
-    decoration: BoxDecoration(
-        color: Colors.white10,
-        border: Border.all(color: const Color.fromARGB(255, 153, 91, 164)),
-        borderRadius: const BorderRadius.all(Radius.circular(15))),
-  );
+      child: GestureDetector(
+          onTap: action,
+          child: Container(
+            child: Text(
+              title,
+              style: const TextStyle(color: Colors.white),
+            ),
+            // height: 100,
+            margin: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(194, 136, 16, 200),
+                border:
+                    Border.all(color: const Color.fromARGB(255, 176, 79, 194)),
+                borderRadius: const BorderRadius.all(Radius.circular(15))),
+          )));
 }
 
 Widget drawer = const Drawer(
@@ -237,3 +230,18 @@ Widget searchWidget(search) {
         },
       ));
 }
+
+List<Color> colors = [
+  const Color.fromARGB(181, 230, 91, 91),
+  const Color.fromARGB(186, 97, 2, 145),
+  const Color.fromARGB(186, 65, 41, 221),
+  const Color.fromARGB(135, 204, 47, 186),
+  const Color.fromARGB(156, 88, 2, 208),
+  const Color.fromARGB(172, 44, 0, 60),
+  const Color.fromARGB(211, 210, 67, 67),
+  const Color.fromARGB(160, 76, 81, 240),
+  const Color.fromARGB(133, 36, 131, 200),
+  const Color.fromARGB(134, 184, 4, 178),
+  const Color.fromARGB(156, 5, 61, 110),
+  const Color.fromARGB(162, 2, 72, 104),
+];

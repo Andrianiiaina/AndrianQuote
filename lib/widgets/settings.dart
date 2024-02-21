@@ -49,20 +49,17 @@ class _SettingsState extends State<Settings> {
               }),
             ),
           ),
-          const SizedBox(height: 10),
           TextButton(
               onPressed: () {
                 try {
-                  statisticModel.populateStatistic();
+                  StatisticModel.populateStatistic();
                 } catch (e) {
                   showMessage(context,
-                      "Une erreur s'est produite, veuillez réessayer.");
+                      "Une erreur s'est produite, veuillez réessayer!");
                 }
                 context.go('/');
               },
-              child: const Text('Mettre à jour les statistiques')),
-          const SizedBox(height: 10),
-          const SizedBox(height: 10),
+              child: const Text('Mettre à jour les statistiques.')),
           TextButton(
               onPressed: () {
                 try {
@@ -98,8 +95,9 @@ class _SettingsState extends State<Settings> {
 
                 Navigator.pop(context);
               },
-              child: Text(
-                  _auth.currentUser != null ? 'Deconnection' : 'Inscription')),
+              child: Text(_auth.currentUser != null
+                  ? 'Deconnection.'
+                  : 'Inscription.')),
         ],
       ),
     );

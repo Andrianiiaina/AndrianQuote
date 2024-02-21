@@ -1,5 +1,5 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
-import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
+import 'package:andrianiaiina_quote/book/book_formulaire.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -16,7 +16,6 @@ class ShowBook extends StatefulWidget {
 
 class _ShowBookState extends State<ShowBook> {
   late BookClass? book;
-  late bool isAuthorExist;
   late int note;
 
   @override
@@ -32,7 +31,7 @@ class _ShowBookState extends State<ShowBook> {
 
   _deleteBook(int id) async {
     await BookModel.deleteBook(id);
-    await statisticModel.populateStatistic();
+    await StatisticModel.populateStatistic();
     showMessage(context, "Le livre a bien été supprimé.");
     context.go('/books');
   }
@@ -41,7 +40,6 @@ class _ShowBookState extends State<ShowBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(book!.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -52,7 +50,7 @@ class _ShowBookState extends State<ShowBook> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              ShowConfirmation(context, "Confirmation",
+              showConfirmation(context, "Confirmation",
                   "Etes-vous sur de vouloir supprimer ce livre?", () {
                 _deleteBook(widget.idBook);
               });
@@ -70,18 +68,19 @@ class _ShowBookState extends State<ShowBook> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 110,
-                    width: 80,
+                    height: 160,
+                    width: 90,
                     child: (book!.couverture.isEmpty)
                         ? const Image(
                             image: AssetImage('assets/p (10).jpg'),
+                            fit: BoxFit.cover,
                           )
                         : Image.file(
                             File(book!.couverture),
                           ),
                   ),
                   SizedBox(
-                    height: 110,
+                    height: 160,
                     width: 180,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,38 +121,27 @@ class _ShowBookState extends State<ShowBook> {
               width: MediaQuery.of(context).size.width,
               constraints:
                   BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
-                color: Theme.of(context).colorScheme.background,
+                color: Color.fromARGB(255, 180, 58, 201),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'A propos:',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    child: Text(
-                        book!.resume == "" ? "Aucun resumé..." : book!.resume,
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 206, 198, 198))),
-                  ),
-                  const SizedBox(height: 30),
-                  Text(
-                    "Categorie: ${book!.category}\nPages:${book!.nbrPage.toString()}\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}",
+              child: ListTile(
+                textColor: Colors.grey,
+                title: const Text(
+                  'A propos:',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                ),
+                subtitle: Text(
+                    book!.resume == ""
+                        ? "Aucun resumé..."
+                        : "${book!.resume}\n\n${book!.nbrPage.toString()} pages.\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}\nCategorie: ${book!.category}\n",
                     style: const TextStyle(
-                      color: Colors.white,
-                      letterSpacing: 2,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+                        color: Color.fromARGB(255, 206, 198, 198))),
               ),
             ),
           ],

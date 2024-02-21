@@ -1,16 +1,17 @@
+import 'package:andrianiaiina_quote/models/book_model.dart';
 import 'package:flutter/material.dart';
 import 'style.dart';
 import 'package:go_router/go_router.dart';
 
 class CardBook extends StatelessWidget {
-  final book;
+  final BookClass book;
   const CardBook({Key? key, required this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var note = 0;
     try {
-      note = int.parse(book!.note);
+      note = int.parse(book.note);
     } catch (e) {
       note = 0;
     }

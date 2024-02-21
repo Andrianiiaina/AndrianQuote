@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:select_form_field/select_form_field.dart';
 import '../models/wishlist_model.dart';
-import 'style.dart';
+import '../widgets/style.dart';
 import '../models/models.dart';
 
 class WishlistFormulaire extends StatefulWidget {
@@ -48,7 +47,7 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
         decoration: const BoxDecoration(
           image: DecorationImage(
               opacity: 0.6,
-              image: AssetImage('assets/p (6).jpg'),
+              image: AssetImage('assets/p (11).jpg'),
               fit: BoxFit.cover),
         ),
         child: Form(
@@ -56,26 +55,16 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              textWidget("Ajouter un livre à souhait"),
+              textWidget("Ajouter à wishlist"),
               const SizedBox(height: 20),
               textFieldWidget(authorController, "Nom de l'auteur", false),
               textFieldWidget(titleController, "Titre du livre", false),
-              SelectFormField(
-                decoration: InputDecoration(
-                    hintText: categoryController.text, labelText: 'Categorie'),
-                type: SelectFormFieldType.dropdown,
-                controller: categoryController,
-                items: Models.bookCategory,
-              ),
-              SelectFormField(
-                decoration: InputDecoration(
-                    hintText: versionController.text, labelText: 'Langage'),
-                type: SelectFormFieldType.dropdown,
-                controller: versionController,
-                items: Models.bookversion,
-              ),
+              selectFormWidget(
+                  categoryController, "Catégorie", Models.bookCategory),
+              selectFormWidget(
+                  versionController, 'Langage', Models.bookversion),
               textFieldWidgetNumber(nbrpageController, "Nombre de page", false),
-              textareaWidget(resumeController, "Resumé", false),
+              textareaWidgetForm(resumeController, "Resumé", false),
               Container(
                 margin: const EdgeInsets.all(15),
                 height: 40,
@@ -99,8 +88,6 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
                       }
                       context.go('/wishlists');
                     }
-
-                    //message bien enregistrer
                     showMessage(context, "Wishlist bien enregistré.");
                   },
                   child: const Text(

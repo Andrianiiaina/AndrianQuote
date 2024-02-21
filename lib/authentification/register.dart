@@ -1,3 +1,4 @@
+import 'package:andrianiaiina_quote/widgets/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign in'),
+        title: const Text("Inscription"),
         elevation: 1,
       ),
       body: Column(children: [
@@ -27,7 +28,7 @@ class _RegisterState extends State<Register> {
           controller: _email,
         ),
         TextField(
-          decoration: const InputDecoration(label: Text("Password")),
+          decoration: const InputDecoration(label: Text("Mot de passe")),
           controller: _password,
         ),
         TextButton(
@@ -39,10 +40,10 @@ class _RegisterState extends State<Register> {
                 context.go('/');
               }
             } catch (e) {
-              print(e);
+              showMessage(context, "une erreur s'est produite");
             }
           },
-          child: const Text("Sing in"),
+          child: const Text("s'inscrire"),
         )
       ]),
     );

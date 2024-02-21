@@ -1,9 +1,8 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:andrianiaiina_quote/widgets/style.dart';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import 'package:select_form_field/select_form_field.dart';
 
 class StatisticPage extends StatefulWidget {
@@ -14,9 +13,8 @@ class StatisticPage extends StatefulWidget {
 }
 
 class _StatisticPageState extends State<StatisticPage> {
-  int year = 2024;
-  TextEditingController yearController = TextEditingController();
-  final List<StatisticClass> allStats = statisticModel.getAllData().toList();
+  int year = DateTime.now().year;
+  final List<StatisticClass> allStats = StatisticModel.getAllData().toList();
   late StatisticClass stat;
   late int perDay;
 
@@ -24,10 +22,10 @@ class _StatisticPageState extends State<StatisticPage> {
   void initState() {
     super.initState();
     stat = fetchStatistics(year);
-    perDay = getPerDay(year);
+    perDay = getPerDayPages(year);
   }
 
-  int getPerDay(year) {
+  int getPerDayPages(year) {
     return DateTime.now().year == year
         ? (stat.totalFinishedPage /
                 DateTime.now().difference(DateTime(year)).inDays)
@@ -63,9 +61,8 @@ class _StatisticPageState extends State<StatisticPage> {
         actions: [
           SizedBox(
             child: SelectFormField(
-              style: const TextStyle(color: Colors.white),
               initialValue: '2024',
-              type: SelectFormFieldType.dropdown,
+              type: SelectFormFieldType.dialog,
               items: const [
                 {'value': 2022, 'label': '2022'},
                 {'value': 2023, 'label': '2023'},
@@ -73,8 +70,9 @@ class _StatisticPageState extends State<StatisticPage> {
               ],
               onChanged: (value) async {
                 setState(() {
-                  stat = fetchStatistics(int.parse(value));
-                  perDay = getPerDay(int.parse(value));
+                  year = int.parse(value);
+                  stat = fetchStatistics(year);
+                  perDay = getPerDayPages(year);
                 });
               },
             ),
@@ -89,10 +87,20 @@ class _StatisticPageState extends State<StatisticPage> {
               height: 80,
               child: Row(
                 children: [
-                  statisticButton("${stat.finished.toString()} livres lus"),
-                  statisticButton("${stat.totalFinishedPage.toString()} pages"),
                   statisticButton(
-                      "${stat.current.toString()} en cours \n${stat.abandonned.toString()} abandonnés"),
+                      "${stat.finished.toString()} livres lus\n${stat.totalFinishedPage.toString()} pages",
+                      () {
+                    context.go('/search_book/${0}/$year');
+                  }),
+                  statisticButton("${stat.current.toString()} \nen cours", () {
+                    context.go('/search_book/${1}/$year');
+                  }),
+                  statisticButton(
+                    "${stat.abandonned.toString()} \nabandonnés",
+                    () {
+                      context.go('/search_book/${2}/$year');
+                    },
+                  )
                 ],
               ),
             ),
@@ -150,29 +158,33 @@ class _StatisticPageState extends State<StatisticPage> {
               margin: const EdgeInsets.only(top: 20),
               padding: const EdgeInsets.all(5),
               width: MediaQuery.of(context).size.width,
+              height: 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     child: Text(
                       "Autres informations",
-                      style: TextStyle(
-                          fontSize: 16, color: Color.fromARGB(198, 0, 0, 0)),
+                      style: TextStyle(fontSize: 16),
                     ),
                     height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      statisticText('${stat.englishVersion} livres en anglais'),
-                      statisticText('${stat.frenchVersion} livres en francais')
+                      statisticButton(
+                          "${stat.englishVersion} livres en anglais", () {}),
+                      statisticButton(
+                          "${stat.frenchVersion} livres en francais", () {}),
                     ],
                   ),
-                  statisticText('$perDay pages par jour en moyenne.'),
-                  statisticText(
-                      '${stat.paperBook} livres en papier: ${stat.paperPages} pages.'),
-                  statisticText(
-                      ' ${stat.digitalBook} livres numerique: ${stat.digitalPages} pages.'),
+                  statisticButton('$perDay pages par jour en moyenne.', () {}),
+                  statisticButton(
+                      '${stat.paperBook} livres en papier: ${stat.paperPages} pages.',
+                      () {}),
+                  statisticButton(
+                      ' ${stat.digitalBook} livres numerique: ${stat.digitalPages} pages.',
+                      () {}),
                 ],
               ),
             )

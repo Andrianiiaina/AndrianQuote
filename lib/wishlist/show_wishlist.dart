@@ -1,10 +1,9 @@
-import 'package:andrianiaiina_quote/widgets/book_formulaire.dart';
+import 'package:andrianiaiina_quote/book/book_formulaire.dart';
 import '../models/book_model.dart';
-import '/main.dart';
 import 'package:flutter/material.dart';
 import '../models/wishlist_model.dart';
 import '../widgets/style.dart';
-import '../widgets/wishlist_formulaire.dart';
+import 'wishlist_formulaire.dart';
 import 'package:go_router/go_router.dart';
 
 //todo:redirection after modification
@@ -72,20 +71,34 @@ class _ShowWishlistState extends State<ShowWishlist> {
                 children: [
                   Expanded(
                     child: ListTile(
-                      title: const Text('Genre'),
-                      subtitle: Text('${book?.category}'),
+                      title:
+                          const Text('Genre', style: TextStyle(fontSize: 14)),
+                      subtitle: Text('${book?.category}',
+                          style: const TextStyle(fontSize: 12)),
                     ),
                   ),
                   Expanded(
                     child: ListTile(
-                      title: const Text('Langage'),
-                      subtitle: Text("${book?.version}"),
+                      title: const Text(
+                        'Langage',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        "${book?.version}",
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
                   ),
                   Expanded(
                     child: ListTile(
-                      title: const Text('Pages'),
-                      subtitle: Text("${book?.nbrPage}"),
+                      title: const Text(
+                        'Pages',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        "${book?.nbrPage}",
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
                   ),
                 ],

@@ -1,9 +1,8 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:select_form_field/select_form_field.dart';
 import '../models/book_model.dart';
-import 'style.dart';
+import '../widgets/style.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -20,6 +19,7 @@ class BookFormulaire extends StatefulWidget {
 
 class _BookFormulaireState extends State<BookFormulaire> {
   int stara = 0;
+
   TextEditingController authorController = TextEditingController(text: "");
   TextEditingController titleController = TextEditingController(text: "");
   TextEditingController categoryController = TextEditingController(text: "");
@@ -90,8 +90,8 @@ class _BookFormulaireState extends State<BookFormulaire> {
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  opacity: 0.8,
-                  image: AssetImage('assets/p (26).jpg'),
+                  opacity: 0.6,
+                  image: AssetImage('assets/p (11).jpg'),
                   fit: BoxFit.cover)),
           child: Form(
             key: _formKey,
@@ -119,39 +119,21 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   backgroundColor: Colors.grey,
                 ),
                 const Text(
-                  "Couverture du livre si",
+                  "(Couverture du livre si)",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(height: 5),
                 textFieldWidget(authorController, "Nom de l'auteur", false),
                 textFieldWidget(titleController, "Titre du livre", false),
-                SelectFormField(
-                  style: const TextStyle(color: Colors.grey),
-                  decoration: InputDecoration(
-                    hintText: categoryController.text,
-                    labelText: 'Categorie',
-                  ),
-                  type: SelectFormFieldType.dropdown,
-                  controller: categoryController,
-                  items: Models.bookCategory,
-                ),
-                SelectFormField(
-                  decoration: InputDecoration(
-                      hintText: versionController.text, labelText: 'Langage'),
-                  type: SelectFormFieldType.dropdown,
-                  controller: versionController,
-                  items: Models.bookversion,
-                  style: const TextStyle(color: Colors.grey),
-                  validator: (value) {
-                    if (value == "") return "Veuillez remplir ce champ";
-                    return null;
-                  },
-                ),
+                selectFormWidget(
+                    categoryController, "Catégorie", Models.bookCategory),
+                selectFormWidget(
+                    versionController, 'Langage', Models.bookversion),
                 textFieldWidgetNumber(
                     nbrpageController, "Nombre de page", false),
                 textareaWidgetForm(resumeController, "Resumé", false),
                 DateTimeFormField(
-                  dateTextStyle: const TextStyle(color: Colors.grey),
+                  dateTextStyle: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText:
                           "Debut: ${selectedDebut.year}-${selectedDebut.month}-${selectedDebut.day}"),
@@ -164,7 +146,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   initialDate: selectedDebut,
                 ),
                 DateTimeFormField(
-                  dateTextStyle: const TextStyle(color: Colors.grey),
+                  dateTextStyle: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText:
                           "Date: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
@@ -177,7 +159,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   },
                 ),
                 TextFormField(
-                  style: const TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.white),
                   controller: noteController,
                   decoration: const InputDecoration(label: Text("Note [0-10]")),
                   readOnly: false,
@@ -187,33 +169,29 @@ class _BookFormulaireState extends State<BookFormulaire> {
                     var number = 0;
                     try {
                       number = int.parse(value!);
-                    } catch (e) {}
+                    } catch (e) {
+                      number = 0;
+                    }
                     if (number < 0 || number > 10) return "note sur 10";
                     return null;
                   },
                 ),
-                SelectFormField(
-                  decoration: InputDecoration(
-                      hintText: statusController.text, labelText: 'Status'),
-                  type: SelectFormFieldType.dropdown,
-                  controller: statusController,
-                  items: const [
+                selectFormWidget(
+                  statusController,
+                  'Status',
+                  [
                     {'value': 'finished', 'label': 'Terminé'},
                     {'value': 'abandonned', 'label': 'Abandonné'},
                     {'value': 'current', 'label': 'current'},
                   ],
-                  style: const TextStyle(color: Colors.grey),
                 ),
-                SelectFormField(
-                  decoration: InputDecoration(
-                      hintText: isPaperController.text, labelText: 'Version'),
-                  type: SelectFormFieldType.dropdown,
-                  controller: isPaperController,
-                  items: const [
+                selectFormWidget(
+                  isPaperController,
+                  'Version',
+                  [
                     {'value': 'paper', 'label': 'Papier'},
                     {'value': 'numeric', 'label': 'Numérique'},
                   ],
-                  style: const TextStyle(color: Colors.grey),
                 ),
                 Container(
                   height: 40,
@@ -222,13 +200,12 @@ class _BookFormulaireState extends State<BookFormulaire> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        final imageFile = File(currentImage);
                         if (!File(_imageFile).existsSync() &&
                             currentImage != "") {
-                          await imageFile.copy(_imageFile);
+                          await File(currentImage).copy(_imageFile);
                         }
 
-                        BookClass boky = BookClass(
+                        BookClass newBook = BookClass(
                             title: titleController.text,
                             author: authorController.text,
                             version: versionController.text,
@@ -244,13 +221,14 @@ class _BookFormulaireState extends State<BookFormulaire> {
                                 ? true
                                 : false);
                         if (widget.idBook == -1) {
-                          _addBook(boky);
+                          await BookModel.addBook(newBook);
                         } else {
-                          _updateBook(widget.idBook, boky);
+                          await BookModel.updateBook(widget.idBook, newBook);
                         }
+                        await StatisticModel.populateStatistic();
+                        context.go('/books');
                       }
-
-                      //message bien enregistrer
+                      showMessage(context, "Livre bien enregistré.");
                     },
                     child: const Text(
                       'Enregistrer',
@@ -263,26 +241,5 @@ class _BookFormulaireState extends State<BookFormulaire> {
             ),
           )),
     );
-  }
-
-  _addBook(BookClass values) async {
-    await BookModel.addBook(values);
-    try {
-      await statisticModel.populateStatistic();
-    } catch (e) {
-      print(e);
-    }
-    context.go('/books');
-  }
-
-  _updateBook(idBook, BookClass values) async {
-    await BookModel.updateBook(idBook, values);
-    try {
-      await statisticModel.populateStatistic();
-    } catch (e) {
-      print(e);
-    }
-
-    context.go('/books');
   }
 }

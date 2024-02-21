@@ -7,7 +7,7 @@ import 'models.dart';
 
 final box = Hive.box<StatisticClass>('stats');
 
-class statisticModel {
+class StatisticModel {
   static getAllData() {
     return box.keys.map((e) {
       final value = box.get(e);
@@ -36,9 +36,7 @@ class statisticModel {
       box.add(getData(2022));
       box.add(getData(2023));
       box.add(getData(2024));
-    } catch (e) {
-      print(e);
-    }
+    } finally {}
   }
 }
 

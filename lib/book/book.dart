@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:andrianiaiina_quote/widgets/search_result.dart';
 import 'package:flutter/material.dart';
-import '../widgets/card_book.dart';
-import '../widgets/book_formulaire.dart';
+import 'package:go_router/go_router.dart';
+import 'book_formulaire.dart';
 import '../widgets/style.dart';
 import '../models/book_model.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({Key? key}) : super(key: key);
@@ -15,25 +17,11 @@ class BookPage extends StatefulWidget {
 
 class BookPageState extends State<BookPage> {
   final List<BookClass> books = BookModel.getAllData().toList();
-  List<BookClass> filteredBooks = [];
-  List<BookClass> monthly = [];
-  List<BookClass> current = [];
   @override
   void initState() {
     super.initState();
     books.removeWhere((element) => element.id == 0);
-    monthly = books
-        .where((element) =>
-            element.date.month == DateTime.now().month &&
-            element.date.year == DateTime.now().year)
-        .take(8)
-        .toList();
-    filteredBooks = books;
-    filteredBooks.sort(((a, b) => b.date.compareTo(a.date)));
-    current = books
-        .where((element) => element.status.contains('current'))
-        .take(5)
-        .toList();
+    books.sort(((a, b) => b.date.compareTo(a.date)));
   }
 
   @override
@@ -41,139 +29,86 @@ class BookPageState extends State<BookPage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        title: Text('Livres (${books.length})'),
+        title: Text('Mes livres (${books.length})'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showForm(context, const BookFormulaire());
+            },
+            icon: const Icon(Icons.add_rounded),
+          ),
+          IconButton(
+              onPressed: () {
+                showForm(context, const SearchBook());
+              },
+              icon: const Icon(Icons.search)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('ce mois'),
-                        Container(
-                          margin: EdgeInsets.only(top: 10, bottom: 10, left: 5),
-                          height: 150,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 8,
-                              itemBuilder: (_, i) {
-                                return Container(
-                                  width: 29,
-                                  decoration: BoxDecoration(
-                                      color: colors[i],
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: Colors.white)),
-                                  child: RotatedBox(
-                                    quarterTurns: 3,
-                                    child: Text(
-                                        i < monthly.length
-                                            ? monthly[i].title
-                                            : '',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                  ),
-                                );
-                              }),
-                        ),
-                        Image(
-                          image: AssetImage('assets/p (11).jpg'),
+          height: MediaQuery.of(context).size.height - 150,
+          decoration: BoxDecoration(
+              border: Border(
+                  left: const BorderSide(width: 15, color: Colors.brown),
+                  right: const BorderSide(width: 15, color: Colors.brown),
+                  bottom: const BorderSide(width: 15, color: Colors.brown),
+                  top: BorderSide(
+                      width: 30,
+                      color: Theme.of(context).colorScheme.background))),
+          child: MasonryGridView.count(
+              controller: ScrollController(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: books.length,
+              crossAxisCount: 10,
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
+              itemBuilder: (context, index) {
+                BookClass book = books[index];
+                return GestureDetector(
+                  onTap: () {
+                    context.go('/book/${book.id}');
+                  },
+                  child: Container(
+                    height: 170,
+                    alignment: Alignment.bottomCenter,
+                    decoration: BoxDecoration(
+                      border: Border(
+                          bottom:
+                              const BorderSide(width: 10, color: Colors.brown),
+                          top: BorderSide(
+                              width: 3,
+                              color: Theme.of(context).colorScheme.background)),
+                    ),
+                    child: RotatedBox(
+                        quarterTurns: 3,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: colors[Random().nextInt(11)],
+                              border: Border.all(color: Colors.white),
+                              borderRadius: const BorderRadius.only(
+                                  bottomRight: Radius.circular(3),
+                                  topRight: Radius.circular(3))),
                           height: 100,
-                          fit: BoxFit.cover,
-                          width: 228,
-                        )
-                      ],
-                    ),
+                          width: 130 + Random().nextInt(5) * 5.5,
+                          child: Text(
+                            index < books.length
+                                ? "${book.title} - ${book.author}"
+                                : '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
+                        )),
                   ),
-                  Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          Text('Courrant'),
-                          SizedBox(
-                              height: 250,
-                              child: ListView.builder(
-                                  itemCount: 5,
-                                  itemBuilder: (_, i) {
-                                    return Container(
-                                      margin: EdgeInsets.only(right: 5),
-                                      padding: EdgeInsets.all(4),
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: colors[Random().nextInt(7)],
-                                          border:
-                                              Border.all(color: Colors.white)),
-                                      child: Text(
-                                          i < current.length
-                                              ? current[i].title
-                                              : '',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis),
-                                    );
-                                  }))
-                        ],
-                      )),
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(child: searchWidget(search), flex: 8),
-                  Expanded(
-                      child: IconButton(
-                    icon: const Icon(
-                      Icons.add_rounded,
-                      color: Colors.purple,
-                    ),
-                    onPressed: () {
-                      showForm(context, const BookFormulaire());
-                    },
-                  ))
-                ],
-              ),
-              Expanded(
-                flex: 5,
-                child: ListView.builder(
-                    controller: ScrollController(),
-                    itemCount: filteredBooks.length,
-                    itemBuilder: ((context, index) {
-                      BookClass book = filteredBooks[index];
-                      return CardBook(book: book);
-                    })),
-              )
-            ],
-          ),
+                );
+              }),
         ),
       ),
     );
   }
-
-  search(String q) {
-    setState(() {
-      filteredBooks = books
-          .where((element) =>
-              element.title.toLowerCase().contains(q.toLowerCase()) ||
-              element.author.toLowerCase().contains(q.toLowerCase()))
-          .toList();
-    });
-  }
-
-  List<Color> colors = [
-    Colors.black,
-    Color.fromARGB(255, 98, 2, 145),
-    Color.fromARGB(255, 65, 41, 221),
-    Color.fromARGB(255, 204, 47, 186),
-    Color.fromARGB(255, 88, 2, 208),
-    Colors.deepPurple,
-    Color.fromARGB(178, 122, 8, 142),
-    Colors.black
-  ];
 }

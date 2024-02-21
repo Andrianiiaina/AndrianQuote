@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connexion'),
+        title: const Text('Connection'),
         elevation: 1,
       ),
       body: Column(children: [
@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
             ),
             TextField(
               decoration: const InputDecoration(
-                  label: Text("Password",
+                  label: Text("Mot de passe",
                       style: TextStyle(color: Colors.black54))),
               controller: _password,
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:select_form_field/select_form_field.dart';
 import '../widgets/style.dart';
-import '../widgets/book_formulaire.dart';
+import '../book/book_formulaire.dart';
 import '../models/book_model.dart';
 import '../models/quote_model.dart';
 import 'dart:math';
@@ -51,13 +51,13 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
             image: DecorationImage(
-                opacity: 0.3,
-                image: AssetImage('assets/p (10).jpg'),
+                opacity: 0.8,
+                image: AssetImage('assets/p (11).jpg'),
                 fit: BoxFit.cover)),
         child: Column(
           children: [
             const SizedBox(height: 30),
-            titre("Nouveau quote", context),
+            textWidget("Nouveau quote"),
             const SizedBox(height: 15),
             Row(
               children: [
@@ -68,7 +68,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                     controller: _book,
                     type: SelectFormFieldType.dialog,
                     items: bookField,
-                    style: TextStyle(color: Colors.grey.shade600),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
 
