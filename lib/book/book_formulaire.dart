@@ -226,9 +226,10 @@ class _BookFormulaireState extends State<BookFormulaire> {
                           await BookModel.updateBook(widget.idBook, newBook);
                         }
                         await StatisticModel.populateStatistic();
+                        Navigator.pop(context);
                         context.go('/books');
+                        showMessage(context, "Livre bien enregistré.");
                       }
-                      showMessage(context, "Livre bien enregistré.");
                     },
                     child: const Text(
                       'Enregistrer',

@@ -86,9 +86,11 @@ class _WishlistFormulaireState extends State<WishlistFormulaire> {
                         await WishlistModel.updateWishlist(
                             widget.idWishlist, book);
                       }
+                      Navigator.pop(context);
                       context.go('/wishlists');
+                      showMessage(
+                          context, "Livre bien enregistré dans wishlist.");
                     }
-                    showMessage(context, "Wishlist bien enregistré.");
                   },
                   child: const Text(
                     'Enregistrer',

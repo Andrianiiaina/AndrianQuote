@@ -15,6 +15,20 @@ final bottomDatas = [
   const BottomNavigationBarItem(
       icon: Icon(Icons.watch_later), label: 'wishlist', tooltip: "wishlist"),
 ];
+final List<Color> colors = [
+  const Color.fromARGB(156, 88, 2, 208),
+  const Color.fromARGB(186, 97, 2, 145),
+  const Color.fromARGB(186, 65, 41, 221),
+  const Color.fromARGB(172, 44, 0, 60),
+  const Color.fromARGB(211, 210, 67, 67),
+  const Color.fromARGB(135, 204, 47, 186),
+  const Color.fromARGB(181, 230, 91, 91),
+  const Color.fromARGB(160, 76, 81, 240),
+  const Color.fromARGB(133, 36, 131, 200),
+  const Color.fromARGB(134, 184, 4, 178),
+  Color.fromARGB(156, 180, 4, 174),
+];
+
 var themeLight = ThemeData.light().copyWith(
     dialogBackgroundColor: Colors.white,
     datePickerTheme: const DatePickerThemeData(backgroundColor: Colors.white),
@@ -156,7 +170,10 @@ Future showConfirmation(
 
 showMessage(BuildContext context, _content) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(_content),
+    content: Text(
+      _content,
+      style: const TextStyle(color: Colors.white),
+    ),
     duration: const Duration(seconds: 3),
   ));
 }
@@ -230,18 +247,3 @@ Widget searchWidget(search) {
         },
       ));
 }
-
-List<Color> colors = [
-  const Color.fromARGB(181, 230, 91, 91),
-  const Color.fromARGB(186, 97, 2, 145),
-  const Color.fromARGB(186, 65, 41, 221),
-  const Color.fromARGB(135, 204, 47, 186),
-  const Color.fromARGB(156, 88, 2, 208),
-  const Color.fromARGB(172, 44, 0, 60),
-  const Color.fromARGB(211, 210, 67, 67),
-  const Color.fromARGB(160, 76, 81, 240),
-  const Color.fromARGB(133, 36, 131, 200),
-  const Color.fromARGB(134, 184, 4, 178),
-  const Color.fromARGB(156, 5, 61, 110),
-  const Color.fromARGB(162, 2, 72, 104),
-];

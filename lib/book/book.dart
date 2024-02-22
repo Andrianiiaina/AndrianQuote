@@ -85,7 +85,9 @@ class BookPageState extends State<BookPage> {
                         child: Container(
                           padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
-                              color: colors[Random().nextInt(11)],
+                              color: colors[(int.tryParse(book.note) == null)
+                                  ? 0
+                                  : int.parse(book.note)],
                               border: Border.all(color: Colors.white),
                               borderRadius: const BorderRadius.only(
                                   bottomRight: Radius.circular(3),

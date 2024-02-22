@@ -31,25 +31,7 @@ void main() async {
   await Hive.openBox<WishlistClass>("wishlist");
   await Hive.openBox<StatisticClass>("stats");
 
-  /** 
-  final book = Hive.box<BookClass>('book');if (!book.containsKey(0)) {
-    book.put(
-        0,
-        BookClass(
-          title: "Inconnu",
-          author: "",
-          version: "",
-          note: "",
-          resume: "A utiliser quand quote.book n'est pas dans book",
-          category: "all",
-          couverture: "",
-          nbrPage: 0,
-          date: DateTime.now(),
-          debut: DateTime.now(),
-          status: "finished",
-          isPaper: false,
-        ));
-  } */
+
   runApp(const MyApp(index: 1));
 }
 

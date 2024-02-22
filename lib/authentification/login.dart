@@ -27,17 +27,11 @@ class _LoginState extends State<Login> {
             child: Column(
           children: [
             TextField(
-              decoration: const InputDecoration(
-                  label: Text(
-                "Email",
-                style: TextStyle(color: Colors.black54),
-              )),
+              decoration: const InputDecoration(label: Text("Email")),
               controller: _email,
             ),
             TextField(
-              decoration: const InputDecoration(
-                  label: Text("Mot de passe",
-                      style: TextStyle(color: Colors.black54))),
+              decoration: const InputDecoration(label: Text("Mot de passe")),
               controller: _password,
             ),
             TextButton(

@@ -173,18 +173,26 @@ class _StatisticPageState extends State<StatisticPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       statisticButton(
-                          "${stat.englishVersion} livres en anglais", () {}),
+                          "${stat.englishVersion} livres en anglais", () {
+                        context.go('/search_book/${3}/$year');
+                      }),
                       statisticButton(
-                          "${stat.frenchVersion} livres en francais", () {}),
+                          "${stat.frenchVersion} livres en francais", () {
+                        context.go('/search_book/${4}/$year');
+                      }),
                     ],
                   ),
                   statisticButton('$perDay pages par jour en moyenne.', () {}),
                   statisticButton(
                       '${stat.paperBook} livres en papier: ${stat.paperPages} pages.',
-                      () {}),
+                      () {
+                    context.go('/search_book/${5}/$year');
+                  }),
                   statisticButton(
                       ' ${stat.digitalBook} livres numerique: ${stat.digitalPages} pages.',
-                      () {}),
+                      () {
+                    context.go('/search_book/${6}/$year');
+                  }),
                 ],
               ),
             )

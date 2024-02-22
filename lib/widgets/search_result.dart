@@ -17,6 +17,7 @@ class _SearchBookState extends State<SearchBook> {
   final List<BookClass> _books = BookModel.getAllData().toList();
   List<BookClass> filteredBooks = [];
   List<BookClass> books = [];
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,28 @@ class _SearchBookState extends State<SearchBook> {
           .where((element) =>
               element.status.contains('inished') &&
               element.date.year == widget.year)
+          .toList();
+    } else if (widget.type == 3) {
+      books = _books
+          .where((element) =>
+              element.version.contains("Anglaise") &&
+              element.date.year == widget.year)
+          .toList();
+    } else if (widget.type == 4) {
+      books = _books
+          .where((element) =>
+              element.version.contains("Francaise") &&
+              element.date.year == widget.year)
+          .toList();
+    } else if (widget.type == 5) {
+      books = _books
+          .where((element) =>
+              element.isPaper == true && element.date.year == widget.year)
+          .toList();
+    } else if (widget.type == 6) {
+      books = _books
+          .where((element) =>
+              element.isPaper == false && element.date.year == widget.year)
           .toList();
     } else {
       books = _books;

@@ -57,28 +57,35 @@ class _SettingsState extends State<Settings> {
                   showMessage(context,
                       "Une erreur s'est produite, veuillez réessayer!");
                 }
+                Navigator.pop(context);
                 context.go('/');
               },
               child: const Text('Mettre à jour les statistiques.')),
           TextButton(
               onPressed: () {
-                try {
-                  BookModel.recupJsonDataBook();
-                  QuoteModel.recupJsonDataQuote();
-                  WishlistModel.recupJsonDataWishlist();
-                } catch (e) {
-                  showMessage(context,
-                      "Une erreur s'est produite.\n Si vous avez bien exporté vos données antérierement, contactez nous.\n Si vous aviez changer d'appareil, connecter vous à votre compte et dans parametre, appuyer sur restauration données.");
-                }
-                context.go('/');
-                Navigator.pop(context);
+                showConfirmation(context, "Récuperation des données", "", () {
+                  try {
+                    BookModel.recupJsonDataBook();
+                    QuoteModel.recupJsonDataQuote();
+                    WishlistModel.recupJsonDataWishlist();
+                  } catch (e) {
+                    showMessage(context,
+                        "Une erreur s'est produite.\n Si vous avez bien exporté vos données antérierement, contactez nous.\n Si vous aviez changer d'appareil, connecter vous à votre compte et dans parametre, appuyer sur restauration données.");
+                  }
+                  Navigator.pop(context);
+                  context.go('/');
+                });
               },
               child: const Text('Récupérer les données sauvegardées.')),
           TextButton(
               onPressed: () {
-                sauvegarde.exportToJson();
-                context.go('/');
-                Navigator.pop(context);
+                showConfirmation(context, "Sauvegarde",
+                    "Etes-vous sur de sauvegarder les données actuelle sur internet? les anciens vont etre dupprimer",
+                    () {
+                  sauvegarde.exportToJson();
+                  Navigator.pop(context);
+                  context.go('/');
+                });
               },
               child: const Text('Sauvegarder sur internet.')),
           TextButton(
@@ -86,7 +93,7 @@ class _SettingsState extends State<Settings> {
                 sauvegarde.dataRestauration();
                 Navigator.pop(context);
               },
-              child: const Text('Restaurer les données.')),
+              child: const Text('Restaurer les données de ce compte.')),
           TextButton(
               onPressed: () {
                 _auth.currentUser != null
@@ -95,9 +102,8 @@ class _SettingsState extends State<Settings> {
 
                 Navigator.pop(context);
               },
-              child: Text(_auth.currentUser != null
-                  ? 'Deconnection.'
-                  : 'Inscription.')),
+              child: Text(
+                  _auth.currentUser != null ? 'Deconnection.' : 'Connection.')),
         ],
       ),
     );
