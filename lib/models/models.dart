@@ -7,7 +7,6 @@ import 'package:andrianiaiina_quote/authentification/register.dart';
 import 'package:andrianiaiina_quote/book/show_book.dart';
 import 'package:andrianiaiina_quote/main_page.dart';
 //import 'package:andrianiaiina_quote/quote/show_quotedart';
-import 'package:andrianiaiina_quote/quote/quote.dart';
 import '../quote/show_quote.dart';
 
 class Models {

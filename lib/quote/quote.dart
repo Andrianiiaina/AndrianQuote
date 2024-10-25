@@ -4,7 +4,6 @@ import '../widgets/card_quote.dart';
 import '../widgets/widget.dart';
 import '../models/quote_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class QuotePage extends StatefulWidget {
   const QuotePage({Key? key}) : super(key: key);

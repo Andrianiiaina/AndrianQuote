@@ -246,5 +246,5 @@ final List<Color> bookColors = [
   const Color.fromARGB(160, 76, 81, 240),
   const Color.fromARGB(133, 36, 131, 200),
   const Color.fromARGB(134, 184, 4, 178),
-  Color.fromARGB(156, 180, 4, 174),
+  const Color.fromARGB(156, 180, 4, 174),
 ];

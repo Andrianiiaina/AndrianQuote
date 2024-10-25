@@ -75,8 +75,9 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                       items: bookField,
                       style: const TextStyle(color: Colors.white),
                       validator: (value) {
-                        if (value!.isEmpty)
+                        if (value!.isEmpty) {
                           return "Veuillez selectionner un livre ou en créer un.";
+                        }
                         return null;
                       },
                     ),
