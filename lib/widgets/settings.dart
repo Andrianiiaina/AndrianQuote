@@ -1,5 +1,5 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
-import 'package:andrianiaiina_quote/widgets/style.dart';
+import 'package:andrianiaiina_quote/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

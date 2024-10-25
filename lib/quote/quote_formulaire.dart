@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:select_form_field/select_form_field.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import '../book/book_formulaire.dart';
 import '../models/book_model.dart';
 import '../models/quote_model.dart';
@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 class QuoteFormulaire extends StatefulWidget {
   final int id;
+  //id: -1=>creation, sinon edition
   const QuoteFormulaire({Key? key, this.id = -1}) : super(key: key);
 
   @override
@@ -103,7 +104,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                   final pickedFile =
                       await picker.getImage(source: ImageSource.gallery);
 
-                  String a = await getImageTotext(pickedFile!.path);
+                  String a = await extractTextIntoImage(pickedFile!.path);
 
                   setState(() {
                     _quoty.text = a;
@@ -141,8 +142,6 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
                       Navigator.pop(context);
                       context.go('/quotes');
                     }
-
-                    ///notif oe bien enregistrer
                   },
                   child: const Text(
                     'Enregistrer le quote',
@@ -159,7 +158,7 @@ class _QuoteFormulaireState extends State<QuoteFormulaire> {
     );
   }
 
-  Future getImageTotext(final imagePath) async {
+  Future extractTextIntoImage(final imagePath) async {
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     final RecognizedText recognizedText =
         await textRecognizer.processImage(InputImage.fromFilePath(imagePath));

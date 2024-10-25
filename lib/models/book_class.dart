@@ -11,7 +11,7 @@ class BookClass extends HiveObject {
   @HiveField(2)
   String version;
   @HiveField(3)
-  String note;
+  int note;
   @HiveField(4)
   String resume;
   @HiveField(5)
@@ -28,7 +28,6 @@ class BookClass extends HiveObject {
   DateTime debut;
   @HiveField(11)
   bool isPaper;
-
   BookClass({
     this.id,
     required this.title,

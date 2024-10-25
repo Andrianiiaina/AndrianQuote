@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/wishlist_model.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import '../models/models.dart';
 
 class WishlistFormulaire extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:andrianiaiina_quote/models/book_model.dart';
 import 'package:flutter/material.dart';
-import 'style.dart';
+import 'widget.dart';
 import 'package:go_router/go_router.dart';
 
 class CardBook extends StatelessWidget {
@@ -9,12 +9,6 @@ class CardBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var note = 0;
-    try {
-      note = int.parse(book.note);
-    } catch (e) {
-      note = 0;
-    }
     return Container(
       color: Theme.of(context).colorScheme.background.withOpacity(0.05),
       key: ValueKey(book.id),
@@ -32,7 +26,8 @@ class CardBook extends StatelessWidget {
             context.go('/book/${book.id}');
           },
           trailing: SizedBox(
-              width: MediaQuery.of(context).size.width / 4, child: star(note))),
+              width: MediaQuery.of(context).size.width / 4,
+              child: star(book.note))),
     );
   }
 }

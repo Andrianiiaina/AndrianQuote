@@ -1,7 +1,7 @@
 import 'package:andrianiaiina_quote/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'widgets/style.dart';
+import 'widgets/widget.dart';
 import 'models/wishlist_class.dart';
 import 'models/book_class.dart';
 import 'models/quoty_class.dart';
@@ -30,7 +30,6 @@ void main() async {
   await Hive.openBox<BookClass>("book");
   await Hive.openBox<WishlistClass>("wishlist");
   await Hive.openBox<StatisticClass>("stats");
-
 
   runApp(const MyApp(index: 1));
 }
@@ -66,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           _loadSavedTheme(value);
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            title: 'Fenitra book',
+            title: 'Andrian book',
             theme: themeLight,
             darkTheme: ThemeData.dark(),
             themeMode: value.currentThemeMode,

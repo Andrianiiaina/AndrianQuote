@@ -3,7 +3,7 @@ import 'package:andrianiaiina_quote/quote/quote.dart';
 import 'package:andrianiaiina_quote/statistic.dart';
 import 'package:andrianiaiina_quote/wishlist/wishlist.dart';
 import 'package:flutter/material.dart';
-import 'widgets/style.dart';
+import 'widgets/widget.dart';
 
 class MainPage extends StatefulWidget {
   final int index;

@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:flutter/material.dart';
 import 'wishlist_formulaire.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import '../models/wishlist_model.dart';
 
 class Wishlist extends StatefulWidget {

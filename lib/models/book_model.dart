@@ -16,7 +16,7 @@ class BookModel {
         title: book.title,
         version: book.version,
         category: book.category,
-        note: book.note.toString(),
+        note: book.note,
         resume: book.resume,
         couverture: book.couverture,
         nbrPage: book.nbrPage,

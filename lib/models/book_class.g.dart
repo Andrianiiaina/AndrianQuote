@@ -20,7 +20,7 @@ class BookClassAdapter extends TypeAdapter<BookClass> {
       title: fields[0] as String,
       author: fields[1] as String,
       version: fields[2] as String,
-      note: fields[3] as String,
+      note: fields[3] as int,
       resume: fields[4] as String,
       category: fields[5] as String,
       couverture: fields[6] as String,

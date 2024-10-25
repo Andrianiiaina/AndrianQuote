@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/book_model.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 
 class ShowBook extends StatefulWidget {
   final int idBook;
@@ -22,11 +22,7 @@ class _ShowBookState extends State<ShowBook> {
   void initState() {
     super.initState();
     book = BookModel.getBook(widget.idBook);
-    try {
-      note = int.parse(book!.note);
-    } catch (e) {
-      note = 0;
-    }
+    note = book!.note;
   }
 
   _deleteBook(int id) async {
@@ -137,8 +133,8 @@ class _ShowBookState extends State<ShowBook> {
                       color: Colors.white),
                 ),
                 subtitle: Text(
-                    book!.resume == ""
-                        ? "Aucun resumé..."
+                    book!.status != "finished"
+                        ? "Livre non términé\n ${book!.nbrPage.toString()}pages.\nVersion ${book!.version.toLowerCase()}\nCategorie: ${book!.category}\n"
                         : "${book!.resume}\n\n${book!.nbrPage.toString()} pages.\nVersion ${book!.version.toLowerCase()}\nLu le ${book!.date.year}-${book!.date.month}-${book!.date.day}\nCategorie: ${book!.category}\n",
                     style: const TextStyle(
                         color: Color.fromARGB(255, 206, 198, 198))),

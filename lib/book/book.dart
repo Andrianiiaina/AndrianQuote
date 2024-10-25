@@ -4,7 +4,7 @@ import 'package:andrianiaiina_quote/widgets/search_result.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'book_formulaire.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import '../models/book_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -29,7 +29,7 @@ class BookPageState extends State<BookPage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        title: Text('Mes livres (${books.length})'),
+        title: Text('Mes livres :(${books.length})'),
         actions: [
           IconButton(
             onPressed: () {
@@ -85,9 +85,7 @@ class BookPageState extends State<BookPage> {
                         child: Container(
                           padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
-                              color: colors[(int.tryParse(book.note) == null)
-                                  ? 0
-                                  : int.parse(book.note)],
+                              color: bookColors[book.note],
                               border: Border.all(color: Colors.white),
                               borderRadius: const BorderRadius.only(
                                   bottomRight: Radius.circular(3),

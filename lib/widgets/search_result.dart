@@ -1,4 +1,4 @@
-import 'package:andrianiaiina_quote/widgets/style.dart';
+import 'package:andrianiaiina_quote/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import '../widgets/card_book.dart';
 import '../models/book_model.dart';

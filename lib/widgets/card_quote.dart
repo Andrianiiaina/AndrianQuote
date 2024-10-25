@@ -1,4 +1,4 @@
-import 'package:andrianiaiina_quote/widgets/style.dart';
+import 'package:andrianiaiina_quote/widgets/widget.dart';
 import 'package:go_router/go_router.dart';
 import '../quote/quote_formulaire.dart';
 import 'package:flutter/material.dart';

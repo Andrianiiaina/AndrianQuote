@@ -2,7 +2,7 @@ import 'package:andrianiaiina_quote/book/book_formulaire.dart';
 import '../models/book_model.dart';
 import 'package:flutter/material.dart';
 import '../models/wishlist_model.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import 'wishlist_formulaire.dart';
 import 'package:go_router/go_router.dart';
 
@@ -119,7 +119,7 @@ class _ShowWishlistState extends State<ShowWishlist> {
                     title: book!.title,
                     author: book!.author,
                     version: book!.version,
-                    note: "0",
+                    note: 0,
                     resume: book!.resume,
                     category: book!.category,
                     couverture: "",

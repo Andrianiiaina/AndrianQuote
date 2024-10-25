@@ -2,7 +2,7 @@ import 'package:andrianiaiina_quote/models/statistic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/book_model.dart';
-import '../widgets/style.dart';
+import '../widgets/widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -12,20 +12,21 @@ import 'package:flutter/services.dart';
 
 class BookFormulaire extends StatefulWidget {
   final int idBook;
+  //idBook= -1: creation sinon modification
   const BookFormulaire({Key? key, this.idBook = -1}) : super(key: key);
   @override
   State<BookFormulaire> createState() => _BookFormulaireState();
 }
 
 class _BookFormulaireState extends State<BookFormulaire> {
-  int stara = 0;
+  int rate = 0;
 
   TextEditingController authorController = TextEditingController(text: "");
   TextEditingController titleController = TextEditingController(text: "");
   TextEditingController categoryController = TextEditingController(text: "");
   TextEditingController versionController = TextEditingController(text: "");
   TextEditingController resumeController = TextEditingController(text: "");
-  TextEditingController nbrpageController = TextEditingController(text: "");
+  TextEditingController nbrPageController = TextEditingController(text: "");
   TextEditingController noteController = TextEditingController(text: "");
   TextEditingController statusController = TextEditingController(text: "");
   TextEditingController isPaperController = TextEditingController(text: "");
@@ -49,18 +50,14 @@ class _BookFormulaireState extends State<BookFormulaire> {
       resumeController.text = book.resume;
       categoryController.text = book.category;
       versionController.text = book.version;
-      nbrpageController.text = book.nbrPage.toString();
+      nbrPageController.text = book.nbrPage.toString();
       selectedDate = book.date;
       selectedDebut = book.debut;
       isPaperController.text = book.isPaper.toString();
-      noteController.text = book.note;
+      noteController.text = book.note.toString();
       statusController.text = book.status;
       isPaperController.text = book.isPaper ? 'paper' : 'numeric';
-      try {
-        stara = int.parse(book.note);
-      } catch (e) {
-        stara = 0;
-      }
+      rate = book.note;
     }
   }
 
@@ -130,7 +127,7 @@ class _BookFormulaireState extends State<BookFormulaire> {
                 selectFormWidget(
                     versionController, 'Langage', Models.bookversion),
                 textFieldWidgetNumber(
-                    nbrpageController, "Nombre de page", false),
+                    nbrPageController, "Nombre de page", false),
                 textareaWidgetForm(resumeController, "Resumé", false),
                 DateTimeFormField(
                   dateTextStyle: const TextStyle(color: Colors.white),
@@ -209,13 +206,13 @@ class _BookFormulaireState extends State<BookFormulaire> {
                             title: titleController.text,
                             author: authorController.text,
                             version: versionController.text,
-                            note: noteController.text,
+                            note: int.parse(noteController.text),
                             resume: resumeController.text,
                             category: categoryController.text,
                             couverture: _imageFile,
                             date: selectedDate,
                             debut: selectedDebut,
-                            nbrPage: int.parse(nbrpageController.text),
+                            nbrPage: int.parse(nbrPageController.text),
                             status: statusController.text,
                             isPaper: isPaperController.text == 'paper'
                                 ? true

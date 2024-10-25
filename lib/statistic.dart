@@ -1,5 +1,5 @@
 import 'package:andrianiaiina_quote/models/statistic_model.dart';
-import 'package:andrianiaiina_quote/widgets/style.dart';
+import 'package:andrianiaiina_quote/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,33 +23,6 @@ class _StatisticPageState extends State<StatisticPage> {
     super.initState();
     stat = fetchStatistics(year);
     perDay = getPerDayPages(year);
-  }
-
-  int getPerDayPages(year) {
-    return DateTime.now().year == year
-        ? (stat.totalFinishedPage /
-                DateTime.now().difference(DateTime(year)).inDays)
-            .round()
-        : stat.pagesPerDay;
-  }
-
-  StatisticClass fetchStatistics(int year) {
-    return allStats.firstWhere((e) => e.year == year,
-        orElse: () => StatisticClass(
-            year: 0,
-            finished: 0,
-            current: 0,
-            abandonned: 0,
-            categories: [],
-            digitalBook: 0,
-            digitalPages: 0,
-            englishVersion: 0,
-            finishedPerMonth: [],
-            frenchVersion: 0,
-            pagesPerDay: 0,
-            paperBook: 0,
-            paperPages: 0,
-            totalFinishedPage: 0));
   }
 
   @override
@@ -189,7 +162,7 @@ class _StatisticPageState extends State<StatisticPage> {
                     context.go('/search_book/${5}/$year');
                   }),
                   statisticButton(
-                      ' ${stat.digitalBook} livres numerique: ${stat.digitalPages} pages.',
+                      ' ${stat.digitalBook} livres numeriques: ${stat.digitalPages} pages.',
                       () {
                     context.go('/search_book/${6}/$year');
                   }),
@@ -200,5 +173,32 @@ class _StatisticPageState extends State<StatisticPage> {
         ),
       ),
     );
+  }
+
+  StatisticClass fetchStatistics(int year) {
+    return allStats.firstWhere((e) => e.year == year,
+        orElse: () => StatisticClass(
+            year: 0,
+            finished: 0,
+            current: 0,
+            abandonned: 0,
+            categories: [],
+            digitalBook: 0,
+            digitalPages: 0,
+            englishVersion: 0,
+            finishedPerMonth: [],
+            frenchVersion: 0,
+            pagesPerDay: 0,
+            paperBook: 0,
+            paperPages: 0,
+            totalFinishedPage: 0));
+  }
+
+  int getPerDayPages(year) {
+    return DateTime.now().year == year
+        ? (stat.totalFinishedPage /
+                DateTime.now().difference(DateTime(year)).inDays)
+            .round()
+        : stat.pagesPerDay;
   }
 }

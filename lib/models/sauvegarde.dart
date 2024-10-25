@@ -74,6 +74,7 @@ class sauvegarde {
       await fileQuote.writeAsString(json.encode(dataQuote));
       await fileWishlist.writeAsString(json.encode(dataWishlist));
     } finally {}
+    //si user connécté=> data sauvegardé sur firebase
     if (_auth.currentUser != null) {
       try {
         final childRef = _auth.currentUser!.uid;
@@ -149,7 +150,7 @@ class sauvegarde {
         title: data["title"],
         author: data["author"],
         version: data["version"],
-        note: data["note"],
+        note: int.tryParse(data["note"].toString()) ?? 0,
         resume: data["resume"],
         category: data["category"],
         couverture: data["couverture"],
