@@ -1,9 +1,8 @@
+import 'package:andrianiaiina_quote/authentification/auth_form.dart';
 import 'package:andrianiaiina_quote/widgets/search_result.dart';
 import 'package:andrianiaiina_quote/wishlist/show_wishlist.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:andrianiaiina_quote/authentification/login.dart';
-import 'package:andrianiaiina_quote/authentification/register.dart';
 import 'package:andrianiaiina_quote/book/show_book.dart';
 import 'package:andrianiaiina_quote/main_page.dart';
 //import 'package:andrianiaiina_quote/quote/show_quotedart';
@@ -51,15 +50,9 @@ class Models {
         },
         routes: <RouteBase>[
           GoRoute(
-            path: 'register',
+            path: 'authentification',
             builder: (BuildContext context, GoRouterState state) {
-              return const Register();
-            },
-          ),
-          GoRoute(
-            path: 'login',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Login();
+              return const AuthForm();
             },
           ),
           GoRoute(

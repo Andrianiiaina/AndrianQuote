@@ -98,7 +98,7 @@ class _SettingsState extends State<Settings> {
               onPressed: () {
                 _auth.currentUser != null
                     ? _auth.signOut()
-                    : context.go('/login');
+                    : context.go('/authentification');
 
                 Navigator.pop(context);
               },
