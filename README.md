@@ -16,9 +16,8 @@ The app includes a personalized dashboard to display annual reading stats, such 
 - Sync & Restore: User data is securely backed up to Firestore, ensuring data can be restored if a device becomes inaccessible.
 
 # Screenshot 
-
-![quote_qoutes](https://github.com/user-attachments/assets/52563b0f-38c5-4de0-bd40-cc4619344723)
 ![quote_home](https://github.com/user-attachments/assets/9c33cce9-8cbf-4d66-b5a0-19de3297916d)
+![quote_qoutes](https://github.com/user-attachments/assets/52563b0f-38c5-4de0-bd40-cc4619344723)
 ![quote_statistique](https://github.com/user-attachments/assets/c679be6b-b8ca-43d5-a8e8-90a7f3b779c0)
 # Installation
 ## Prerequisites
